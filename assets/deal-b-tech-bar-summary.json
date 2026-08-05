@@ -18,6 +18,7 @@
   },
   "demand": {
     "deskside_tickets_per_month": 1710,
+    "tickets_yr": 20520,
     "aht_tech_bar_minutes": 45,
     "aht_virtual_minutes": 30,
     "working_days_month": 21,
@@ -25,6 +26,34 @@
     "utilization": 0.8,
     "demand_fte": 9.5,
     "team_utilization": 0.73
+  },
+  "cost_model": {
+    "sites": 65,
+    "users": 20000,
+    "tpu": 1.026,
+    "tech_bars": 8,
+    "day1_techs": 13,
+    "floor_per_bar": 1,
+    "physical_touch_share": 0.55,
+    "day_one_reach": 0.75,
+    "utilization": 0.8,
+    "working_days": 252,
+    "on_site_tickets_per_day": 5,
+    "remote_tickets_per_day": 8,
+    "curtech": 22,
+    "curmgmt_pct": 14,
+    "curlog": 420000,
+    "depots": 2,
+    "depot_fix_yr": 48000,
+    "stock_value_per_bar": 28000,
+    "regional_mix_pct": [90, 4, 4, 2],
+    "ratio_band": [1500, 2000],
+    "ratio_ladder": [
+      {"key": "r1500", "name": "1500:1 . GOAL", "ratio": 1500, "defl": 10, "zt": 45, "year": 2, "goal": true},
+      {"key": "r1750", "name": "1750:1 . Stretch", "ratio": 1750, "defl": 18, "zt": 65, "year": 4},
+      {"key": "r2000", "name": "2000:1 . Art of possible", "ratio": 2000, "defl": 26, "zt": 85, "year": 6}
+    ],
+    "note": "Tech-bar-heavy commercial band is roughly 1500:1–2000:1. Day-one headcount is demand-sized (bars + virtual + roving), not campus VC floors."
   },
   "operating_model": [
     "One dedicated technician per established tech bar (business hours 8\u00d75)",

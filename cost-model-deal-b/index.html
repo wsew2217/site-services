@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Site Services · Generic Cost Model</title>
+<title>Reference Deal B · Cost Model</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
@@ -69,11 +69,11 @@ details ul{margin:8px 0 4px 20px}
 .toolbar{top:52px}
 </style>
 </head>
-<body class="suite-app suite-tool" data-page="cost-model" data-mode="tool">
+<body class="suite-app suite-tool" data-page="cost-model-deal-b" data-mode="tool">
 <div class="hero"><div class="hero-inner">
-<div class="k">Site Services · Generic</div>
+<div class="k">Reference Deal B · Tech-bar pattern example</div>
 <h1>Cost Model</h1>
-<div class="s">Primary economics sandbox for any estate — not a single-customer deal. Prefer loading a deal-engine summary so campuses and day-one techs are site-derived; ratios stay guardrails. Labeled examples: <a href="/cost-model-deal-a" style="color:var(--acc)">Deal A (campus)</a> · <a href="/cost-model-deal-b" style="color:var(--acc)">Deal B (tech bar)</a>.</div>
+<div class="s">Economics for the tech-bar walk-in pattern (65 offices · 8 bars · 13 day-one techs). Ratio band ~1500:1–2000:1 — not Deal A’s campus estate. Generic defaults live at <a href="/cost-model" style="color:var(--acc)">Generic Cost Model</a>; pattern brief at <a href="/deal-b" style="color:var(--acc)">Deal B</a>.</div>
 </div></div>
 <div class="toolbar"><div class="toolbar-inner">
 <button class="tab on" data-p="inputs">1 . Inputs</button>
@@ -91,41 +91,41 @@ details ul{margin:8px 0 4px 20px}
 <!-- ================= PANE 1: INPUTS ================= -->
 <div class="pane on" id="pane-inputs">
 <h2 class="sec">Estate &amp; delivery inputs</h2>
-<p class="note">Defaults describe a large, distributed global estate. Prefer loading an engine summary so campuses and day-one techs are site-derived, not invented.</p>
+<p class="note">Defaults match the Reference Deal B tech-bar summary. Day-one techs and bar count lock from the summary; commercial rates remain editable placeholders.</p>
 <div class="card" style="margin-bottom:16px">
-<h3>Deal engine bridge</h3>
-<div class="sub">Load <code>/assets/engine-summary.json</code> produced by <code>python -m engine run …</code> (or upload a file). Campuses lock as derived; day-one techs come from the site model.</div>
-<div class="frow"><label>Engine JSON</label><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-<button class="btn ghost" type="button" id="btn_load_engine">Load sample engine summary</button>
+<h3>Tech-bar summary bridge</h3>
+<div class="sub">Loads <code>/assets/deal-b-tech-bar-summary.json</code> (or upload another summary). Tech bars and day-one techs stay pattern-derived for this example.</div>
+<div class="frow"><label>Summary JSON</label><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<button class="btn ghost" type="button" id="btn_load_engine">Reload Deal B summary</button>
 <input type="file" id="i_engine_file" accept="application/json,.json" style="font-size:12px">
 </span></div>
-<div class="note" id="engine_status">No engine file loaded — campuses are manual until you load a summary.</div>
+<div class="note" id="engine_status">Loading Reference Deal B tech-bar summary…</div>
 </div>
 <div class="grid g3">
-<div class="card"><h3>Estate</h3><div class="sub">The footprint being served</div>
-<div class="frow"><label>Sites in scope</label><input type="number" id="i_sites" value="1000"></div>
-<div class="frow"><label>Users (seats)</label><input type="number" id="i_users" value="50000"></div>
-<div class="frow"><label>Tickets per user / yr<span class="hint">demand intensity; 1.0-1.8 typical field-heavy</span></label><input type="number" id="i_tpu" value="1.6" step="0.1"></div>
-<div class="frow"><label>Virtual campuses<span class="hint" id="camp_hint">from engine when loaded; else manual</span></label><input type="number" id="i_camp" value="28"></div>
-<div class="frow"><label>Physical-touch share of tickets<span class="hint">% needing hands on hardware</span></label><input type="number" id="i_touch" value="35"></div>
-<div class="frow"><label>On-site reach at day one %<span class="hint">share of touches within staff drive range</span></label><input type="number" id="i_cov" value="55"></div>
+<div class="card"><h3>Estate</h3><div class="sub">Reference Deal B tech-bar footprint</div>
+<div class="frow"><label>Offices in scope</label><input type="number" id="i_sites" value="65"></div>
+<div class="frow"><label>Users (seats)</label><input type="number" id="i_users" value="20000"></div>
+<div class="frow"><label>Tickets per user / yr<span class="hint">from ~1,710 deskside tickets / month</span></label><input type="number" id="i_tpu" value="1.026" step="0.001"></div>
+<div class="frow"><label>Established tech bars<span class="hint" id="camp_hint">from Deal B summary when loaded</span></label><input type="number" id="i_camp" value="8"></div>
+<div class="frow"><label>Physical-touch share of tickets<span class="hint">% needing hands on hardware (walk-in bar volume)</span></label><input type="number" id="i_touch" value="55"></div>
+<div class="frow"><label>Walk-in reach at day one %<span class="hint">share of touches within bar / walk-in radius</span></label><input type="number" id="i_cov" value="75"></div>
 <div class="frow"><label>Devices per user</label><input type="number" id="i_dpu" value="1.2" step="0.1"></div>
 <div class="frow"><label>Refresh cycle (years)</label><input type="number" id="i_refresh" value="4"></div>
 </div>
 <div class="card"><h3>Delivery model</h3><div class="sub">Throughput and structure</div>
-<div class="frow"><label>On-site tickets / tech / day</label><input type="number" id="i_onrate" value="5" step="0.5"></div>
-<div class="frow"><label>Remote tickets / tech / day</label><input type="number" id="i_remrate" value="5" step="0.5"></div>
-<div class="frow"><label>Utilization %</label><input type="number" id="i_util" value="85"></div>
+<div class="frow"><label>Walk-in tickets / tech / day</label><input type="number" id="i_onrate" value="5" step="0.5"></div>
+<div class="frow"><label>Virtual tickets / tech / day</label><input type="number" id="i_remrate" value="8" step="0.5"></div>
+<div class="frow"><label>Utilization %</label><input type="number" id="i_util" value="80"></div>
 <div class="frow"><label>Working days / yr</label><input type="number" id="i_days" value="252"></div>
-<div class="frow"><label>Team floor per campus<span class="hint">minimum techs for resilience</span></label><input type="number" id="i_floor" value="2"></div>
+<div class="frow"><label>Floor per tech bar<span class="hint">dedicated tech minimum per established bar</span></label><input type="number" id="i_floor" value="1"></div>
 <div class="frow"><label>Lead span (techs per lead)</label><input type="number" id="i_lead" value="10"></div>
 <div class="frow"><label>Manager span (techs per mgr)</label><input type="number" id="i_mgr" value="24"></div>
 </div>
 <div class="card"><h3>Labor rates (fully loaded base)</h3><div class="sub">Regional mix must total 100%</div>
-<div class="frow"><label>NAM: mix % / salary</label><span><input type="number" id="i_mx0" value="12" style="width:56px"> <input type="number" id="i_r0" value="85000" style="width:84px"></span></div>
-<div class="frow"><label>LATAM: mix % / salary</label><span><input type="number" id="i_mx1" value="18" style="width:56px"> <input type="number" id="i_r1" value="42000" style="width:84px"></span></div>
-<div class="frow"><label>EMEA: mix % / salary</label><span><input type="number" id="i_mx2" value="43" style="width:56px"> <input type="number" id="i_r2" value="72000" style="width:84px"></span></div>
-<div class="frow"><label>APJC: mix % / salary</label><span><input type="number" id="i_mx3" value="27" style="width:56px"> <input type="number" id="i_r3" value="40000" style="width:84px"></span></div>
+<div class="frow"><label>NAM: mix % / salary</label><span><input type="number" id="i_mx0" value="90" style="width:56px"> <input type="number" id="i_r0" value="85000" style="width:84px"></span></div>
+<div class="frow"><label>LATAM: mix % / salary</label><span><input type="number" id="i_mx1" value="4" style="width:56px"> <input type="number" id="i_r1" value="42000" style="width:84px"></span></div>
+<div class="frow"><label>EMEA: mix % / salary</label><span><input type="number" id="i_mx2" value="4" style="width:56px"> <input type="number" id="i_r2" value="72000" style="width:84px"></span></div>
+<div class="frow"><label>APJC: mix % / salary</label><span><input type="number" id="i_mx3" value="2" style="width:56px"> <input type="number" id="i_r3" value="40000" style="width:84px"></span></div>
 <div class="frow"><label>Burden uplift %<span class="hint">benefits, tools, overhead</span></label><input type="number" id="i_burden" value="28"></div>
 <div class="frow"><label>Lead premium (x rate)</label><input type="number" id="i_leadx" value="1.25" step="0.05"></div>
 <div class="frow"><label>Manager salary (flat)</label><input type="number" id="i_mgrsal" value="140000"></div>
@@ -135,10 +135,10 @@ details ul{margin:8px 0 4px 20px}
 <div class="card"><h3>Logistics &amp; depots</h3><div class="sub">The cost side that grows as labor shrinks</div>
 <div class="frow"><label>Cost per parts shipment</label><input type="number" id="i_ship" value="38"></div>
 <div class="frow"><label>Parts-shipment share of physical touches %</label><input type="number" id="i_shipshare" value="55"></div>
-<div class="frow"><label>Depots</label><input type="number" id="i_depots" value="18"></div>
-<div class="frow"><label>Depot fixed cost / yr each</label><input type="number" id="i_depfix" value="60000"></div>
+<div class="frow"><label>Lifecycle hubs / depots<span class="hint">third-party path; out of bar HC</span></label><input type="number" id="i_depots" value="2"></div>
+<div class="frow"><label>Depot fixed cost / yr each</label><input type="number" id="i_depfix" value="48000"></div>
 <div class="frow"><label>Depot variable per shipment</label><input type="number" id="i_depvar" value="6"></div>
-<div class="frow"><label>Stock value per campus</label><input type="number" id="i_stockval" value="45000"></div>
+<div class="frow"><label>Stock value per tech bar</label><input type="number" id="i_stockval" value="28000"></div>
 <div class="frow"><label>Stock carrying cost %/yr</label><input type="number" id="i_carry" value="18"></div>
 </div>
 <div class="card"><h3>Dispatch &amp; OEM warranty</h3><div class="sub">Hands beyond staff reach</div>
@@ -151,9 +151,9 @@ details ul{margin:8px 0 4px 20px}
 <div class="frow"><label>Refresh shipping per device</label><input type="number" id="i_rship" value="24"></div>
 </div>
 <div class="card"><h3>Current state &amp; transition</h3><div class="sub">Where the customer is today</div>
-<div class="frow"><label>Current field technicians</label><input type="number" id="i_curtech" value="150"></div>
-<div class="frow"><label>Current mgmt overhead % of tech cost</label><input type="number" id="i_curmgmt" value="16"></div>
-<div class="frow"><label>Current logistics spend / yr<span class="hint">lump sum; shown in the Parts shipping column for current state</span></label><input type="number" id="i_curlog" value="900000"></div>
+<div class="frow"><label>Current field technicians<span class="hint">pre–tech-bar consolidation; above day-one model</span></label><input type="number" id="i_curtech" value="22"></div>
+<div class="frow"><label>Current mgmt overhead % of tech cost</label><input type="number" id="i_curmgmt" value="14"></div>
+<div class="frow"><label>Current logistics spend / yr<span class="hint">lump sum; shown in the Parts shipping column for current state</span></label><input type="number" id="i_curlog" value="420000"></div>
 <div class="frow"><label>Severance per exiting head</label><input type="number" id="i_sev" value="30000"></div>
 <div class="frow"><label>Hire + training per added head</label><input type="number" id="i_hire" value="12000"></div>
 <div class="frow"><label>Parallel-run months (each step)</label><input type="number" id="i_par" value="2"></div>
@@ -165,17 +165,15 @@ details ul{margin:8px 0 4px 20px}
 <!-- ================= PANE 2: SCENARIOS ================= -->
 <div class="pane" id="pane-scen">
 <h2 class="sec">Scenario ladder</h2>
-<p class="note">Yellow cells are editable per rung: the users-per-tech ratio, the demand deflection adoption assumption (self-service + remote-first removing tickets), the zero-touch maturity %, and the year each rung is reached (drives the cash view). The day-one row is computed from throughput, not a ratio.</p>
+<p class="note">Yellow cells are editable per rung: the users-per-tech ratio, deflection, zero-touch maturity, and year reached. Day one is demand-sized (bars + virtual + roving). Road-map rungs sit in the tech-bar commercial band (~1500:1–2000:1).</p>
 <div class="card">
-<h3>Vertical ratio guidance (editable guardrails)</h3>
-<div class="sub">Not day-one sizing truth — use when setting road-map rungs. Size from workload; bands are commercial conversation ranges. Full write-up on <a href="/structure">Structure</a>.</div>
+<h3>Tech-bar ratio guidance</h3>
+<div class="sub">Commercial guardrails for this pattern — not day-one sizing truth. Size from walk-in + virtual demand; ratios frame the lean path.</div>
 <table>
 <tr><th style="text-align:left">Pattern</th><th>Users : tech</th></tr>
-<tr><td>Some lean / mature deals</td><td>~2000 : 1</td></tr>
-<tr><td>Healthcare</td><td>250 : 1 – 750 : 1</td></tr>
-<tr><td>Manufacturing</td><td>750 : 1 – 1000 : 1</td></tr>
+<tr class="hl"><td>Tech bar–heavy (this deal)</td><td>1500 : 1 – 2000 : 1</td></tr>
 <tr><td>Administrative / office</td><td>1000 : 1 – 1500 : 1</td></tr>
-<tr><td>Tech bar–heavy</td><td>1500 : 1 – 2000 : 1</td></tr>
+<tr><td>Campus field (Deal A style)</td><td>~750 : 1 goal band</td></tr>
 </table>
 </div>
 <div class="card" style="overflow-x:auto"><table id="t_scen"></table>
@@ -217,11 +215,11 @@ details ul{margin:8px 0 4px 20px}
 <h2 class="sec">Model logic (the defensible version)</h2>
 <details open><summary>Demand and staffing</summary>
 <ul>
-<li>Tickets/yr = users x tickets-per-user. Deflection% removes tickets before staffing (adoption of self-service and remote-first).</li>
-<li>When an engine summary is loaded, day-one technicians and campus count come from the site/VC model (hub catchment + throughput). Manual Inputs remain a scenario sandbox.</li>
-<li>Without an engine file, day-one technicians ≈ ceil(daily tickets x physical-touch share / on-site rate / utilization) + ceil(daily remote tickets / remote rate / utilization), floored by campuses x team floor.</li>
-<li>Road-map rungs: technicians = max(campuses x floor, ceil(users / ratio)). Ratios are commercial guardrails, not the day-one sizing driver. Leads = ceil(techs/lead span); managers = ceil(techs/mgr span).</li>
-<li>Blended tech rate = regional mix-weighted salary x (1 + burden). Leads at premium x blended; managers flat + burden.</li>
+<li>Tickets/yr = users x tickets-per-user. Deflection% removes tickets before staffing (self-service + remote-first).</li>
+<li>When the Deal B summary is loaded, day-one technicians and tech-bar count come from the pattern (dedicated bar techs + virtual + roving). Manual Inputs remain a scenario sandbox.</li>
+<li>Without a summary file, day-one technicians ≈ ceil(daily walk-in tickets / walk-in rate / utilization) + ceil(daily virtual tickets / remote rate / utilization), floored by bars × floor.</li>
+<li>Road-map rungs: technicians = max(bars × floor, ceil(users / ratio)). Tech-bar ratios (~1500:1–2000:1) are commercial guardrails. Leads = ceil(techs/lead span); managers = ceil(techs/mgr span).</li>
+<li>Blended tech rate = regional mix-weighted salary x (1 + burden). This example is NAM-heavy. Leads at premium x blended; managers flat + burden.</li>
 </ul></details>
 <details open><summary>Logistics, dispatch and OEM (the shift)</summary>
 <ul>
@@ -236,8 +234,8 @@ details ul{margin:8px 0 4px 20px}
 <li>Cash view: each year charges the annual cost of the active rung plus any step one-time; cumulative line compares against staying at current state.</li>
 </ul></details>
 <details><summary>What this model deliberately is not</summary>
-<p>It is the <b>generic Site Services</b> cost model: it prices structure and shifts, not a specific contract. Reference Deal A (campus estate) lives at <a href="/cost-model-deal-a">/cost-model-deal-a</a>; Reference Deal B (tech-bar pattern, ~1500:1–2000:1) at <a href="/cost-model-deal-b">/cost-model-deal-b</a>. Site geography, hub selection, and VC floors live in the Python deal engine (<code>python -m engine run</code>). Load an engine summary JSON so campus count and day-one techs stay reconciled. Dollar rates are modern placeholders — refresh per deal (older PFS models inform structure only).</p></details>
-<div class="band">The ratio road map is a cost shift, not just a labor cut. This tool makes the shift visible and priceable.</div>
+<p>It is the <b>Reference Deal B</b> tech-bar cost example — not generic Site Services defaults (see <a href="/cost-model">/cost-model</a>) and not Deal A’s campus estate (see <a href="/cost-model-deal-a">/cost-model-deal-a</a>). Pattern brief: <a href="/deal-b">/deal-b</a>. Bar count and day-one HC come from the sanitized tech-bar summary; dollar rates are modern placeholders. Lifecycle-hub / depot lines are logistics cost, not bar headcount.</p></details>
+<div class="band">Reference Deal B · tech-bar pattern · ratio band 1500:1–2000:1 · cost shift made visible.</div>
 </div>
 
 </div>
@@ -252,11 +250,10 @@ const CE=Math.ceil;
 // scenario state (editable)
 let SC=[
  {key:'cur', name:'Current state', ratio:null, defl:0, zt:10, year:null},
- {key:'day1',name:'Day one (demand model)', ratio:null, defl:0, zt:15, year:0},
- {key:'r750',name:'750:1 . GOAL', ratio:750, defl:12, zt:40, year:2, goal:true},
- {key:'r1000',name:'1000:1 . Stretch', ratio:1000, defl:20, zt:60, year:4},
- {key:'r1200',name:'1200:1', ratio:1200, defl:26, zt:75, year:5},
- {key:'r1500',name:'1500:1 . Art of possible', ratio:1500, defl:32, zt:90, year:6}
+ {key:'day1',name:'Day one (tech-bar model)', ratio:null, defl:0, zt:20, year:0},
+ {key:'r1500',name:'1500:1 . GOAL', ratio:1500, defl:10, zt:45, year:2, goal:true},
+ {key:'r1750',name:'1750:1 . Stretch', ratio:1750, defl:18, zt:65, year:4},
+ {key:'r2000',name:'2000:1 . Art of possible', ratio:2000, defl:26, zt:85, year:6}
 ];
 const DEF={};
 function snapshot(){document.querySelectorAll('input').forEach(e=>DEF[e.id]=e.value);DEF._sc=JSON.parse(JSON.stringify(SC));}
@@ -284,7 +281,51 @@ function inputs(){
  };
 }
 
-let ENGINE=null; // loaded engine-summary.json
+let ENGINE=null; // normalized from deal-b-tech-bar-summary.json
+function normalizeDealB(raw){
+ if(!raw) return null;
+ // Already flattened cost-model shape
+ if(raw.day1_techs!=null && (raw.tech_bars!=null || raw.campuses!=null)){
+  return {
+   sites: raw.sites,
+   users: raw.users,
+   tpu: raw.tpu,
+   tech_bars: raw.tech_bars!=null?raw.tech_bars:raw.campuses,
+   day1_techs: raw.day1_techs,
+   label: raw.label||'Reference Deal B'
+  };
+ }
+ const cm=raw.cost_model||{};
+ const cov=raw.coverage||{};
+ const team=raw.team||{};
+ const dem=raw.demand||{};
+ const ticketsYr=dem.tickets_yr!=null?dem.tickets_yr:(dem.deskside_tickets_per_month!=null?dem.deskside_tickets_per_month*12:null);
+ const users=cm.users!=null?cm.users:20000;
+ const tpu=cm.tpu!=null?cm.tpu:(ticketsYr!=null?+(ticketsYr/users).toFixed(3):1.026);
+ return {
+  sites: cm.sites!=null?cm.sites:(cov.offices!=null?cov.offices:65),
+  users,
+  tpu,
+  tech_bars: cm.tech_bars!=null?cm.tech_bars:(cov.established_tech_bars!=null?cov.established_tech_bars:8),
+  day1_techs: cm.day1_techs!=null?cm.day1_techs:(team.total!=null?team.total:13),
+  floor: cm.floor_per_bar!=null?cm.floor_per_bar:1,
+  touch: cm.physical_touch_share,
+  cov: cm.day_one_reach,
+  util: cm.utilization!=null?cm.utilization:(dem.utilization!=null?dem.utilization:null),
+  days: cm.working_days,
+  onrate: cm.on_site_tickets_per_day,
+  remrate: cm.remote_tickets_per_day,
+  curtech: cm.curtech,
+  curmgmt: cm.curmgmt_pct,
+  curlog: cm.curlog,
+  depots: cm.depots,
+  depfix: cm.depot_fix_yr,
+  stockval: cm.stock_value_per_bar,
+  mix: cm.regional_mix_pct,
+  ladder: cm.ratio_ladder,
+  label: raw.label||'Reference Deal B'
+ };
+}
 function techsFor(sc,I){
  if(sc.key==='cur') return I.curtech;
  const tickets=I.users*I.tpu*(1-sc.defl/100);
@@ -297,29 +338,51 @@ function techsFor(sc,I){
   const remT=CE(tpd*(1-I.touch)/(I.remrate*I.util));
   return Math.max(I.camp*I.floor, onT+remT);
  }
- return Math.max(I.camp*Math.max(1,I.floor-1), CE(I.users/sc.ratio));
+ // Tech-bar floor: keep at least one dedicated tech per established bar
+ return Math.max(I.camp*I.floor, CE(I.users/sc.ratio));
 }
 function applyEngine(data){
- ENGINE=data||null;
+ ENGINE=normalizeDealB(data);
  const st=$('engine_status');
  if(!ENGINE){
-  st.textContent='No engine file loaded — campuses are manual until you load a summary.';
+  st.textContent='No summary loaded — tech bars are manual until you load a file.';
   $('i_camp').readOnly=false;
   return;
  }
  if(ENGINE.sites!=null) $('i_sites').value=ENGINE.sites;
  if(ENGINE.users!=null) $('i_users').value=ENGINE.users;
  if(ENGINE.tpu!=null) $('i_tpu').value=ENGINE.tpu;
- if(ENGINE.campuses!=null){
-  $('i_camp').value=ENGINE.campuses;
+ if(ENGINE.tech_bars!=null){
+  $('i_camp').value=ENGINE.tech_bars;
   $('i_camp').readOnly=true;
-  $('camp_hint').textContent='derived from deal engine (locked)';
+  $('camp_hint').textContent='derived from tech-bar summary (locked)';
  }
- // Keep current-state techs as a separate commercial input; day-one uses ENGINE.day1_techs in techsFor().
- if(ENGINE.day1_techs!=null && Number($('i_curtech').value) < ENGINE.day1_techs){
-  $('i_curtech').value=Math.round(ENGINE.day1_techs*1.25);
+ if(ENGINE.floor!=null) $('i_floor').value=ENGINE.floor;
+ if(ENGINE.touch!=null) $('i_touch').value=Math.round(ENGINE.touch*100);
+ if(ENGINE.cov!=null) $('i_cov').value=Math.round(ENGINE.cov*100);
+ if(ENGINE.util!=null) $('i_util').value=Math.round(ENGINE.util*100);
+ if(ENGINE.days!=null) $('i_days').value=ENGINE.days;
+ if(ENGINE.onrate!=null) $('i_onrate').value=ENGINE.onrate;
+ if(ENGINE.remrate!=null) $('i_remrate').value=ENGINE.remrate;
+ if(ENGINE.curtech!=null) $('i_curtech').value=ENGINE.curtech;
+ else if(ENGINE.day1_techs!=null && Number($('i_curtech').value) < ENGINE.day1_techs){
+  $('i_curtech').value=Math.round(ENGINE.day1_techs*1.5);
  }
- st.textContent='Loaded engine summary: '+ENGINE.campuses+' campuses, '+ENGINE.day1_techs+' day-one field techs, '+ENGINE.sites+' sites. Campuses are derived; ratios remain guardrails.';
+ if(ENGINE.curmgmt!=null) $('i_curmgmt').value=ENGINE.curmgmt;
+ if(ENGINE.curlog!=null) $('i_curlog').value=ENGINE.curlog;
+ if(ENGINE.depots!=null) $('i_depots').value=ENGINE.depots;
+ if(ENGINE.depfix!=null) $('i_depfix').value=ENGINE.depfix;
+ if(ENGINE.stockval!=null) $('i_stockval').value=ENGINE.stockval;
+ if(ENGINE.mix && ENGINE.mix.length===4){
+  ENGINE.mix.forEach((m,i)=>{if($('i_mx'+i))$('i_mx'+i).value=m;});
+ }
+ if(ENGINE.ladder && ENGINE.ladder.length){
+  const base=SC.filter(s=>s.key==='cur'||s.key==='day1');
+  SC=base.concat(ENGINE.ladder.map(r=>({
+   key:r.key, name:r.name, ratio:r.ratio, defl:r.defl, zt:r.zt, year:r.year, goal:!!r.goal
+  })));
+ }
+ st.textContent='Loaded '+ENGINE.label+': '+ENGINE.tech_bars+' tech bars, '+ENGINE.day1_techs+' day-one techs, '+ENGINE.sites+' offices. Bar count locked; ratios stay in the 1500:1–2000:1 band.';
  snapshot(); recalc(true);
 }
 async function loadEngineUrl(url){
@@ -331,14 +394,15 @@ async function loadEngineUrl(url){
   $('engine_status').textContent='Could not load '+url+' — '+e.message;
  }
 }
-$('btn_load_engine').addEventListener('click',()=>loadEngineUrl('/assets/engine-summary.json'));
+$('btn_load_engine').addEventListener('click',()=>loadEngineUrl('/assets/deal-b-tech-bar-summary.json'));
 $('i_engine_file').addEventListener('change',ev=>{
  const f=ev.target.files&&ev.target.files[0]; if(!f) return;
  const reader=new FileReader();
  reader.onload=()=>{try{applyEngine(JSON.parse(reader.result));}catch(e){$('engine_status').textContent='Invalid JSON: '+e.message;}};
  reader.readAsText(f);
 });
-// Generic page keeps round-number defaults until the user loads an engine summary.
+// Deal B page auto-loads the tech-bar summary
+loadEngineUrl('/assets/deal-b-tech-bar-summary.json');
 
 function costFor(sc,I){
  const techs=techsFor(sc,I);
@@ -444,7 +508,7 @@ function rStack(R){
   SEG.forEach(sg=>{const v=r.c[sg[0]];if(v<=0)return;const h=v/max*230;y-=h;
    s+=`<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="${sg[2]}"/>`;});
   s+=`<text x="${x+bw/2}" y="${y-8}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#13294B">${fm(r.c.total)}</text>`;
-  s+=`<text x="${x+bw/2}" y="${base+18}" text-anchor="middle" font-size="11" fill="#54607A">${r.sc.name.split(' .')[0].replace('Current state','Current').replace(' (demand model)','')}</text>`;
+  s+=`<text x="${x+bw/2}" y="${base+18}" text-anchor="middle" font-size="11" fill="#54607A">${r.sc.name.split(' .')[0].replace('Current state','Current').replace(' (tech-bar model)','').replace(' (demand model)','')}</text>`;
   s+=`<text x="${x+bw/2}" y="${base+32}" text-anchor="middle" font-size="10.5" fill="#8A93A6">${fi(r.c.techs)} techs</text>`;
  });
  s+='</svg>';$('stackchart').innerHTML=s;

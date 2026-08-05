@@ -29,6 +29,7 @@
       label: "Reference Deal B",
       items: [
         { href: "/deal-b", id: "deal-b", title: "Tech Bar Pattern" },
+        { href: "/cost-model-deal-b", id: "cost-model-deal-b", title: "Cost Model (Deal B)" },
       ],
     },
   ];
@@ -98,6 +99,7 @@
       { id: "deal-b", href: "/deal-b", label: "Deal B" },
       { id: "cost-model", href: "/cost-model", label: "Cost (Generic)" },
       { id: "cost-model-deal-a", href: "/cost-model-deal-a", label: "Cost (Deal A)" },
+      { id: "cost-model-deal-b", href: "/cost-model-deal-b", label: "Cost (Deal B)" },
       { id: "deck", href: "/deck", label: "Deck A" },
       { id: "workbook", href: "/workbook", label: "Workbook A" },
     ]
