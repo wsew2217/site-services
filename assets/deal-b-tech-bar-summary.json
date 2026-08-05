@@ -1,0 +1,90 @@
+{
+  "label": "Reference Deal B",
+  "pattern": "tech-bar-heavy",
+  "contrast": "Campus footprint (Deal A) vs tech-bar walk-in + virtual coverage (Deal B)",
+  "team": {
+    "tech_bar_technicians": 8,
+    "dedicated_virtual_technician": 1,
+    "roving_technicians": 4,
+    "total": 13,
+    "optional_team_lead": 1
+  },
+  "coverage": {
+    "offices": 65,
+    "walk_in": 13,
+    "virtual": 52,
+    "walk_in_radius_miles": 25,
+    "established_tech_bars": 8
+  },
+  "demand": {
+    "deskside_tickets_per_month": 1710,
+    "aht_tech_bar_minutes": 45,
+    "aht_virtual_minutes": 30,
+    "working_days_month": 21,
+    "hours_per_day": 8,
+    "utilization": 0.8,
+    "demand_fte": 9.5,
+    "team_utilization": 0.73
+  },
+  "operating_model": [
+    "One dedicated technician per established tech bar (business hours 8\u00d75)",
+    "One dedicated virtual technician covering home-office region plus named remote metros",
+    "Roving technicians run ticket queue, overflow, and absence cover for the bars",
+    "Offices beyond walk-in radius supported virtually; hardware via lifecycle hub / third-party depot (out of HC scope)",
+    "No new tech bars proposed \u2014 establish coverage map for existing bars only"
+  ],
+  "bars": [
+    {
+      "location": "Metro A (West)",
+      "tickets_mo": 116,
+      "walk_in_offices": 3
+    },
+    {
+      "location": "Metro B (West)",
+      "tickets_mo": 214,
+      "walk_in_offices": 1
+    },
+    {
+      "location": "Metro C (Southeast)",
+      "tickets_mo": 320,
+      "walk_in_offices": 1
+    },
+    {
+      "location": "Metro D (Midwest)",
+      "tickets_mo": 287,
+      "walk_in_offices": 1
+    },
+    {
+      "location": "Metro E (Northeast)",
+      "tickets_mo": 60,
+      "walk_in_offices": 3
+    },
+    {
+      "location": "Metro F (Midwest)",
+      "tickets_mo": 202,
+      "walk_in_offices": 2
+    },
+    {
+      "location": "Metro G (Mid-Atlantic)",
+      "tickets_mo": 352,
+      "walk_in_offices": 1
+    },
+    {
+      "location": "Metro H (Mid-Atlantic)",
+      "tickets_mo": 126,
+      "walk_in_offices": 1
+    }
+  ],
+  "virtual_pair": [
+    {
+      "location": "Metro Virtual 1",
+      "tickets_mo": 17
+    },
+    {
+      "location": "Metro Virtual 2",
+      "tickets_mo": 16
+    }
+  ],
+  "economics_note": "Loaded cost rates in source were placeholders for internal modeling \u2014 do not treat as published price lists.",
+  "sanitization": "Customer name, incumbent provider, and real city/site labels replaced with generic Reference Deal B language."
+}

@@ -3,26 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Site Services · Coverage</title>
+<title>Site Services · Coverage Atlas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <style>
-.coverage-hero-map {
-  width: 100%;
-  max-height: min(72vh, 720px);
-  object-fit: contain;
-  display: block;
-  border-radius: 12px;
-  border: 1px solid var(--doc-line);
-  background: #0a1422;
+.atlas-legend { display:flex; flex-wrap:wrap; gap:14px; margin:12px 0 22px; font-size:13px; color:var(--doc-mute); }
+.atlas-legend span { display:inline-flex; align-items:center; gap:6px; }
+.dot-staffed, .dot-cap, .dot-none {
+  width:10px; height:10px; border-radius:2px; display:inline-block;
 }
-.coverage-note {
-  margin-top: 14px;
-  font-size: 14px;
-  color: var(--doc-mute);
-  line-height: 1.45;
-  max-width: 62ch;
+.dot-staffed { background:#2E7D32; }
+.dot-cap { background:#D86A44; }
+.dot-none { background:#C9D2E4; }
+.atlas-filters { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; }
+.atlas-filters button {
+  border:1px solid var(--doc-line); background:#fff; color:#54607A;
+  font-weight:700; font-size:12.5px; border-radius:20px; padding:6px 14px; cursor:pointer;
+}
+.atlas-filters button.on { background:#13294B; color:#fff; border-color:#13294B; }
+.atlas-table-wrap { overflow-x:auto; border:1px solid var(--doc-line); border-radius:12px; background:#fff; }
+.atlas-table { width:100%; border-collapse:collapse; font-size:12.5px; min-width:920px; }
+.atlas-table th {
+  background:#13294B; color:#fff; text-align:left; padding:8px 9px; font-weight:700; white-space:nowrap;
+  position:sticky; top:0;
+}
+.atlas-table td { padding:7px 9px; border-bottom:1px solid var(--doc-line); white-space:nowrap; }
+.atlas-table tr:nth-child(even) td { background:#F4F6FB; }
+.atlas-table .country { font-weight:700; color:#13294B; }
+.pill {
+  display:inline-block; min-width:72px; text-align:center; font-size:11px; font-weight:700;
+  border-radius:999px; padding:2px 8px;
+}
+.pill-staffed { background:#E8F5E9; color:#1B5E20; }
+.pill-cap { background:#FBEFE9; color:#9A3412; }
+.pill-empty { background:#EEF1F6; color:#8A93A6; }
+.region-h {
+  margin:28px 0 8px; font-family:Cambria,Georgia,serif; color:#13294B; font-size:20px;
+}
+.deal-a-callout {
+  margin-top:28px; padding:16px 18px; border-radius:12px; border:1px solid var(--doc-line);
+  background:#F4F6FB; font-size:14px; line-height:1.45; color:#54607A;
 }
 </style>
 </head>
@@ -31,34 +52,134 @@
   <div class="suite-doc-frame">
 <div class="page">
 <div class="hero">
-  <div class="kicker">Site Services · Coverage</div>
-  <h1>Where hubs sit and what they reach</h1>
-  <div class="sub">Coverage today for the example estate — the engine rebuilds the same pattern from any site intake.</div>
+  <div class="kicker">Site Services · Generic</div>
+  <h1>Coverage atlas</h1>
+  <div class="sub">Country-level Site Services capability — Staffed vs Capability — from the portfolio capability matrix. Not a single-customer campus map.</div>
+  <div class="statrow" id="atlas-stats">
+    <div class="stat"><b>—</b><span>countries with presence</span></div>
+    <div class="stat"><b>—</b><span>staffed deskside</span></div>
+    <div class="stat"><b>—</b><span>staffed tech bars</span></div>
+    <div class="stat"><b>—</b><span>staffed smart hands</span></div>
+    <div class="stat acc"><b>—</b><span>regions</span></div>
+  </div>
 </div>
 
-<img class="coverage-hero-map" src="/assets/maps/footprint-map.png" alt="World footprint map of virtual campus hubs and sites">
+<p>Generic coverage answers <b class="t">what can be delivered in a country</b>, not where one account’s hubs sit. For a campus footprint example, see <a href="/coverage-deal-a">Reference Deal A coverage</a>. For a tech-bar walk-in pattern, see <a href="/deal-b">Reference Deal B</a>.</p>
 
-<p class="coverage-note">
-  Stars mark campus hubs; the estate sites hang off them by geography. Near a hub: same-day local hands.
-  Far from one: remote queue plus smart-hands dispatch and shipping. Every site still has exactly one owner campus.
+<div class="atlas-legend">
+  <span><i class="dot-staffed"></i> Staffed — dedicated / assigned HC</span>
+  <span><i class="dot-cap"></i> Capability — partner or shared capacity</span>
+  <span><i class="dot-none"></i> Blank — no matrix flag for that service</span>
+</div>
+
+<div class="atlas-filters" id="atlas-filters" aria-label="Filter by region"></div>
+<div id="atlas-body"><p class="coverage-note">Loading capability atlas…</p></div>
+
+<div class="deal-a-callout">
+  <b class="t">Reference Deal A footprint lives elsewhere.</b>
+  The virtual-campus world map is an example estate artifact — moved to
+  <a href="/coverage-deal-a">/coverage-deal-a</a> so generic Site Services coverage is not mistaken for one customer’s hubs.
+</div>
+
+<div class="band">Capability matrix → country atlas · campus maps stay deal-specific</div>
+<p style="margin-top:18px">
+  <a class="chip" href="/structure">Structure &amp; methodology</a>
+  <a class="chip" href="/coverage-deal-a">Deal A campus map</a>
+  <a class="chip" href="/deal-b">Deal B tech-bar pattern</a>
+  <a class="chip" href="/cost-model">Generic cost model</a>
 </p>
 
-<h2>How to read it</h2>
-<ul>
-<li><b class="t">Hub countries</b> host the physical campus anchor.</li>
-<li><b class="t">Drive-range ring</b> defines Local vs Remote for staffing (default ~60 km).</li>
-<li><b class="t">Remote reach</b> is not “no coverage” — it is a different modality (dispatch / OEM / shipping).</li>
-</ul>
-
-<p>This map is the Reference Deal A footprint used in the example decks. For a new deal, run the Python engine on your intake; campuses and hubs re-derive from volume and coordinates.</p>
-
-<div class="band">Generic model · intake → hubs by catchment → Staffed / Local / Remote</div>
-<p style="margin-top:18px"><a class="chip" href="/structure">Structure & methodology</a> <a class="chip" href="/deck">Reference Deal A deck</a> <a class="chip" href="/cost-model">Generic cost model</a> <a class="chip" href="/cost-model-deal-a">Deal A cost model</a></p>
-
-<div class="foot"><span>Site Services · Coverage</span><span>Field Services Solution Design · 2026</span></div>
+<div class="foot"><span>Site Services · Generic coverage atlas</span><span>Field Services Solution Design · 2026</span></div>
 </div>
   </div>
 </div>
 <script src="/assets/site.js"></script>
+<script>
+(() => {
+  const CAP_SHORT = {
+    "Smart Hands": "SH",
+    "Deskside": "DS",
+    "VIP": "VIP",
+    "Tech Bar": "TB",
+    "Conf Room": "CR",
+    "Depot": "Dep",
+    "Refresh": "Ref",
+    "Projects": "Prj",
+    "Dispatch SD": "D-SD",
+    "Dispatch NBD": "D-NBD",
+  };
+
+  function pill(v) {
+    if (v === "Staffed") return '<span class="pill pill-staffed">Staffed</span>';
+    if (v === "Capability") return '<span class="pill pill-cap">Capability</span>';
+    return '<span class="pill pill-empty">—</span>';
+  }
+
+  function render(data, region) {
+    const caps = data.capabilities;
+    const rows = data.countries.filter((c) => !region || region === "ALL" || c.region === region);
+    const byRegion = {};
+    rows.forEach((c) => {
+      (byRegion[c.region] ||= []).push(c);
+    });
+
+    const body = document.getElementById("atlas-body");
+    let html = "";
+    Object.keys(byRegion).sort().forEach((reg) => {
+      html += `<h2 class="region-h">${reg}</h2><div class="atlas-table-wrap"><table class="atlas-table"><thead><tr>
+        <th>Country</th><th>Sub-region</th><th>Eng.</th>`;
+      caps.forEach((cap) => {
+        html += `<th title="${cap}">${CAP_SHORT[cap] || cap}</th>`;
+      });
+      html += `</tr></thead><tbody>`;
+      byRegion[reg]
+        .slice()
+        .sort((a, b) => a.country.localeCompare(b.country))
+        .forEach((c) => {
+          html += `<tr><td class="country">${c.country}</td><td>${c.sub_region || ""}</td><td>${c.engagements || "—"}</td>`;
+          caps.forEach((cap) => {
+            html += `<td>${pill(c.capabilities[cap])}</td>`;
+          });
+          html += `</tr>`;
+        });
+      html += `</tbody></table></div>`;
+    });
+    body.innerHTML = html || "<p>No countries match this filter.</p>";
+  }
+
+  fetch("/assets/capability-atlas.json")
+    .then((r) => r.json())
+    .then((data) => {
+      const s = data.stats || {};
+      const stats = document.getElementById("atlas-stats");
+      const regionCount = Object.keys(s.regions || {}).length;
+      stats.innerHTML = `
+        <div class="stat"><b>${s.countries_with_presence ?? "—"}</b><span>countries with presence</span></div>
+        <div class="stat"><b>${s.staffed_deskside ?? "—"}</b><span>staffed deskside</span></div>
+        <div class="stat"><b>${s.staffed_tech_bar ?? "—"}</b><span>staffed tech bars</span></div>
+        <div class="stat"><b>${s.staffed_smart_hands ?? "—"}</b><span>staffed smart hands</span></div>
+        <div class="stat acc"><b>${regionCount || "—"}</b><span>regions</span></div>`;
+
+      const filters = document.getElementById("atlas-filters");
+      const regions = ["ALL", ...Object.keys(s.regions || {}).sort()];
+      let active = "ALL";
+      filters.innerHTML = regions
+        .map((r) => `<button type="button" data-r="${r}" class="${r === "ALL" ? "on" : ""}">${r === "ALL" ? "All regions" : r}</button>`)
+        .join("");
+      filters.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-r]");
+        if (!btn) return;
+        active = btn.dataset.r;
+        filters.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.r === active));
+        render(data, active);
+      });
+      render(data, active);
+    })
+    .catch(() => {
+      document.getElementById("atlas-body").innerHTML =
+        "<p>Could not load <code>/assets/capability-atlas.json</code>.</p>";
+    });
+})();
+</script>
 </body>
 </html>
