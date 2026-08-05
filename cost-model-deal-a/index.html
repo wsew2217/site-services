@@ -73,9 +73,10 @@ details ul{margin:8px 0 4px 20px}
 <div class="hero"><div class="hero-inner">
 <div class="k">Reference Deal A · Single-customer example</div>
 <h1>Cost Model</h1>
-<div class="s">Economics for one example estate (989 sites · 29 campuses · 114 day-one techs). Not the generic Site Services product defaults — those live at <a href="/cost-model" style="color:var(--acc)">Generic Cost Model</a>.</div>
+<div class="s">Economics for one example estate (989 sites · 29 campuses · 114 day-one techs). Not the generic Site Services product defaults — those live at <a href="/cost-model" style="color:var(--acc)">Generic Cost Model</a>. · <a href="#pane-guide" style="color:var(--acc)" onclick="openGuide(event)">How this model was built</a></div>
 </div></div>
 <div class="toolbar"><div class="toolbar-inner">
+<button class="tab" data-p="guide">Guide</button>
 <button class="tab on" data-p="inputs">1 . Inputs</button>
 <button class="tab" data-p="scen">2 . Scenarios</button>
 <button class="tab" data-p="results">3 . Results &amp; Charts</button>
@@ -87,6 +88,49 @@ details ul{margin:8px 0 4px 20px}
 <button class="btn" onclick="window.print()">Print / PDF</button>
 </div></div>
 <div class="wrap">
+
+<!-- ================= PANE 0: GUIDE ================= -->
+<div class="pane" id="pane-guide">
+<div class="kick">How this model was built</div>
+<h2 class="sec">Reference Deal A cost model</h2>
+<p class="note">Single-customer campus-estate economics. Staffing build story: <a href="/how-we-built">How We Built</a>. Product sandbox: <a href="/cost-model">Generic Cost Model</a>. Tech-bar contrast: <a href="/cost-model-deal-b">Deal B</a>. Structure: <a href="/structure">/structure</a>.</p>
+
+<div class="card"><h3>Purpose</h3>
+<p>Prices the <b>Reference Deal A</b> campus footprint (989 sites · 29 virtual campuses · demand-sized day-one HC) — one labeled example estate, not Site Services product defaults. OEM / lifecycle-hub lines are commercial attach opportunities in the cost-shift story; the Dell theme on this page is Deal A chrome only.</p></div>
+
+<div class="grid g2">
+<div class="card"><h3>Inputs</h3>
+<ul style="margin:8px 0 0 18px">
+<li><b>Engine JSON</b> — <code>/assets/engine-summary-deal-a.json</code> (publish Deal A <code>Deal_Output.json</code> here). Campuses and day-one techs stay estate-derived.</li>
+<li><b>Estate assumptions</b> — v2 footprint defaults (sites, users, tickets/user, physical-touch share) plus editable labor / logistics / OEM / transition placeholders.</li>
+<li><b>Ratio ladder</b> — commercial road map from day-one throughput toward ~750:1 goal and leaner rungs; ratios are guardrails, not the engine that invents campus count. See <a href="/structure">Structure</a> and <a href="/methodology">Deal A methodology</a>.</li>
+</ul></div>
+<div class="card"><h3>Method</h3>
+<ul style="margin:8px 0 0 18px">
+<li><b>Upstream</b> — site extract → geocode / VC hubs → throughput staffing (<a href="/how-we-built">How We Built</a>), then deal-engine cost summary for this page.</li>
+<li><b>Pipeline on-page</b> — demand → campus floors → scenario ladder → cost adjuster (dispatch, parts, depots, OEM, refresh, transition cash).</li>
+<li><b>Panes</b> — Inputs (Deal A bridge) → Scenarios → Results → Cash → Sensitivity → Model Logic. Same interactive skeleton as generic; defaults and summary path are Deal A–specific.</li>
+</ul></div>
+</div>
+
+<div class="card"><h3>How to use</h3>
+<ol style="margin:8px 0 0 18px">
+<li>Page auto-loads the Deal A summary; use <b>Reload Deal A summary</b> after publishing a fresh engine JSON, or upload another summary file.</li>
+<li>Keep campus count and day-one techs locked to the estate model; tweak rates and current-state heads for commercial conversation.</li>
+<li>On <b>Scenarios</b>, walk the ratio / deflection / zero-touch ladder; GOAL rung drives Sensitivity.</li>
+<li>Use <b>Results</b> and <b>Cash</b> for the cost-shift story and multi-year payback vs as-is; <b>Print / PDF</b> for a snapshot.</li>
+<li>Rebuild staffing/cost upstream per <code>engine/README.md</code> (<code>python -m engine run …</code>), copy JSON to <code>assets/engine-summary-deal-a.json</code>, then reload.</li>
+</ol></div>
+
+<div class="card"><h3>What not to confuse</h3>
+<ul style="margin:8px 0 0 18px">
+<li><b>These numbers are not universal Site Services defaults</b> — use <a href="/cost-model">/cost-model</a> for the product sandbox.</li>
+<li><b>Not Deal B</b> — Deal B is a tech-bar walk-in pattern (~1500:1–2000:1), not this campus map (<a href="/cost-model-deal-b">/cost-model-deal-b</a>).</li>
+<li>Campus coverage map lives at <a href="/coverage-deal-a">/coverage-deal-a</a>; generic <a href="/coverage">/coverage</a> is the country capability atlas.</li>
+</ul></div>
+
+<div class="band">Also see: <a href="/how-we-built" style="color:#fff">How We Built</a> · <a href="/cost-model" style="color:#fff">Generic cost</a> · <a href="/cost-model-deal-b" style="color:#fff">Deal B cost</a> · <a href="/structure" style="color:#fff">Structure</a></div>
+</div>
 
 <!-- ================= PANE 1: INPUTS ================= -->
 <div class="pane on" id="pane-inputs">
@@ -542,6 +586,7 @@ function recalc(rebuildScen=true){
  if(rebuildScen)rScenTable(R); else updateScenComputed(R);
  rLadder(R);rCostTable(R);rStack(R);rKpis(R);rCash(R);rTornado(R);
 }
+function openGuide(e){if(e)e.preventDefault();const t=document.querySelector('.tab[data-p="guide"]');if(t)t.click();}
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
@@ -549,6 +594,7 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 }));
 document.querySelectorAll('.pane input').forEach(e=>e.addEventListener('input',()=>recalc(true)));
 snapshot();recalc();
+if(location.hash==='#pane-guide')openGuide();
 
 </script>
 </body>

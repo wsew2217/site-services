@@ -32,3 +32,9 @@ See `engine/defaults/methodology.md`, `engine/defaults/ops_kpis.json`, and `engi
 
 ## Footprint map
 Shared visual asset: `/assets/maps/footprint-map.png`
+
+## Cost model how-tos
+Each interactive cost page has a **Guide** tab (purpose, inputs, method, how to use, what not to confuse):
+- `/cost-model#pane-guide` — generic Site Services
+- `/cost-model-deal-a#pane-guide` — Reference Deal A campus estate
+- `/cost-model-deal-b#pane-guide` — Reference Deal B tech-bar pattern

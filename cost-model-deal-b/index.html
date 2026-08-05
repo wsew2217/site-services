@@ -73,9 +73,10 @@ details ul{margin:8px 0 4px 20px}
 <div class="hero"><div class="hero-inner">
 <div class="k">Reference Deal B · Tech-bar pattern example</div>
 <h1>Cost Model</h1>
-<div class="s">Economics for the tech-bar walk-in pattern (65 offices · 8 bars · 13 day-one techs). Ratio band ~1500:1–2000:1 — not Deal A’s campus estate. Generic defaults live at <a href="/cost-model" style="color:var(--acc)">Generic Cost Model</a>; pattern brief at <a href="/deal-b" style="color:var(--acc)">Deal B</a>.</div>
+<div class="s">Economics for the tech-bar walk-in pattern (65 offices · 8 bars · 13 day-one techs). Ratio band ~1500:1–2000:1 — not Deal A’s campus estate. Generic defaults live at <a href="/cost-model" style="color:var(--acc)">Generic Cost Model</a>; pattern brief at <a href="/deal-b" style="color:var(--acc)">Deal B</a>. · <a href="#pane-guide" style="color:var(--acc)" onclick="openGuide(event)">How this model was built</a></div>
 </div></div>
 <div class="toolbar"><div class="toolbar-inner">
+<button class="tab" data-p="guide">Guide</button>
 <button class="tab on" data-p="inputs">1 . Inputs</button>
 <button class="tab" data-p="scen">2 . Scenarios</button>
 <button class="tab" data-p="results">3 . Results &amp; Charts</button>
@@ -87,6 +88,49 @@ details ul{margin:8px 0 4px 20px}
 <button class="btn" onclick="window.print()">Print / PDF</button>
 </div></div>
 <div class="wrap">
+
+<!-- ================= PANE 0: GUIDE ================= -->
+<div class="pane" id="pane-guide">
+<div class="kick">How this model was built</div>
+<h2 class="sec">Reference Deal B cost model</h2>
+<p class="note">Tech-bar pattern economics. Pattern brief: <a href="/deal-b">/deal-b</a>. Product sandbox: <a href="/cost-model">Generic Cost Model</a>. Campus contrast: <a href="/cost-model-deal-a">Deal A</a>. Ratio context: <a href="/structure">Structure</a>.</p>
+
+<div class="card"><h3>Purpose</h3>
+<p>Prices the <b>Reference Deal B</b> tech-bar walk-in pattern (65 offices · 8 established bars · dedicated virtual + roving cover · 13 day-one techs). Commercial ratio band ~1500:1–2000:1. It is a labeled operating-pattern example — not Deal A’s campus estate and not generic Site Services defaults.</p></div>
+
+<div class="grid g2">
+<div class="card"><h3>Inputs</h3>
+<ul style="margin:8px 0 0 18px">
+<li><b>Summary JSON</b> — <code>/assets/deal-b-tech-bar-summary.json</code> (sanitized pattern file). Tech-bar count and day-one HC lock from the summary.</li>
+<li><b>Pattern assumptions</b> — offices, users, deskside demand → tickets/user, walk-in reach, NAM-heavy labor mix, lifecycle hubs/depots out of bar HC.</li>
+<li><b>Ratio band</b> — tech-bar–heavy ~1500:1–2000:1 on Scenarios; day one is demand-sized (bars + virtual + roving), not campus VC floors. See <a href="/structure">Structure</a>.</li>
+</ul></div>
+<div class="card"><h3>Method</h3>
+<ul style="margin:8px 0 0 18px">
+<li><b>Upstream</b> — sanitized tech-bar operating model (walk-in radius, virtual offices, roving) published as the summary JSON this page loads.</li>
+<li><b>On-page pipeline</b> — demand → bar floors / staffing → lean ratio ladder → cost adjuster (dispatch, parts, hubs, OEM, refresh, transition).</li>
+<li><b>Panes</b> — same six interactive steps as the other cost models; labels and defaults speak tech bars, not campuses.</li>
+</ul></div>
+</div>
+
+<div class="card"><h3>How to use</h3>
+<ol style="margin:8px 0 0 18px">
+<li>Page auto-loads the Deal B summary; <b>Reload Deal B summary</b> after editing the JSON, or upload another summary.</li>
+<li>Keep bar count and day-one techs pattern-derived; adjust rates and pre–tech-bar current state for the commercial story.</li>
+<li>On <b>Scenarios</b>, stay in the ~1500:1–2000:1 band for road-map rungs; edit deflection / zero-touch / year reached as needed.</li>
+<li>Read <b>Results</b> and <b>Cash</b> for labor-to-logistics shift and payback; lifecycle-hub lines are logistics cost, not bar headcount.</li>
+<li><b>Print / PDF</b> for a snapshot; rebuild the summary asset when the pattern brief at <a href="/deal-b">/deal-b</a> changes.</li>
+</ol></div>
+
+<div class="card"><h3>What not to confuse</h3>
+<ul style="margin:8px 0 0 18px">
+<li><b>Tech-bar ≠ campus map</b> — do not import Deal A’s 29 campuses or footprint map into this model (<a href="/cost-model-deal-a">Deal A cost</a> · <a href="/coverage-deal-a">Deal A map</a>).</li>
+<li><b>Not generic defaults</b> — any-estate sandbox is <a href="/cost-model">/cost-model</a>.</li>
+<li>Generic <a href="/coverage">/coverage</a> is the country capability atlas — not a Deal B office map.</li>
+</ul></div>
+
+<div class="band">Also see: <a href="/deal-b" style="color:#fff">Deal B pattern</a> · <a href="/cost-model" style="color:#fff">Generic cost</a> · <a href="/cost-model-deal-a" style="color:#fff">Deal A cost</a> · <a href="/structure" style="color:#fff">Structure</a></div>
+</div>
 
 <!-- ================= PANE 1: INPUTS ================= -->
 <div class="pane on" id="pane-inputs">
@@ -617,6 +661,7 @@ function recalc(rebuildScen=true){
  if(rebuildScen)rScenTable(R); else updateScenComputed(R);
  rLadder(R);rCostTable(R);rStack(R);rKpis(R);rCash(R);rTornado(R);
 }
+function openGuide(e){if(e)e.preventDefault();const t=document.querySelector('.tab[data-p="guide"]');if(t)t.click();}
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
@@ -624,6 +669,7 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 }));
 document.querySelectorAll('.pane input').forEach(e=>e.addEventListener('input',()=>recalc(true)));
 snapshot();recalc();
+if(location.hash==='#pane-guide')openGuide();
 
 </script>
 </body>
