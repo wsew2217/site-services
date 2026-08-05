@@ -1,0 +1,505 @@
+{
+  "source": "Site Services Capability Matrix (country rollup, sanitized)",
+  "note": "Country-level capability atlas for generic Site Services. No customer or account names. Engagement counts are anonymized portfolio presence indicators.",
+  "capability_legend": {
+    "Staffed": "Dedicated / assigned headcount in country",
+    "Capability": "Deliverable via partner or shared capacity (not necessarily dedicated HC)",
+    "Supported": "Country has at least one active Site Services engagement pattern"
+  },
+  "capabilities": [
+    "Smart Hands",
+    "Deskside",
+    "VIP",
+    "Tech Bar",
+    "Conf Room",
+    "Depot",
+    "Refresh",
+    "Projects",
+    "Dispatch SD",
+    "Dispatch NBD"
+  ],
+  "countries": [
+    {
+      "region": "APJ",
+      "sub_region": "ANZ",
+      "country": "Australia",
+      "coverage_status": "Supported",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "APJ",
+      "sub_region": "Greater China",
+      "country": "China",
+      "coverage_status": "Supported",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Staffed",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Staffed",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "APJ",
+      "sub_region": "Greater China",
+      "country": "Hong Kong",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Staffed",
+        "Depot": "Capability",
+        "Refresh": "Capability",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "APJ",
+      "sub_region": "Greater China",
+      "country": "Korea, Republic of",
+      "coverage_status": "Supported",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "APJ",
+      "sub_region": "Japan",
+      "country": "Japan",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Capability",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Capability",
+        "Depot": "Capability",
+        "Refresh": "Capability",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "APJ",
+      "sub_region": "SEA",
+      "country": "Philippines",
+      "coverage_status": "Supported",
+      "engagements": 3,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Staffed",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Staffed",
+        "Dispatch SD": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "APJ",
+      "sub_region": "SEA",
+      "country": "Singapore",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "APJ",
+      "sub_region": "SEA",
+      "country": "Thailand",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Staffed",
+        "Depot": "Capability",
+        "Refresh": "Capability",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "APJ",
+      "sub_region": "South Asia",
+      "country": "India",
+      "coverage_status": "Supported",
+      "engagements": 5,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Staffed",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Staffed",
+        "Dispatch SD": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "EMEA",
+      "sub_region": "Africa",
+      "country": "Ghana",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "EMEA",
+      "sub_region": "Africa",
+      "country": "South Africa",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "EMEA",
+      "sub_region": "Europe",
+      "country": "Belgium",
+      "coverage_status": "Supported",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "EMEA",
+      "sub_region": "Europe",
+      "country": "Czech Republic",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Staffed",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Staffed",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "EMEA",
+      "sub_region": "Europe",
+      "country": "France",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Capability",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Capability",
+        "Depot": "Capability",
+        "Refresh": "Capability",
+        "Projects": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "EMEA",
+      "sub_region": "Europe",
+      "country": "Germany",
+      "coverage_status": "Supported",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Staffed",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Staffed",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Staffed",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "EMEA",
+      "sub_region": "Europe",
+      "country": "Italy",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Staffed",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Staffed",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "EMEA",
+      "sub_region": "Europe",
+      "country": "Romania",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Staffed",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Staffed",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "EMEA",
+      "sub_region": "Europe",
+      "country": "United Kingdom",
+      "coverage_status": "Supported",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Capability",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Staffed",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Staffed",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "LATAM",
+      "sub_region": "South America",
+      "country": "Argentina",
+      "coverage_status": "Capability",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Capability",
+        "Projects": "Capability",
+        "Dispatch SD": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "LATAM",
+      "sub_region": "South America",
+      "country": "Brazil",
+      "coverage_status": "Capability",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Capability",
+        "Projects": "Capability",
+        "Dispatch SD": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "LATAM",
+      "sub_region": "South America",
+      "country": "Chile",
+      "coverage_status": "Capability",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Capability",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Capability",
+        "Depot": "Capability",
+        "Refresh": "Capability",
+        "Projects": "Capability",
+        "Dispatch SD": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "LATAM",
+      "sub_region": "South America",
+      "country": "Colombia",
+      "coverage_status": "Capability",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Capability",
+        "Projects": "Capability",
+        "Dispatch SD": "Capability",
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "LATAM",
+      "sub_region": "South America",
+      "country": "Peru",
+      "coverage_status": "Capability",
+      "engagements": 1,
+      "capabilities": {
+        "Dispatch NBD": "Capability"
+      }
+    },
+    {
+      "region": "NA",
+      "sub_region": "Canada",
+      "country": "Canada",
+      "coverage_status": "Supported",
+      "engagements": 1,
+      "capabilities": {
+        "Smart Hands": "Capability",
+        "Deskside": "Capability",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Capability",
+        "Depot": "Capability",
+        "Refresh": "Capability",
+        "Projects": "Capability",
+        "Dispatch SD": "Capability",
+        "Dispatch NBD": "Staffed"
+      }
+    },
+    {
+      "region": "NA",
+      "sub_region": "Mexico",
+      "country": "Mexico",
+      "coverage_status": "Supported",
+      "engagements": 2,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Capability",
+        "Tech Bar": "Capability",
+        "Conf Room": "Capability",
+        "Depot": "Staffed",
+        "Refresh": "Capability",
+        "Projects": "Staffed",
+        "Dispatch SD": "Capability",
+        "Dispatch NBD": "Staffed"
+      }
+    },
+    {
+      "region": "NA",
+      "sub_region": "USA",
+      "country": "United States",
+      "coverage_status": "Supported",
+      "engagements": 3,
+      "capabilities": {
+        "Smart Hands": "Staffed",
+        "Deskside": "Staffed",
+        "VIP": "Staffed",
+        "Tech Bar": "Staffed",
+        "Conf Room": "Staffed",
+        "Depot": "Staffed",
+        "Refresh": "Staffed",
+        "Projects": "Staffed",
+        "Dispatch SD": "Staffed",
+        "Dispatch NBD": "Staffed"
+      }
+    }
+  ],
+  "stats": {
+    "countries_with_presence": 26,
+    "regions": {
+      "APJ": 9,
+      "EMEA": 9,
+      "LATAM": 5,
+      "NA": 3
+    },
+    "staffed_deskside": 12,
+    "capability_deskside": 13,
+    "staffed_tech_bar": 15,
+    "staffed_smart_hands": 21
+  }
+}

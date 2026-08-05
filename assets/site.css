@@ -8,6 +8,7 @@
   --ink: #eaf0f8;
   --muted: #8fa0b7;
   --line: rgba(232, 240, 255, 0.1);
+  /* Generic Site Services — teal/navy (not Dell-owned) */
   --accent: #2fd6c2;
   --accent-2: #6ea8ff;
   --accent-soft: rgba(47, 214, 194, 0.14);
@@ -18,6 +19,34 @@
   --doc-line: #d9e2ef;
   --doc-card: #ffffff;
   --navy: #13294b;
+  --acc: #d86a44;
+
+  /* Dell brand tokens — Reference Deal A (CES / brand cues) */
+  --dell-blue: #0076ce;
+  --dell-blue-alt: #007db8;
+  --dell-blue-deep: #0672cb;
+  --dell-blue-hover: #0063af;
+  --dell-blue-active: #00538f;
+  --dell-blue-tint: #e5f1fa;
+  --dell-white: #ffffff;
+  --dell-charcoal: #454545;
+  --dell-gallery: #efefef;
+  /* Accessible functional scales */
+  --dell-gray-50: #f7f8fa;
+  --dell-gray-100: #eef0f3;
+  --dell-gray-200: #dde1e6;
+  --dell-gray-300: #c5cbd3;
+  --dell-gray-400: #9aa3ae;
+  --dell-gray-500: #6b7480;
+  --dell-gray-600: #4c545e;
+  --dell-gray-700: #363b42;
+  --dell-gray-800: #22262b;
+  --dell-gray-900: #11141a;
+  --dell-success: #008a00;
+  --dell-warning: #b85c00;
+  --dell-error: #ce2029;
+  --dell-info: #0076ce;
+
   --sidebar-w: 268px;
   --topbar-h: 58px;
   --radius: 18px;
@@ -25,6 +54,20 @@
   --font-display: "Sora", system-ui, sans-serif;
   --font-body: "Manrope", system-ui, sans-serif;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Reference Deal A — Dell Blue / charcoal / gallery (scoped; generic SS stays teal) */
+body.theme-deal-a {
+  --navy: var(--dell-blue);
+  --acc: var(--dell-blue-alt);
+  --accent: var(--dell-blue-alt);
+  --accent-2: var(--dell-blue-deep);
+  --accent-soft: rgba(0, 118, 206, 0.14);
+  --doc-bg: var(--dell-gallery);
+  --doc-ink: var(--dell-charcoal);
+  --doc-mute: var(--dell-gray-500);
+  --doc-line: var(--dell-gray-200);
+  --doc-card: var(--dell-white);
 }
 
 * { box-sizing: border-box; }
@@ -489,6 +532,11 @@ body.suite-doc .suite-main {
   padding: 52px 34px 40px;
   margin: 0 -34px 44px;
 }
+body.theme-deal-a .suite-doc-frame .hero {
+  background:
+    radial-gradient(80% 120% at 100% 0%, rgba(0,125,184,0.35), transparent 45%),
+    linear-gradient(135deg, #00538f 0%, var(--dell-blue) 52%, var(--dell-blue-deep) 100%);
+}
 .suite-doc-frame .hero .kicker {
   color: var(--accent);
   font-weight: 800;
@@ -496,6 +544,9 @@ body.suite-doc .suite-main {
   font-size: 12px;
   text-transform: uppercase;
   margin-bottom: 14px;
+}
+body.theme-deal-a .suite-doc-frame .hero .kicker {
+  color: #b8ddf5;
 }
 .suite-doc-frame .hero h1 {
   font-family: var(--font-display);
@@ -529,6 +580,7 @@ body.suite-doc .suite-main {
   letter-spacing: -0.03em;
 }
 .suite-doc-frame .stat.acc b { color: var(--accent); }
+body.theme-deal-a .suite-doc-frame .stat.acc b { color: #b8ddf5; }
 .suite-doc-frame .stat span { font-size: 12.5px; color: #b7c6db; }
 
 .suite-doc-frame h2 {
@@ -537,6 +589,17 @@ body.suite-doc .suite-main {
   font-size: 26px;
   letter-spacing: -0.03em;
   margin: 46px 0 14px;
+}
+body.theme-deal-a .suite-doc-frame h2,
+body.theme-deal-a .suite-doc-frame h3,
+body.theme-deal-a .suite-doc-frame b.t,
+body.theme-deal-a .suite-doc-frame .navy,
+body.theme-deal-a .suite-doc-frame .qq {
+  color: var(--dell-charcoal);
+}
+body.theme-deal-a .suite-doc-frame h2,
+body.theme-deal-a .suite-doc-frame h3 {
+  color: var(--dell-blue);
 }
 .suite-doc-frame h3 {
   font-family: var(--font-display);
