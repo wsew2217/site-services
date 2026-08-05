@@ -2,6 +2,11 @@
 
 Customer-name-free operating defaults for the deal engine.
 
+## Site Services ≡ Field Services (locked)
+- **Site Services and Field Services share the same process-flow model** (Reference Deal K / FMO Process Pack).
+- Design one FMO stage chain (intake → misroute → contact/schedule → tower work → staging/quarantine → finalize); treat campus vs remote and partner dispatch as routing overlays, not separate methodologies.
+- Sanitized notes: `engine/defaults/reference_deal_k_fmo_process.md`.
+
 ## Focus & Flex / Focused-Lane
 - Every site has one accountable virtual campus (no orphans).
 - Two mirrored modes by volume: campus-focused (local-first) and remote-focused (depot-first).
@@ -44,6 +49,11 @@ From Deskside + Reference Deal J (FS Ops pack):
 - Action-code driven updates; consistent formatting; management oversight of all queues.
 - Compliance dashboard drills account → technician.
 - Engine outputs should remain ITSM-agnostic; these are operating assumptions for post-go-live design QA.
+
+## FMO process cadence (Deal K)
+- Contact ≥ 2× per business day; incidents unreachable after 3 business days / 3 attempts; requests after ~2 weeks.
+- Escalate after more than 2 misroute transfers; quarantine hold default 14 calendar days; Smart Hands capped near 60 minutes TOT.
+- Logistics branches (hot swap, ship/receive, partner dispatch) feed physical-touch / shipment / depot knobs — not separate Site vs Field math.
 
 ## Ops KPIs (post-design QA)
 - DOH = open ÷ average daily closed  

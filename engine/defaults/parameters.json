@@ -70,6 +70,8 @@
   "overlay_depot_techs_per_depot_campus": 1,
   "overlay_tech_bar_threshold_users": 400,
   "staging_radius_miles": 25,
+  "quarantine_hold_days": 14,
+  "smart_hands_max_tot_minutes": 60,
   "ratio_guardrail_seats_per_tech": 600,
   "working_days_month": 22,
   "fmo_tickets_per_tech_day": 7.0,
