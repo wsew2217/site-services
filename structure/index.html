@@ -39,6 +39,42 @@
 .role-card h3 { margin: 0 0 6px; font-size: 16px; }
 .role-card p { margin: 0; font-size: 13.5px; color: #54607A; }
 .ratio-table td:nth-child(2) { font-weight: 700; color: #13294B; white-space: nowrap; }
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin: 14px 0 18px;
+}
+.metric-card {
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fff;
+}
+.metric-card b {
+  display: block;
+  font-family: Cambria, Georgia, serif;
+  font-size: 22px;
+  color: #13294B;
+  line-height: 1.15;
+  margin-bottom: 4px;
+}
+.metric-card .mlabel {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8A93A6;
+  margin-bottom: 6px;
+}
+.metric-card .mnote {
+  margin: 0;
+  font-size: 12.5px;
+  color: #54607A;
+  line-height: 1.4;
+}
+.metric-card.accent b { color: #D86A44; }
 </style>
 </head>
 <body class="suite-app suite-doc" data-page="structure" data-mode="shell">
@@ -139,6 +175,30 @@
 
 <h2>Overlays</h2>
 <p>Depot / staging, tech bars, VIP, virtual techs, critical 24×7, partner-remote share. Coverage classes: dedicated business hours, local drive-range, dispatch/remote, critical 24×7.</p>
+
+<h2>Delivery optimization metrics</h2>
+<p>Industry-typical operating KPIs for Generic Site Services deal design — not a named-customer scorecard. Ranked for usefulness when designing campuses, remote overlays, and cost-to-serve. Full write-up: <code>engine/defaults/field_services_delivery_metrics.md</code>; targets live in <code>ops_kpis.json</code>.</p>
+<div class="metric-grid" aria-label="Delivery optimization metrics">
+  <div class="metric-card accent"><b>≥85%</b><span class="mlabel">First-time fix</span><p class="mnote">Design target. Industry median ~75–77%; top ~86–88%. Deskside first-visit avg ~84%.</p></div>
+  <div class="metric-card"><b>~14%</b><span class="mlabel">Avoidable dispatch</span><p class="mnote">Industry median truck rolls that did not need to happen. Top ~3%. ~1 in 5 cases remotely resolvable.</p></div>
+  <div class="metric-card"><b>95% SLO</b><span class="mlabel">SLA / SLO attainment</span><p class="mnote">Internal SLO tighter than contractual SLA. Industry ops floors often ≥90%.</p></div>
+  <div class="metric-card"><b>75–85%</b><span class="mlabel">Tech utilization</span><p class="mnote">Suite designs at 85%. Pacesetters ~90%. Do not push past mid-80s at the expense of response slack.</p></div>
+  <div class="metric-card"><b>&lt;20%</b><span class="mlabel">Travel share</span><p class="mnote">Target max of workday in travel. Wrench / hands-on time often 25–35%; best-in-class 45–55%.</p></div>
+  <div class="metric-card"><b>+34–44%</b><span class="mlabel">Failed-visit cost</span><p class="mnote">Resolution cost uplift when first visit fails. Failed visits ≈25% of service cost at median.</p></div>
+  <div class="metric-card"><b>92–96%</b><span class="mlabel">Parts fill (mature)</span><p class="mnote">Segment by criticality — blended fill can hide stockouts that kill FTFR.</p></div>
+  <div class="metric-card"><b>≤1.5 DOH</b><span class="mlabel">Backlog health</span><p class="mnote">Days of hand (open ÷ daily closed). Amber to 2.5. Aging bands 0–3 … 30+.</p></div>
+</div>
+<div class="card tint">
+  <h3 style="margin-top:0">Deal-design reading order</h3>
+  <ol style="margin:0 0 0 18px">
+    <li><b class="t">FTFR + avoidable dispatch + SLO</b> — cost, capacity, and contract in three numbers.</li>
+    <li><b class="t">Utilization band + throughput</b> — day-one HC; users:tech ratios stay guardrails.</li>
+    <li><b class="t">Remote / tech-bar deflection before cutting Local heads</b> — price the overlay, then the labor shift.</li>
+    <li><b class="t">Parts / depot / dispatch rising as labor falls</b> — cost-to-serve, not just a headcount cut.</li>
+    <li><b class="t">DOH / aging / CSAT</b> — post-design QA and CX proof, not the sizing formula.</li>
+  </ol>
+  <p style="margin:12px 0 0;font-size:13px;color:#54607A">Hub-and-spoke campuses, Smart Hands (≤60 min TOT), and partner dispatch are routing overlays on the same FMO ladder — split KPIs by Campus / Local / Remote.</p>
+</div>
 
 <h2>Cost &amp; scenarios</h2>
 <p>Day-one cost follows throughput-sized staffing plus dispatch, shipment, depot, stock, refresh, and transition cash. Ratio rungs are a commercial road map and cost-shift story — not the engine that invents campus count. Use the <a href="/cost-model">generic cost model</a> for any estate; Reference Deal A has its own <a href="/cost-model-deal-a">deal-specific cost model</a>.</p>

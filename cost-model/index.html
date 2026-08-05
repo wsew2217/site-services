@@ -223,6 +223,13 @@ details ul{margin:8px 0 4px 20px}
 <li>Road-map rungs: technicians = max(campuses x floor, ceil(users / ratio)). Ratios are commercial guardrails, not the day-one sizing driver. Leads = ceil(techs/lead span); managers = ceil(techs/mgr span).</li>
 <li>Blended tech rate = regional mix-weighted salary x (1 + burden). Leads at premium x blended; managers flat + burden.</li>
 </ul></details>
+<details open><summary>Ops KPIs (delivery optimization)</summary>
+<ul>
+<li>Industry-typical ranges for deal QA — not customer truth. Full note: <a href="/structure">Structure → Delivery optimization metrics</a> and <code>engine/defaults/field_services_delivery_metrics.md</code>.</li>
+<li>Design band: utilization 85% (typical 75–85%), SLO 95%, FTFR target ≥85%, travel share &lt;20% of workday, DOH green ≤1.5.</li>
+<li>Deflection in this model is the commercial twin of avoidable-dispatch / remote-resolve (industry avoidable-dispatch median ~14%; ~1 in 5 cases remotely resolvable).</li>
+<li>Failed first visits typically lift total resolution cost ~34–44% vs a single work order — which is why parts fill, remote triage, and FTFR matter as much as headcount.</li>
+</ul></details>
 <details open><summary>Logistics, dispatch and OEM (the shift)</summary>
 <ul>
 <li>Physical touches = adjusted tickets x physical-touch share. Staff on-site capacity = techs x on-site allocation (60% of capacity) x rate x days x utilization.</li>

@@ -64,6 +64,11 @@ Locked: **Site Services and Field Services share the same process-flow model** (
 - Productivity = closed ÷ working days ÷ techs  
 - Staffing gap = site staff share − site volume share  
 - SLO target 95%; tighter internal SLO than contractual SLA  
+- Delivery optimization (industry-typical, not customer truth): FTFR design ≥85%, avoidable-dispatch median ~14%, utilization band 75–85% (design 85%), travel share &lt;20%, parts fill mature 92–96%, DOH green ≤1.5 — see `field_services_delivery_metrics.md` and `ops_kpis.json` → `delivery_optimization`  
+
+## Delivery optimization research
+- Public synthesis: `engine/defaults/field_services_delivery_metrics.md` (FSM / deskside / hub-spoke / cost-to-serve).  
+- Prefer workload sizing + FTFR / remote deflection / SLO in deal conversations; CSAT and abandon are outcome metrics.
 
 ## DSCTM
 - Future-oriented status codes; close only as RSLV or CNRC  

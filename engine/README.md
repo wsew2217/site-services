@@ -28,7 +28,7 @@ Sites without coordinates are never auto-Local/Staffed by distance.
 Edit the `Settings` sheet in the intake workbook, or `engine/defaults/parameters.json`.
 
 ## Methodology
-See `engine/defaults/methodology.md` and `engine/defaults/ops_kpis.json`.
+See `engine/defaults/methodology.md`, `engine/defaults/ops_kpis.json`, and `engine/defaults/field_services_delivery_metrics.md`.
 
 ## Footprint map
 Shared visual asset: `/assets/maps/footprint-map.png`
