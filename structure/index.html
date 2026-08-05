@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · Structure & Methodology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body class="suite-app suite-doc" data-page="structure" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">Site Services · Generic</div>
+  <h1>Structure & methodology</h1>
+  <div class="sub">The operating model for any estate — not one account’s campus list. Same process flows as Field Services.</div>
+</div>
+
+<h2>What Site Services is</h2>
+<p>Site Services (and Field Services — same process skeleton) organizes deskside and field work into <b class="t">virtual campuses</b>: one accountable team per site, three routed queues, and overlays for depot, tech bar, and critical coverage. Demand sizes the team; geography chooses the hub; commercial ratios are outputs and guardrails, not day-one drivers.</p>
+
+<h2>Virtual campus anatomy</h2>
+<ul>
+<li><b class="t">Hub (Staffed)</b> — Anchor site whose catchment maximizes volume inside the drive radius (default ~60 km / ~60 minutes).</li>
+<li><b class="t">Local</b> — Sites inside drive range of the hub; same team, on-site reach.</li>
+<li><b class="t">Remote</b> — Outside drive range or missing coordinates; remote queue + smart-hands / OEM dispatch and shipping.</li>
+</ul>
+<p>Every site belongs to exactly one campus. No orphans. Campuses promote or fold from settings and demand — not hand-picked exceptions as the primary design.</p>
+
+<h2>Demand when data is sparse</h2>
+<ol>
+<li>Annual tickets if present</li>
+<li>Else users/seats × estate ticket rate</li>
+<li>Else devices × device ticket rate</li>
+<li>Else placeholder with a low-confidence flag</li>
+</ol>
+<p>Without coordinates, a site cannot be auto-Local — it stays Remote / Uncertain.</p>
+
+<h2>Staffing math</h2>
+<ul>
+<li>Working days: 252 · Utilization: ~85% · Team floor: typically 2</li>
+<li>On-site: ~6 incidents / tech / day, ~4 requests / tech / day</li>
+<li>Remote: ~5 tickets / tech / day</li>
+<li>Vac/sick, travel utilization, SLA mix, and 24×7 floors are settings overlays (structure from legacy PFS; rates are modern placeholders)</li>
+<li><b class="t">Primary / Secondary / Tertiary</b> role lanes are reporting splits of sized headcount — secondary/tertiary are flex, not additive HC</li>
+</ul>
+
+<h2>Overlays</h2>
+<p>Depot / staging, tech bars, VIP, virtual techs, critical 24×7, partner-remote share. Coverage classes: dedicated business hours, local drive-range, dispatch/remote, critical 24×7.</p>
+
+<h2>Cost & scenarios</h2>
+<p>Day-one cost follows throughput-sized staffing plus dispatch, shipment, depot, stock, refresh, and transition cash. Ratio rungs (750:1 → 1500:1) are a commercial road map and cost-shift story — not the engine that invents campus count. Load an engine summary JSON into the live cost model so campuses stay site-derived.</p>
+
+<h2>Process flows</h2>
+<p>Intake → misroute check → contact / schedule → tower work → logistics → finalize. Site Services and Field Services share this ladder (FMO process packs). Action codes, auto-assign by role/location/load, and ops KPIs (DOH, aging, staffing gap, SLO) sit on top for design QA and live control.</p>
+
+<div class="band">Build any deal from sparse intake · <code>python -m engine run intake.xlsx</code> · then adjust economics in the cost model</div>
+<p style="margin-top:18px"><a class="chip" href="/cost-model">Open cost model</a> <a class="chip" href="/coverage">Coverage atlas</a> <a class="chip" href="/methodology">Reference Deal A parameters</a></p>
+
+<div class="foot"><span>Site Services · Generic structure</span><span>Field Services Solution Design · 2026</span></div>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+</body>
+</html>

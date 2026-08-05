@@ -1,29 +1,31 @@
 (() => {
   const NAV = [
     {
-      label: "Overview",
+      label: "Site Services",
       items: [
         { href: "/", id: "home", title: "Home" },
-        { href: "/summary", id: "summary", title: "Executive Summary" },
-        { href: "/changes", id: "changes", title: "What Changed" },
-        { href: "/methodology", id: "methodology", title: "Methodology" },
+        { href: "/structure", id: "structure", title: "Structure & Methodology" },
+        { href: "/coverage", id: "coverage", title: "Coverage" },
+        { href: "/cost-model", id: "cost-model", title: "Cost Model" },
       ],
     },
     {
-      label: "Narrative",
+      label: "Reference Deal A",
       items: [
+        { href: "/summary", id: "summary", title: "Executive Summary" },
+        { href: "/changes", id: "changes", title: "What Changed" },
+        { href: "/methodology", id: "methodology", title: "Deal A Methodology" },
         { href: "/story", id: "story", title: "Build Story" },
         { href: "/how-we-built", id: "how-we-built", title: "How We Built" },
       ],
     },
     {
-      label: "Tools",
+      label: "Deal A Tools",
       items: [
         { href: "/deck", id: "deck", title: "Customer Deck" },
         { href: "/deck-internal", id: "deck-internal", title: "Internal Deck" },
         { href: "/workbook", id: "workbook", title: "Customer Workbook" },
         { href: "/workbook-internal", id: "workbook-internal", title: "Internal Workbook" },
-        { href: "/cost-model", id: "cost-model", title: "Cost Model" },
       ],
     },
   ];
@@ -82,11 +84,11 @@
 
   function buildToolChrome() {
     const toolLinks = [
-      { id: "deck", href: "/deck", label: "Deck" },
-      { id: "deck-internal", href: "/deck-internal", label: "Deck Int." },
-      { id: "workbook", href: "/workbook", label: "Workbook" },
-      { id: "workbook-internal", href: "/workbook-internal", label: "Workbook Int." },
+      { id: "structure", href: "/structure", label: "Structure" },
+      { id: "coverage", href: "/coverage", label: "Coverage" },
       { id: "cost-model", href: "/cost-model", label: "Cost Model" },
+      { id: "deck", href: "/deck", label: "Deck A" },
+      { id: "workbook", href: "/workbook", label: "Workbook A" },
     ]
       .map((t) => `<a href="${t.href}" class="${t.id === page ? "is-active" : ""}">${t.label}</a>`)
       .join("");
