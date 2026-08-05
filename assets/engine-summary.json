@@ -1,0 +1,95 @@
+{
+  "source": "site-services-deal-engine",
+  "version": "1.0.0",
+  "note": "Campuses and day-one techs are engine-derived. Refresh labor/unit rates per deal.",
+  "sites": 6,
+  "users": 3540,
+  "tickets_yr": 8876,
+  "campuses": 4,
+  "day1_techs": 12,
+  "tpu": 2.507,
+  "overlays": {
+    "field_techs": 12,
+    "leads": 4,
+    "managers": 1,
+    "tech_bars": 2,
+    "depot_techs": 1,
+    "virtual_techs": 0,
+    "total_people": 20
+  },
+  "scenarios": [
+    {
+      "key": "cur",
+      "name": "Current state",
+      "ratio": null,
+      "defl": 0,
+      "zt": 10,
+      "year": null,
+      "techs": 150,
+      "total": 17349089.0,
+      "ratioImplied": 24
+    },
+    {
+      "key": "day1",
+      "name": "Day one (demand model)",
+      "ratio": null,
+      "defl": 0,
+      "zt": 15,
+      "year": 0,
+      "techs": 12,
+      "total": 2131154.0,
+      "ratioImplied": 295
+    },
+    {
+      "key": "r750",
+      "name": "750:1 goal",
+      "ratio": 750,
+      "defl": 12,
+      "zt": 40,
+      "year": 2,
+      "techs": 5,
+      "total": 1378514.0,
+      "ratioImplied": 708
+    },
+    {
+      "key": "r1000",
+      "name": "1000:1 stretch",
+      "ratio": 1000,
+      "defl": 20,
+      "zt": 60,
+      "year": 4,
+      "techs": 4,
+      "total": 1251419.0,
+      "ratioImplied": 885
+    },
+    {
+      "key": "r1200",
+      "name": "1200:1",
+      "ratio": 1200,
+      "defl": 26,
+      "zt": 75,
+      "year": 5,
+      "techs": 4,
+      "total": 1216000.0,
+      "ratioImplied": 885
+    },
+    {
+      "key": "r1500",
+      "name": "1500:1 art of possible",
+      "ratio": 1500,
+      "defl": 32,
+      "zt": 90,
+      "year": 6,
+      "techs": 4,
+      "total": 1180582.0,
+      "ratioImplied": 885
+    }
+  ],
+  "settings_subset": {
+    "working_days": 252,
+    "utilization": 0.85,
+    "team_floor": 2,
+    "physical_touch_share": 0.35,
+    "day_one_reach": 0.55
+  }
+}

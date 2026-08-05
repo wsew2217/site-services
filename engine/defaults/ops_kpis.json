@@ -1,0 +1,47 @@
+{
+  "doh_green_max": 1.5,
+  "doh_amber_max": 2.5,
+  "doh_incident_target": 1.5,
+  "doh_request_target": 2.5,
+  "aging_bands": ["0-3", "4-7", "8-9", "10-19", "20-29", "30+"],
+  "slo_target": 0.95,
+  "business_hours_start": "08:00",
+  "business_hours_end": "17:00",
+  "ert_incident_minutes": 60,
+  "ert_request_minutes": 75,
+  "status_update_checkpoint_hours": 2,
+  "first_contact_minutes": 60,
+  "dspt_pickup_minutes": 60,
+  "reopen_days": 15,
+  "unreachable_attempts": 3,
+  "unreachable_window_weeks": 2,
+  "productivity_closed_per_tech_day_target": 5,
+  "fmo_tickets_per_tech_day_target": 7.0,
+  "working_days_month": 22,
+  "role_lanes": [
+    "Desktop-Incident",
+    "Desktop-Requests",
+    "Remote-Desktop",
+    "Staging",
+    "Site-Lead",
+    "Telecom",
+    "Network-VDI",
+    "Projects"
+  ],
+  "slo_ack_hours": { "1": 0.25, "2": 0.5, "3": 1, "4": 2, "5": 2 },
+  "slo_res_hours": { "1": 2, "2": 4, "3": 12, "4": 24, "5": 24 },
+  "sla_ack_hours": { "1": 0.5, "2": 4, "3": 24, "4": 72, "5": 72 },
+  "sla_res_hours": { "1": 4, "2": 24, "3": 72, "4": 240, "5": 240 },
+  "close_codes": ["RSLV", "CNRC"],
+  "status_codes": [
+    "DSPT", "IPRO", "CETA", "SCHD", "AWCU", "CNRC", "AWDP", "AWDS",
+    "AWEQ", "AWVP", "ASTM", "ESCA", "NDUP", "RSGN", "TRNI", "TRNO",
+    "WUED", "WUER", "RSLV"
+  ],
+  "status_groups": {
+    "Awaiting": ["AWCU", "AWDP", "AWDS", "AWEQ", "AWVP", "ASTM"],
+    "Scheduled": ["SCHD", "CETA"],
+    "Real Time": ["DSPT", "IPRO", "TRNI", "TRNO", "ESCA", "RSGN", "NDUP"],
+    "Completed": ["RSLV", "CNRC", "WUED", "WUER"]
+  }
+}

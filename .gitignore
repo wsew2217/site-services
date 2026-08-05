@@ -1,0 +1,16 @@
+*.log
+*.pyc
+.DS_Store
+.Python
+.vercel
+.venv*/
+Deal_Output.xlsx
+Deal_Output.json
+__pycache__/
+engine/.cache/
+engine/.venv/
+engine/research/**
+!engine/research/README.md
+engine/sample/output/
+research/private/
+samples/out/

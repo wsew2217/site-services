@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services Cost Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+
+:root{--navy:#13294B;--slate:#54607A;--acc:#D86A44;--tint:#F4F6FB;--line:#E4E8F0;--ink:#232A35;--mute:#8A93A6;--light:#C9D2E4;--asoft:#FBEFE9;--green:#2E7D32;--red:#C00000}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Calibri,'Segoe UI',Arial,sans-serif;color:var(--ink);background:#F7F8FB;font-size:14.5px;line-height:1.45}
+.hero{background:var(--navy);color:#fff;padding:34px 30px 24px}
+.hero .k{color:var(--acc);font-weight:700;letter-spacing:3px;font-size:12px;text-transform:uppercase}
+.hero h1{font-family:Cambria,Georgia,serif;font-size:32px;margin:6px 0 4px}
+.hero .s{color:var(--light);font-style:italic;font-size:14px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 22px 80px}
+.hero-inner{max-width:1280px;margin:0 auto;padding:0 22px}
+.toolbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(133,149,176,.15)}
+.toolbar-inner{max-width:1280px;margin:0 auto;padding:10px 22px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:#fff;color:var(--slate);font-weight:700;font-size:13px;border-radius:20px;padding:7px 16px;cursor:pointer}
+.tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.toolbar .sp{flex:1}
+.btn{border:1px solid var(--acc);background:var(--acc);color:#fff;font-weight:700;font-size:13px;border-radius:20px;padding:7px 16px;cursor:pointer}
+.btn.ghost{background:#fff;color:var(--acc)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 3px 10px rgba(133,149,176,.18);padding:18px 20px;margin:16px 0}
+.card h3{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:17.5px;margin-bottom:4px}
+.card .sub{color:var(--mute);font-size:12.5px;margin-bottom:12px}
+.frow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.frow:last-child{border-bottom:none}
+.frow label{font-size:13.5px;color:var(--ink);flex:1}
+.frow .hint{display:block;color:var(--mute);font-size:11px}
+.frow input[type=number],.frow select{width:110px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;font:inherit;font-weight:700;color:var(--navy);text-align:right;background:var(--tint)}
+.frow input:focus{outline:2px solid var(--acc);background:#fff}
+h2.sec{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:24px;margin:34px 0 4px}
+.kick{color:var(--acc);font-weight:700;letter-spacing:2.5px;font-size:11.5px;text-transform:uppercase;margin-top:30px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:14px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 3px 10px rgba(133,149,176,.18);padding:14px 16px}
+.kpi b{font-family:Cambria,Georgia,serif;font-size:24px;color:var(--navy);display:block;white-space:nowrap}
+.kpi.acc b{color:var(--acc)} .kpi.good b{color:var(--green)}
+.kpi span{font-size:11.5px;color:var(--mute);font-weight:600;text-transform:uppercase;letter-spacing:.6px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+th{background:var(--navy);color:#fff;padding:8px 10px;text-align:right;font-weight:700;white-space:nowrap}
+th:first-child{text-align:left}
+td{border:1px solid var(--line);padding:7px 10px;text-align:right;white-space:nowrap}
+td:first-child{text-align:left;font-weight:700;color:var(--navy)}
+tr:nth-child(even) td{background:var(--tint)}
+tr.hl td{background:var(--asoft);border-color:#F0CDBB}
+td input{width:64px;padding:3px 5px;border:1px solid var(--line);border-radius:6px;font:inherit;font-weight:700;color:var(--navy);text-align:right;background:#FFF6D8}
+.band{background:var(--navy);color:#fff;text-align:center;font-weight:700;border-radius:10px;padding:12px 20px;margin:18px 0;box-shadow:0 3px 10px rgba(133,149,176,.25);font-size:14px}
+.note{font-size:12px;color:var(--mute);font-style:italic;margin:8px 0}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--slate);margin:6px 0}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+svg text{font-family:Calibri,'Segoe UI',Arial,sans-serif}
+details{margin:14px 0;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+details summary{font-weight:700;color:var(--navy);cursor:pointer;font-size:14px}
+details p,details li{font-size:13px;color:var(--ink)}
+details ul{margin:8px 0 4px 20px}
+.pane{display:none}.pane.on{display:block}
+.pos{color:var(--green);font-weight:700}.neg{color:var(--red);font-weight:700}
+@media print{.toolbar{display:none}.pane{display:block!important}body{background:#fff}.card,.kpi{box-shadow:none}}
+
+
+.toolbar{top:52px}
+</style>
+</head>
+<body class="suite-app suite-tool" data-page="cost-model" data-mode="tool">
+<div class="hero"><div class="hero-inner">
+<div class="k">Dell Site Services . Solution Design Tool</div>
+<h1>Field Services Cost Model</h1>
+<div class="s">Generic scenario economics for any site-services estate. Prefer loading a deal-engine summary so campuses and day-one techs are site-derived; ratios stay guardrails.</div>
+</div></div>
+<div class="toolbar"><div class="toolbar-inner">
+<button class="tab on" data-p="inputs">1 . Inputs</button>
+<button class="tab" data-p="scen">2 . Scenarios</button>
+<button class="tab" data-p="results">3 . Results &amp; Charts</button>
+<button class="tab" data-p="cash">4 . Transition &amp; Cash</button>
+<button class="tab" data-p="sens">5 . Sensitivity</button>
+<button class="tab" data-p="logic">6 . Model Logic</button>
+<span class="sp"></span>
+<button class="btn ghost" onclick="resetAll()">Reset defaults</button>
+<button class="btn" onclick="window.print()">Print / PDF</button>
+</div></div>
+<div class="wrap">
+
+<!-- ================= PANE 1: INPUTS ================= -->
+<div class="pane on" id="pane-inputs">
+<h2 class="sec">Estate &amp; delivery inputs</h2>
+<p class="note">Defaults describe a large, distributed global estate. Prefer loading an engine summary so campuses and day-one techs are site-derived, not invented.</p>
+<div class="card" style="margin-bottom:16px">
+<h3>Deal engine bridge</h3>
+<div class="sub">Load <code>/assets/engine-summary.json</code> produced by <code>python -m engine run …</code> (or upload a file). Campuses lock as derived; day-one techs come from the site model.</div>
+<div class="frow"><label>Engine JSON</label><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+<button class="btn ghost" type="button" id="btn_load_engine">Load sample summary</button>
+<input type="file" id="i_engine_file" accept="application/json,.json" style="font-size:12px">
+</span></div>
+<div class="note" id="engine_status">No engine file loaded — campuses are manual until you load a summary.</div>
+</div>
+<div class="grid g3">
+<div class="card"><h3>Estate</h3><div class="sub">The footprint being served</div>
+<div class="frow"><label>Sites in scope</label><input type="number" id="i_sites" value="1000"></div>
+<div class="frow"><label>Users (seats)</label><input type="number" id="i_users" value="50000"></div>
+<div class="frow"><label>Tickets per user / yr<span class="hint">demand intensity; 1.0-1.8 typical field-heavy</span></label><input type="number" id="i_tpu" value="1.6" step="0.1"></div>
+<div class="frow"><label>Virtual campuses<span class="hint" id="camp_hint">from engine when loaded; else manual</span></label><input type="number" id="i_camp" value="28"></div>
+<div class="frow"><label>Physical-touch share of tickets<span class="hint">% needing hands on hardware</span></label><input type="number" id="i_touch" value="35"></div>
+<div class="frow"><label>On-site reach at day one %<span class="hint">share of touches within staff drive range</span></label><input type="number" id="i_cov" value="55"></div>
+<div class="frow"><label>Devices per user</label><input type="number" id="i_dpu" value="1.2" step="0.1"></div>
+<div class="frow"><label>Refresh cycle (years)</label><input type="number" id="i_refresh" value="4"></div>
+</div>
+<div class="card"><h3>Delivery model</h3><div class="sub">Throughput and structure</div>
+<div class="frow"><label>On-site tickets / tech / day</label><input type="number" id="i_onrate" value="5" step="0.5"></div>
+<div class="frow"><label>Remote tickets / tech / day</label><input type="number" id="i_remrate" value="5" step="0.5"></div>
+<div class="frow"><label>Utilization %</label><input type="number" id="i_util" value="85"></div>
+<div class="frow"><label>Working days / yr</label><input type="number" id="i_days" value="252"></div>
+<div class="frow"><label>Team floor per campus<span class="hint">minimum techs for resilience</span></label><input type="number" id="i_floor" value="2"></div>
+<div class="frow"><label>Lead span (techs per lead)</label><input type="number" id="i_lead" value="10"></div>
+<div class="frow"><label>Manager span (techs per mgr)</label><input type="number" id="i_mgr" value="24"></div>
+</div>
+<div class="card"><h3>Labor rates (fully loaded base)</h3><div class="sub">Regional mix must total 100%</div>
+<div class="frow"><label>NAM: mix % / salary</label><span><input type="number" id="i_mx0" value="12" style="width:56px"> <input type="number" id="i_r0" value="85000" style="width:84px"></span></div>
+<div class="frow"><label>LATAM: mix % / salary</label><span><input type="number" id="i_mx1" value="18" style="width:56px"> <input type="number" id="i_r1" value="42000" style="width:84px"></span></div>
+<div class="frow"><label>EMEA: mix % / salary</label><span><input type="number" id="i_mx2" value="43" style="width:56px"> <input type="number" id="i_r2" value="72000" style="width:84px"></span></div>
+<div class="frow"><label>APJC: mix % / salary</label><span><input type="number" id="i_mx3" value="27" style="width:56px"> <input type="number" id="i_r3" value="40000" style="width:84px"></span></div>
+<div class="frow"><label>Burden uplift %<span class="hint">benefits, tools, overhead</span></label><input type="number" id="i_burden" value="28"></div>
+<div class="frow"><label>Lead premium (x rate)</label><input type="number" id="i_leadx" value="1.25" step="0.05"></div>
+<div class="frow"><label>Manager salary (flat)</label><input type="number" id="i_mgrsal" value="140000"></div>
+</div>
+</div>
+<div class="grid g3">
+<div class="card"><h3>Logistics &amp; depots</h3><div class="sub">The cost side that grows as labor shrinks</div>
+<div class="frow"><label>Cost per parts shipment</label><input type="number" id="i_ship" value="38"></div>
+<div class="frow"><label>Parts-shipment share of physical touches %</label><input type="number" id="i_shipshare" value="55"></div>
+<div class="frow"><label>Depots</label><input type="number" id="i_depots" value="18"></div>
+<div class="frow"><label>Depot fixed cost / yr each</label><input type="number" id="i_depfix" value="60000"></div>
+<div class="frow"><label>Depot variable per shipment</label><input type="number" id="i_depvar" value="6"></div>
+<div class="frow"><label>Stock value per campus</label><input type="number" id="i_stockval" value="45000"></div>
+<div class="frow"><label>Stock carrying cost %/yr</label><input type="number" id="i_carry" value="18"></div>
+</div>
+<div class="card"><h3>Dispatch &amp; OEM warranty</h3><div class="sub">Hands beyond staff reach</div>
+<div class="frow"><label>Cost per smart-hands dispatch</label><input type="number" id="i_dispatch" value="165"></div>
+<div class="frow"><label>OEM warranty attach % of break-fix<span class="hint">share moved onto manufacturer</span></label><input type="number" id="i_oem" value="45"></div>
+<div class="frow"><label>OEM cost per covered incident<span class="hint">amortized warranty uplift per event</span></label><input type="number" id="i_oemcost" value="55"></div>
+<div class="frow"><label>Break-fix share of physical touches %</label><input type="number" id="i_bfix" value="60"></div>
+<div class="frow"><label>Zero-touch refresh share at end state %<span class="hint">Autopilot + lifecycle hub</span></label><input type="number" id="i_zt" value="85"></div>
+<div class="frow"><label>Refresh touch cost (non zero-touch)</label><input type="number" id="i_rtouch" value="95"></div>
+<div class="frow"><label>Refresh shipping per device</label><input type="number" id="i_rship" value="24"></div>
+</div>
+<div class="card"><h3>Current state &amp; transition</h3><div class="sub">Where the customer is today</div>
+<div class="frow"><label>Current field technicians</label><input type="number" id="i_curtech" value="150"></div>
+<div class="frow"><label>Current mgmt overhead % of tech cost</label><input type="number" id="i_curmgmt" value="16"></div>
+<div class="frow"><label>Current logistics spend / yr<span class="hint">lump sum; shown in the Parts shipping column for current state</span></label><input type="number" id="i_curlog" value="900000"></div>
+<div class="frow"><label>Severance per exiting head</label><input type="number" id="i_sev" value="30000"></div>
+<div class="frow"><label>Hire + training per added head</label><input type="number" id="i_hire" value="12000"></div>
+<div class="frow"><label>Parallel-run months (each step)</label><input type="number" id="i_par" value="2"></div>
+<div class="frow"><label>Program mgmt per step (one-time)</label><input type="number" id="i_pmo" value="150000"></div>
+</div>
+</div>
+</div>
+
+<!-- ================= PANE 2: SCENARIOS ================= -->
+<div class="pane" id="pane-scen">
+<h2 class="sec">Scenario ladder</h2>
+<p class="note">Yellow cells are editable per rung: the users-per-tech ratio, the demand deflection adoption assumption (self-service + remote-first removing tickets), the zero-touch maturity %, and the year each rung is reached (drives the cash view). The day-one row is computed from throughput, not a ratio.</p>
+<div class="card" style="overflow-x:auto"><table id="t_scen"></table>
+<p class="note">Deflection removes tickets before staffing math. Zero-touch maturity scales how much of the device-refresh workload ships direct with no technician touch. Staff coverage of physical touches falls as headcount falls; the uncovered remainder routes to smart-hands dispatch and OEM warranty at the costs set in Inputs.</p></div>
+<div class="card"><h3>Live staffing ladder</h3><div class="sub">Bars scale to technician count; the accent bar is the day-one model</div>
+<div id="ladder"></div></div>
+</div>
+
+<!-- ================= PANE 3: RESULTS ================= -->
+<div class="pane" id="pane-results">
+<h2 class="sec">Results</h2>
+<div class="kpis" id="kpis"></div>
+<div class="card" style="overflow-x:auto"><h3>Annual cost by scenario</h3><div class="sub">Steady-state run cost once each rung is reached</div>
+<table id="t_cost"></table></div>
+<div class="card"><h3>Cost composition</h3><div class="sub">The labor-to-logistics shift, visible</div>
+<div class="legend" id="leg1"></div><div id="stackchart"></div></div>
+<div class="band" id="shiftband"></div>
+</div>
+
+<!-- ================= PANE 4: CASH ================= -->
+<div class="pane" id="pane-cash">
+<h2 class="sec">Transition &amp; multi-year cash</h2>
+<p class="note">The path walks current state to day one in year 0, then steps to each rung in its "year reached." One-time costs (severance, hiring, parallel run, program management) land in the step year. Savings measure against the current-state annual cost.</p>
+<div class="kpis" id="kpis2"></div>
+<div class="card" style="overflow-x:auto"><h3>Step costs</h3><table id="t_steps"></table></div>
+<div class="card"><h3>Cumulative net cash vs staying as-is (7 years)</h3><div class="sub">Above zero = the transformation has paid for itself</div>
+<div id="cashchart"></div></div>
+</div>
+
+<!-- ================= PANE 5: SENSITIVITY ================= -->
+<div class="pane" id="pane-sens">
+<h2 class="sec">Sensitivity</h2>
+<p class="note">Each driver moved +/-15% independently; effect on steady-state annual cost at the target rung (the rung marked GOAL in Scenarios). Longest bars are the drivers worth negotiating hardest.</p>
+<div class="card"><div id="tornado"></div></div>
+</div>
+
+<!-- ================= PANE 6: LOGIC ================= -->
+<div class="pane" id="pane-logic">
+<h2 class="sec">Model logic (the defensible version)</h2>
+<details open><summary>Demand and staffing</summary>
+<ul>
+<li>Tickets/yr = users x tickets-per-user. Deflection% removes tickets before staffing (adoption of self-service and remote-first).</li>
+<li>When an engine summary is loaded, day-one technicians and campus count come from the site/VC model (hub catchment + throughput). Manual Inputs remain a scenario sandbox.</li>
+<li>Without an engine file, day-one technicians ≈ ceil(daily tickets x physical-touch share / on-site rate / utilization) + ceil(daily remote tickets / remote rate / utilization), floored by campuses x team floor.</li>
+<li>Road-map rungs: technicians = max(campuses x floor, ceil(users / ratio)). Ratios are commercial guardrails, not the day-one sizing driver. Leads = ceil(techs/lead span); managers = ceil(techs/mgr span).</li>
+<li>Blended tech rate = regional mix-weighted salary x (1 + burden). Leads at premium x blended; managers flat + burden.</li>
+</ul></details>
+<details open><summary>Logistics, dispatch and OEM (the shift)</summary>
+<ul>
+<li>Physical touches = adjusted tickets x physical-touch share. Staff on-site capacity = techs x on-site allocation (60% of capacity) x rate x days x utilization.</li>
+<li>Uncovered touches = max(0, touches - staff capacity): break-fix share of those goes to OEM warranty at attach% (per-event cost), the rest to smart-hands dispatch (per-visit cost).</li>
+<li>Parts shipments = parts share of physical touches, costed per shipment; depots carry fixed + per-shipment variable; campus stock value x carrying% is inventory cost, scaled down as headcount consolidates (stock follows staffed footprint at 40% elasticity).</li>
+<li>Device refresh = users x devices per user / refresh cycle. Zero-touch maturity% of refreshes ship direct (shipping only); the rest incur a touch cost plus shipping.</li>
+</ul></details>
+<details open><summary>Transition and cash</summary>
+<ul>
+<li>Each step: exits x severance + hires x hire/training + parallel-run months x (old monthly labor x 25% overlap) + program management.</li>
+<li>Cash view: each year charges the annual cost of the active rung plus any step one-time; cumulative line compares against staying at current state.</li>
+</ul></details>
+<details><summary>What this model deliberately is not</summary>
+<p>It is generic: it prices structure and shifts, not a specific contract. Site geography, hub selection, and VC floors live in the Python deal engine (<code>python -m engine run</code>). This page shapes economics live; load <code>engine-summary.json</code> so campus count and day-one techs stay reconciled. Dollar rates are modern placeholders — refresh per deal (older PFS models inform structure only).</p></details>
+<div class="band">The ratio road map is a cost shift, not just a labor cut. This tool makes the shift visible and priceable.</div>
+</div>
+
+</div>
+<script src="/assets/site.js"></script>
+<script>
+
+const $=id=>document.getElementById(id);
+const fm=n=>{if(!isFinite(n))return '-';const a=Math.abs(n);if(a>=1e6)return '$'+(n/1e6).toFixed(2)+'M';if(a>=1e3)return '$'+(n/1e3).toFixed(0)+'K';return '$'+Math.round(n)}
+const fi=n=>Math.round(n).toLocaleString('en-US');
+const CE=Math.ceil;
+
+// scenario state (editable)
+let SC=[
+ {key:'cur', name:'Current state', ratio:null, defl:0, zt:10, year:null},
+ {key:'day1',name:'Day one (demand model)', ratio:null, defl:0, zt:15, year:0},
+ {key:'r750',name:'750:1 . GOAL', ratio:750, defl:12, zt:40, year:2, goal:true},
+ {key:'r1000',name:'1000:1 . Stretch', ratio:1000, defl:20, zt:60, year:4},
+ {key:'r1200',name:'1200:1', ratio:1200, defl:26, zt:75, year:5},
+ {key:'r1500',name:'1500:1 . Art of possible', ratio:1500, defl:32, zt:90, year:6}
+];
+const DEF={};
+function snapshot(){document.querySelectorAll('input').forEach(e=>DEF[e.id]=e.value);DEF._sc=JSON.parse(JSON.stringify(SC));}
+function resetAll(){Object.keys(DEF).forEach(k=>{if(k!=='_sc'&&$(k))$(k).value=DEF[k]});SC=JSON.parse(JSON.stringify(DEF._sc));recalc();}
+
+function V(id){return parseFloat($(id).value)||0}
+
+function inputs(){
+ const mix=[V('i_mx0'),V('i_mx1'),V('i_mx2'),V('i_mx3')];
+ const rates=[V('i_r0'),V('i_r1'),V('i_r2'),V('i_r3')];
+ const msum=mix.reduce((a,b)=>a+b,0)||1;
+ const blended=mix.reduce((a,m,i)=>a+m/msum*rates[i],0);
+ return {
+  sites:V('i_sites'),users:V('i_users'),tpu:V('i_tpu'),camp:V('i_camp'),touch:V('i_touch')/100,
+  dpu:V('i_dpu'),refresh:V('i_refresh'),cov:V('i_cov')/100,
+  onrate:V('i_onrate'),remrate:V('i_remrate'),util:V('i_util')/100,days:V('i_days'),
+  floor:V('i_floor'),lead:V('i_lead'),mgr:V('i_mgr'),
+  blended, burden:1+V('i_burden')/100, leadx:V('i_leadx'), mgrsal:V('i_mgrsal'),
+  ship:V('i_ship'),shipshare:V('i_shipshare')/100,depots:V('i_depots'),depfix:V('i_depfix'),depvar:V('i_depvar'),
+  stockval:V('i_stockval'),carry:V('i_carry')/100,
+  dispatch:V('i_dispatch'),oem:V('i_oem')/100,oemcost:V('i_oemcost'),bfix:V('i_bfix')/100,
+  zt:V('i_zt')/100,rtouch:V('i_rtouch'),rship:V('i_rship'),
+  curtech:V('i_curtech'),curmgmt:V('i_curmgmt')/100,curlog:V('i_curlog'),
+  sev:V('i_sev'),hire:V('i_hire'),par:V('i_par'),pmo:V('i_pmo')
+ };
+}
+
+let ENGINE=null; // loaded engine-summary.json
+function techsFor(sc,I){
+ if(sc.key==='cur') return I.curtech;
+ const tickets=I.users*I.tpu*(1-sc.defl/100);
+ if(sc.key==='day1'){
+  if(ENGINE && ENGINE.day1_techs){
+   return Math.max(I.camp*I.floor, ENGINE.day1_techs);
+  }
+  const tpd=tickets/I.days;
+  const onT=CE(tpd*I.touch/(I.onrate*I.util));
+  const remT=CE(tpd*(1-I.touch)/(I.remrate*I.util));
+  return Math.max(I.camp*I.floor, onT+remT);
+ }
+ return Math.max(I.camp*Math.max(1,I.floor-1), CE(I.users/sc.ratio));
+}
+function applyEngine(data){
+ ENGINE=data||null;
+ const st=$('engine_status');
+ if(!ENGINE){
+  st.textContent='No engine file loaded — campuses are manual until you load a summary.';
+  $('i_camp').readOnly=false;
+  return;
+ }
+ if(ENGINE.sites!=null) $('i_sites').value=ENGINE.sites;
+ if(ENGINE.users!=null) $('i_users').value=ENGINE.users;
+ if(ENGINE.tpu!=null) $('i_tpu').value=ENGINE.tpu;
+ if(ENGINE.campuses!=null){
+  $('i_camp').value=ENGINE.campuses;
+  $('i_camp').readOnly=true;
+  $('camp_hint').textContent='derived from deal engine (locked)';
+ }
+ // Keep current-state techs as a separate commercial input; day-one uses ENGINE.day1_techs in techsFor().
+ if(ENGINE.day1_techs!=null && Number($('i_curtech').value) < ENGINE.day1_techs){
+  $('i_curtech').value=Math.round(ENGINE.day1_techs*1.25);
+ }
+ st.textContent='Loaded engine summary: '+ENGINE.campuses+' campuses, '+ENGINE.day1_techs+' day-one field techs, '+ENGINE.sites+' sites. Campuses are derived; ratios remain guardrails.';
+ snapshot(); recalc(true);
+}
+async function loadEngineUrl(url){
+ try{
+  const r=await fetch(url,{cache:'no-store'});
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  applyEngine(await r.json());
+ }catch(e){
+  $('engine_status').textContent='Could not load '+url+' — '+e.message;
+ }
+}
+$('btn_load_engine').addEventListener('click',()=>loadEngineUrl('/assets/engine-summary.json'));
+$('i_engine_file').addEventListener('change',ev=>{
+ const f=ev.target.files&&ev.target.files[0]; if(!f) return;
+ const reader=new FileReader();
+ reader.onload=()=>{try{applyEngine(JSON.parse(reader.result));}catch(e){$('engine_status').textContent='Invalid JSON: '+e.message;}};
+ reader.readAsText(f);
+});
+// Auto-try sample summary on first paint (non-blocking)
+loadEngineUrl('/assets/engine-summary.json');
+
+function costFor(sc,I){
+ const techs=techsFor(sc,I);
+ const tickets=I.users*I.tpu*(1-sc.defl/100);
+ const leads=sc.key==='cur'?0:CE(techs/I.lead);
+ const mgrs=sc.key==='cur'?0:CE(techs/I.mgr);
+ const techCost=techs*I.blended*I.burden;
+ const mgmtCost=sc.key==='cur'? techCost*I.curmgmt : leads*I.blended*I.leadx*I.burden + mgrs*I.mgrsal*I.burden;
+
+ // physical touches vs staff reach and capacity
+ const touches=tickets*I.touch;
+ const dayOneT=techsFor({key:'day1',defl:0},I);
+ const fp=Math.min(1, techs/Math.max(1,dayOneT));      // staffed footprint vs day one
+ const reach=Math.min(1, I.cov*Math.pow(fp,0.6));      // geographic reach shrinks as teams consolidate
+ const cap=techs*0.6*I.onrate*I.days*I.util;
+ const covered=Math.min(touches*reach, cap);
+ const uncovered=Math.max(0,touches-covered);
+ const bfixUn=uncovered*I.bfix, otherUn=uncovered-bfixUn;
+ const oemEvents=bfixUn*I.oem;
+ const dispatchEvents=(bfixUn-oemEvents)+otherUn;
+ const oemCost=oemEvents*I.oemcost;
+ const dispCost=dispatchEvents*I.dispatch;
+
+ // shipping + depots + stock
+ const shipments=touches*I.shipshare;
+ const shipCost=shipments*I.ship;
+ const depotCost=I.depots*I.depfix + shipments*I.depvar;
+ const stockCost=I.camp*I.stockval*I.carry*(0.6+0.4*fp); // stock consolidates at 40% elasticity
+
+ // refresh
+ const refreshUnits=I.users*I.dpu/Math.max(1,I.refresh);
+ const ztShare=Math.min(1, sc.zt/100 * (I.zt/0.85>1?1:I.zt/0.85+0.15)); // scaled by end-state ceiling
+ const rCost=refreshUnits*( I.rship + (1-ztShare)*I.rtouch );
+
+ let out={shipCost,depotCost,stockCost,rCost,dispCost,oemCost};
+ if(sc.key==='cur'){
+   const rc=refreshUnits*(I.rship+(1-0.10)*I.rtouch);
+   out={shipCost:I.curlog,depotCost:0,stockCost:0,rCost:rc,dispCost:0,oemCost:0};
+ }
+ const logistics=out.shipCost+out.depotCost+out.stockCost+out.rCost+out.dispCost+out.oemCost;
+ const total=techCost+mgmtCost+logistics;
+ return Object.assign({techs,leads,mgrs,techCost,mgmtCost,logistics,total,
+         ratioImplied:techs? Math.round(I.users/techs):0},out);
+}
+
+function compute(){
+ const I=inputs();
+ return SC.map(sc=>({sc,c:costFor(sc,I),I}));
+}
+
+/* ---------------- renders ---------------- */
+function rScenTable(R){
+ let h='<tr><th>Scenario</th><th>Users:tech ratio</th><th>Deflection %</th><th>Zero-touch %</th><th>Year reached</th><th>Techs</th><th>Leads</th><th>Mgrs</th><th>Implied ratio</th></tr>';
+ R.forEach((r,i)=>{
+  const s=r.sc,c=r.c;
+  const ed=(f,v,min,max)=>`<input data-i="${i}" data-f="${f}" value="${v}" min="${min}" max="${max}" type="number">`;
+  h+=`<tr${s.goal?' class="hl"':''}><td>${s.name}</td>
+   <td>${s.ratio? ed('ratio',s.ratio,100,5000):'derived'}</td>
+   <td>${s.key==='cur'?'-':ed('defl',s.defl,0,60)}</td>
+   <td>${ed('zt',s.zt,0,100)}</td>
+   <td>${s.year===null?'today':ed('year',s.year,0,10)}</td>
+   <td id="sc_t_${i}">${fi(c.techs)}</td><td id="sc_l_${i}">${s.key==='cur'?'-':fi(c.leads)}</td><td id="sc_m_${i}">${s.key==='cur'?'-':fi(c.mgrs)}</td>
+   <td id="sc_r_${i}"><b>${c.ratioImplied}:1</b></td></tr>`;
+ });
+ $('t_scen').innerHTML=h;
+ document.querySelectorAll('#t_scen input').forEach(e=>e.addEventListener('input',ev=>{
+  const i=+e.dataset.i,f=e.dataset.f;SC[i][f]=parseFloat(e.value)||0;recalc(false);
+ }));
+}
+function rLadder(R){
+ const max=Math.max(...R.map(r=>r.c.techs));
+ const W=900,rowH=44,H=R.length*rowH+10;
+ let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%">`;
+ R.forEach((r,i)=>{
+  const y=i*rowH+8, bw=Math.max(8,(r.c.techs/max)*(W-420));
+  const acc=r.sc.key==='day1', road=!!r.sc.ratio;
+  const col=acc?'#D86A44':(r.sc.key==='cur'?'#B9C3D6':'#54607A');
+  s+=`<text x="0" y="${y+19}" font-size="13" font-weight="${acc?'700':'400'}" fill="${acc?'#13294B':'#54607A'}">${r.sc.name}</text>`;
+  s+=`<rect x="215" y="${y}" width="${bw}" height="26" rx="5" fill="${col}"/>`;
+  s+=`<text x="${222+bw}" y="${y+18}" font-size="12.5" font-weight="700" fill="${col}">${fi(r.c.techs)} techs</text>`;
+  s+=`<text x="${W-4}" y="${y+19}" font-size="${acc?17:13}" font-weight="700" text-anchor="end" fill="${acc?'#13294B':'#8A93A6'}" font-family="Cambria,Georgia,serif">${r.c.ratioImplied}:1</text>`;
+ });
+ s+='</svg>';
+ $('ladder').innerHTML=s;
+}
+const SEG=[['techCost','Technicians','#13294B'],['mgmtCost','Leads & mgmt','#54607A'],['shipCost','Parts shipping','#D86A44'],['dispCost','Smart hands','#E59B7F'],['oemCost','OEM warranty','#C55A11'],['depotCost','Depots','#8A93A6'],['stockCost','Stock carrying','#B9C3D6'],['rCost','Device refresh','#7A93C4']];
+function rCostTable(R){
+ let h='<tr><th>Scenario</th><th>Techs</th>'+SEG.map(s=>`<th>${s[1]}</th>`).join('')+'<th>Total / yr</th><th>vs current</th></tr>';
+ const cur=R[0].c.total;
+ R.forEach(r=>{const c=r.c;
+  h+=`<tr${r.sc.goal?' class="hl"':''}><td>${r.sc.name}</td><td>${fi(c.techs)}</td>`+
+   SEG.map(s=>`<td>${fm(c[s[0]])}</td>`).join('')+
+   `<td><b>${fm(c.total)}</b></td><td class="${c.total<=cur?'pos':'neg'}">${r.sc.key==='cur'?'-':fm(c.total-cur)}</td></tr>`;
+ });
+ $('t_cost').innerHTML=h;
+}
+function rStack(R){
+ const max=Math.max(...R.map(r=>r.c.total));
+ const W=920,bw=90,gap=(W-R.length*bw)/(R.length+1),H=320,base=270;
+ let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%">`;
+ R.forEach((r,i)=>{
+  const x=gap+i*(bw+gap);let y=base;
+  SEG.forEach(sg=>{const v=r.c[sg[0]];if(v<=0)return;const h=v/max*230;y-=h;
+   s+=`<rect x="${x}" y="${y}" width="${bw}" height="${h}" fill="${sg[2]}"/>`;});
+  s+=`<text x="${x+bw/2}" y="${y-8}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#13294B">${fm(r.c.total)}</text>`;
+  s+=`<text x="${x+bw/2}" y="${base+18}" text-anchor="middle" font-size="11" fill="#54607A">${r.sc.name.split(' .')[0].replace('Current state','Current').replace(' (demand model)','')}</text>`;
+  s+=`<text x="${x+bw/2}" y="${base+32}" text-anchor="middle" font-size="10.5" fill="#8A93A6">${fi(r.c.techs)} techs</text>`;
+ });
+ s+='</svg>';$('stackchart').innerHTML=s;
+ $('leg1').innerHTML=SEG.map(sg=>`<span><i style="background:${sg[2]}"></i>${sg[1]}</span>`).join('');
+}
+function rKpis(R){
+ const cur=R[0].c,d1=R[1].c,goal=(R.find(r=>r.sc.goal)||R[2]).c;
+ const gl=(R.find(r=>r.sc.goal)||R[2]).sc.name;
+ $('kpis').innerHTML=
+  `<div class="kpi"><b>${fm(cur.total)}</b><span>Current annual cost</span></div>
+   <div class="kpi acc"><b>${fm(d1.total)}</b><span>Day one annual</span></div>
+   <div class="kpi good"><b>${fm(cur.total-d1.total)}</b><span>Day-one annual saving</span></div>
+   <div class="kpi"><b>${fm(goal.total)}</b><span>${gl} annual</span></div>
+   <div class="kpi good"><b>${fm(cur.total-goal.total)}</b><span>Saving at goal</span></div>
+   <div class="kpi"><b>${d1.ratioImplied}:1 &rarr; ${goal.ratioImplied}:1</b><span>Ratio path</span></div>`;
+ const shiftPct=Math.round(100*goal.logistics/goal.total);
+ $('shiftband').textContent=`At the goal rung, logistics, dispatch, OEM and refresh are ${shiftPct}% of total cost (vs ${Math.round(100*R[1].c.logistics/R[1].c.total)}% at day one). Labor shifts to logistics; the controls decide whether the shift is a net win.`;
+}
+function steps(R){
+ const I=R[0].I;const path=[R[1],...R.slice(2).filter(r=>r.sc.year!==null)].sort((a,b)=>a.sc.year-b.sc.year);
+ let prev=R[0],out=[];
+ path.forEach(r=>{
+  const exits=Math.max(0,prev.c.techs-r.c.techs),hires=Math.max(0,r.c.techs-prev.c.techs);
+  const oneOff=exits*I.sev+hires*I.hire+I.par*(prev.c.techCost/12)*0.25+I.pmo;
+  out.push({from:prev.sc.name,to:r.sc.name,year:r.sc.year,exits,hires,oneOff,annual:r.c.total});
+  prev=r;});
+ return out;
+}
+function rCash(R){
+ const cur=R[0].c.total;const st=steps(R);
+ let h='<tr><th>Step</th><th>Year</th><th>Exits</th><th>Hires</th><th>One-time cost</th><th>New annual run</th><th>Annual saving vs current</th></tr>';
+ st.forEach(s=>h+=`<tr><td>${s.from} &rarr; ${s.to}</td><td>${s.year}</td><td>${fi(s.exits)}</td><td>${fi(s.hires)}</td><td>${fm(s.oneOff)}</td><td>${fm(s.annual)}</td><td class="pos">${fm(cur-s.annual)}</td></tr>`);
+ $('t_steps').innerHTML=h;
+ // yearly cash, 7 years
+ const yrs=7;let active=R[0],cum=0,pts=[],payback=null,totOne=0;
+ for(let y=0;y<=yrs;y++){
+  const stepNow=st.filter(s=>s.year===y);
+  stepNow.forEach(s=>{cum-=s.oneOff;totOne+=s.oneOff;});
+  if(stepNow.length)active={c:{total:stepNow[stepNow.length-1].annual}};
+  if(y>0){const ramp=(st.some(s=>s.year===y))?0.6:1; cum+=(cur-active.c.total)*ramp;}
+  pts.push(cum);
+  if(payback===null&&cum>0&&y>0)payback=y;
+ }
+ const W=920,H=300,L=70,base=250;
+ const mx=Math.max(...pts.map(Math.abs))||1;
+ const X=y=>L+y*(W-L-20)/yrs, Y=v=>base-140-(v/mx)*100;
+ let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%">`;
+ s+=`<line x1="${L}" y1="${Y(0)}" x2="${W-20}" y2="${Y(0)}" stroke="#8A93A6" stroke-dasharray="4 4"/>`;
+ s+=`<text x="${L-8}" y="${Y(0)+4}" text-anchor="end" font-size="11" fill="#8A93A6">$0</text>`;
+ let d='';pts.forEach((v,y)=>{d+=(y?'L':'M')+X(y)+' '+Y(v)+' ';});
+ s+=`<path d="${d}" fill="none" stroke="#D86A44" stroke-width="3"/>`;
+ pts.forEach((v,y)=>{s+=`<circle cx="${X(y)}" cy="${Y(v)}" r="4" fill="#13294B"/>`;
+  s+=`<text x="${X(y)}" y="${Y(v)-10}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${v>=0?'#2E7D32':'#C00000'}">${fm(v)}</text>`;
+  s+=`<text x="${X(y)}" y="${base+40}" text-anchor="middle" font-size="11" fill="#54607A">Yr ${y}</text>`;});
+ if(payback!==null){s+=`<line x1="${X(payback)}" y1="${Y(0)-90}" x2="${X(payback)}" y2="${base+20}" stroke="#2E7D32" stroke-dasharray="5 4"/><text x="${X(payback)}" y="${Y(0)-98}" text-anchor="middle" font-size="12" font-weight="700" fill="#2E7D32">Payback</text>`;}
+ s+='</svg>';$('cashchart').innerHTML=s;
+ const y7=pts[yrs];
+ $('kpis2').innerHTML=
+  `<div class="kpi"><b>${fm(totOne)}</b><span>Total one-time transition</span></div>
+   <div class="kpi ${y7>=0?'good':''}"><b>${fm(y7)}</b><span>7-year net vs staying as-is</span></div>
+   <div class="kpi"><b>${payback===null?'&gt;7 yrs':'Year '+payback}</b><span>Payback</span></div>
+   <div class="kpi acc"><b>${st.length}</b><span>Transformation steps</span></div>`;
+}
+function rTornado(R){
+ const goal=(SC.find(s=>s.goal)||SC[2]);
+ const drivers=[['Blended salary',['i_r0','i_r1','i_r2','i_r3']],['Deflection at goal','defl'],['Dispatch cost',['i_dispatch']],['OEM attach %',['i_oem']],['Shipment cost',['i_ship']],['Physical-touch share',['i_touch']],['Utilization',['i_util']]];
+ const base=costFor(goal,inputs()).total;
+ const rows=[];
+ drivers.forEach(([name,ids])=>{
+  const mv=(dir)=>{
+   let saved={};
+   if(ids==='defl'){saved.defl=goal.defl;goal.defl=goal.defl*(1+0.15*dir);}
+   else ids.forEach(id=>{saved[id]=$(id).value;$(id).value=parseFloat($(id).value)*(1+0.15*dir);});
+   const v=costFor(goal,inputs()).total;
+   if(ids==='defl'){goal.defl=saved.defl;}else ids.forEach(id=>$(id).value=saved[id]);
+   return v-base;};
+  rows.push({name,up:mv(1),dn:mv(-1)});
+ });
+ rows.sort((a,b)=>Math.max(Math.abs(b.up),Math.abs(b.dn))-Math.max(Math.abs(a.up),Math.abs(a.dn)));
+ const mx=Math.max(...rows.map(r=>Math.max(Math.abs(r.up),Math.abs(r.dn))))||1;
+ const W=920,rh=42,H=rows.length*rh+30,C=W/2+60;
+ let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%">`;
+ s+=`<line x1="${C}" y1="0" x2="${C}" y2="${H-24}" stroke="#8A93A6"/>`;
+ rows.forEach((r,i)=>{const y=i*rh+8;
+  const wUp=Math.abs(r.up)/mx*300,wDn=Math.abs(r.dn)/mx*300;
+  s+=`<text x="0" y="${y+18}" font-size="13" fill="#54607A">${r.name}</text>`;
+  s+=`<rect x="${r.dn<0?C-wDn:C}" y="${y}" width="${wDn}" height="24" fill="#54607A" rx="4"/>`;
+  s+=`<rect x="${r.up<0?C-wUp:C}" y="${y}" width="${wUp}" height="24" fill="#D86A44" rx="4" opacity="0.85"/>`;
+  s+=`<text x="${C+Math.max(wUp,r.up>0?wUp:0)+8}" y="${y+17}" font-size="11.5" font-weight="700" fill="#C00000">${r.up>0?'+':''}${fm(r.up)}</text>`;
+ });
+ s+=`<text x="${C}" y="${H-6}" text-anchor="middle" font-size="11" fill="#8A93A6">orange = driver +15% . slate = driver -15% . labels show the +15% effect</text>`;
+ s+='</svg>';$('tornado').innerHTML=s;
+}
+
+function updateScenComputed(R){
+ R.forEach((r,i)=>{
+  const c=r.c,s=r.sc;
+  if($('sc_t_'+i)){$('sc_t_'+i).textContent=fi(c.techs);
+   $('sc_l_'+i).textContent=s.key==='cur'?'-':fi(c.leads);
+   $('sc_m_'+i).textContent=s.key==='cur'?'-':fi(c.mgrs);
+   $('sc_r_'+i).innerHTML='<b>'+c.ratioImplied+':1</b>';}
+ });
+}
+function recalc(rebuildScen=true){
+ const R=compute();
+ if(rebuildScen)rScenTable(R); else updateScenComputed(R);
+ rLadder(R);rCostTable(R);rStack(R);rKpis(R);rCash(R);rTornado(R);
+}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+ document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
+ $('pane-'+t.dataset.p).classList.add('on');window.scrollTo({top:0});
+}));
+document.querySelectorAll('.pane input').forEach(e=>e.addEventListener('input',()=>recalc(true)));
+snapshot();recalc();
+
+</script>
+</body>
+</html>

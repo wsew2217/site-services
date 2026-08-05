@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Deal A v2 Change Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body class="suite-app suite-doc" data-page="changes" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero"><div class="kicker">Reference Deal A . v2 Data Refresh</div><h1>What Changed, and Why</h1>
+<div class="sub">Rebuilt July 2026 on the customer extract DealA_Site_Data_Extract_V2.xlsx. The full v1 to v2 reconciliation.</div>
+<div class="statrow"><div class="stat"><b>909 > 989</b><span>sites</span></div><div class="stat"><b>28 > 29</b><span>campuses</span></div><div class="stat"><b>127 > 132</b><span>total team</span></div><div class="stat"><b>90% > 97%</b><span>precisely placed</span></div><div class="stat acc"><b>453:1</b><span>derived ratio</span></div></div></div>
+
+<h2>1. Headline comparison</h2>
+<table>
+<tr><th>Metric</th><th class="c">v1</th><th class="c">v2</th><th>Why</th></tr>
+<tr><td>Sites in scope</td><td class="c">909</td><td class="c"><b>989</b></td><td>83 sites new to the data; extract cleanup removed duplicated rows</td></tr>
+<tr><td>Tickets / year</td><td class="c">84,884</td><td class="c"><b>87,163</b></td><td>Observed demand essentially flat (-123); increase is 2,402 tickets/yr estimated on new sites</td></tr>
+<tr><td>Users (seats)</td><td class="c">not provided</td><td class="c"><b>51,680</b></td><td>New datum; enables the User-Ratio Sizing tab</td></tr>
+<tr><td>Countries</td><td class="c">101</td><td class="c"><b>104</b></td><td>Sri Lanka, Iceland, Dominican Republic enter</td></tr>
+<tr><td>Virtual campuses</td><td class="c">28</td><td class="c"><b>29</b></td><td>Peru promoted (Lima)</td></tr>
+<tr><td>Sites with on-site coverage</td><td class="c">128</td><td class="c"><b>140</b></td><td>Better addresses pulled sites into drive range; plus the Lima cluster</td></tr>
+<tr><td>Field technicians</td><td class="c">110</td><td class="c"><b>114</b></td><td>See team changes below</td></tr>
+<tr><td>Tech leads</td><td class="c">12</td><td class="c"><b>13</b></td><td>APJC crossed a lead-span boundary (31 techs)</td></tr>
+<tr><td>Managers</td><td class="c">5</td><td class="c"><b>5</b></td><td>Unchanged</td></tr>
+<tr><td>Total team</td><td class="c">127</td><td class="c"><b>132</b></td><td>Net +5</td></tr>
+<tr><td>Hubs / depots</td><td class="c">10 / 18</td><td class="c"><b>11 / 18</b></td><td>Peru joins as an on-site-led hub</td></tr>
+<tr><td>Annual run cost (internal only)</td><td class="c">$8.25M</td><td class="c"><b>$8.47M</b></td><td>+$216K: four net technicians and one lead</td></tr>
+<tr><td>Sites precisely placed</td><td class="c">816/909 (90%)</td><td class="c"><b>959/989 (97%)</b></td><td>The address extract closed most location gaps</td></tr>
+</table>
+
+<h2>2. Data reconciliation (worth knowing before the customer asks)</h2>
+<div class="card soft"><p><b class="t">The raw extract overstates demand.</b> The Site Data tab sums to 95,280 tickets/yr, but ten sites appear twice with rounded and unrounded values (Mississauga, Montreal, Santiago, Mumbai HO, Paris-Alto, Cergy, Toulouse, Casablanca, Londrina, Campo Novo). Removing the duplicates gives 84,750 observed tickets/yr, essentially flat against v1's 84,884. <b class="t">True demand did not grow 12%; it did not grow at all.</b></p></div>
+<ul>
+<li><b class="t">Join across the two tabs:</b> 846 sites matched (the addresses tab suffixes every name with "-SDWAN"); 60 demand-carrying sites have no address record; 83 address records have no ticket history (new sites).</li>
+<li><b class="t">New sites carry estimated demand.</b> The 83 new sites (1,429 users) are sized at the estate rate of 1.68 tickets/user/yr = 2,402 tickets/yr, flagged "estimated" in the Site Roster until history exists.</li>
+<li><b class="t">Placeholder names.</b> "NO Deal A Network" (India) and "No Firewall" (Philippines) each cover two distinct sites in different cities; split and suffixed by city in the roster.</li>
+</ul>
+
+<h2>3. Structural changes</h2>
+<h3>Peru promoted to campus 29 (the one alignment change)</h3>
+<ul>
+<li>Lima + Callao: 5 of Peru's 6 sites inside one 60 km cluster carrying <b>4.5 tickets/day on-site-able</b> (1,146 of 1,205 tix/yr).</li>
+<li>More daily work than several existing own-campus countries (Japan 3.8, Lille 4.2, US-West 4.0).</li>
+<li>Previously served remotely from Santiago: 2,500 km away, across a customs border.</li>
+<li>New team of 3 (2 on-site, 1 remote). Chile resizes 6 to 5. Peru becomes the 20th host country.</li>
+</ul>
+<h3>Everything else held (the stability story)</h3>
+<ul>
+<li><b class="t">All 28 original hub cities re-derived unchanged</b> at 97% precise placement: same anchor site at every campus (Cincinnati/Blue Ash, Reno/Sparks, Sandton, Nantes/Saint-Herblain, Lille/Marcq all confirmed).</li>
+<li><b class="t">Zero hub/depot role flips.</b> Optimization candidates unchanged: India (Mumbai) and France (Paris).</li>
+<li><b class="t">No campus merges warranted.</b> All 28 reviewed; every small campus retains genuine workload.</li>
+</ul>
+<h3>Team changes (6 of 29 campuses)</h3>
+<table>
+<tr><th>Campus</th><th class="c">v1</th><th class="c">v2</th><th>Driver</th></tr>
+<tr><td>Brazil</td><td class="c">6</td><td class="c">7</td><td>10 added sites incl. Guarulhos; remote tail grew</td></tr>
+<tr><td>India (Bangalore)</td><td class="c">3</td><td class="c">4</td><td>Sri Lanka attaches here; southern tail grew</td></tr>
+<tr><td>United States (East)</td><td class="c">3</td><td class="c">4</td><td>Precise addresses moved 5 sites across the Central/East line</td></tr>
+<tr><td>Peru</td><td class="c">-</td><td class="c">3</td><td>New campus</td></tr>
+<tr><td>Canada</td><td class="c">6</td><td class="c">5</td><td>On-site cluster demand slightly below v1</td></tr>
+<tr><td>Chile</td><td class="c">6</td><td class="c">5</td><td>Peru moved out</td></tr>
+</table>
+<h3>New countries</h3>
+<table>
+<tr><th>Country</th><th class="c">Sites</th><th class="c">Users</th><th>Served by</th></tr>
+<tr><td>Sri Lanka</td><td class="c">3</td><td class="c">347</td><td>India (Bangalore), same precedent as Bangladesh via Kolkata</td></tr>
+<tr><td>Iceland</td><td class="c">1</td><td class="c">12</td><td>Germany, consistent with the Nordic pairings</td></tr>
+<tr><td>Dominican Republic</td><td class="c">2</td><td class="c">34</td><td>Colombia (LATAM-North), like Panama and Guatemala</td></tr>
+</table>
+
+<h2>4. The staffing ratio: 453:1, derived and defensible</h2>
+<p>At 114 field technicians against 51,680 users the model <b class="t">implies 1 technician per 453 users</b> (remote tails included). It is an output of the volume-based sizing, standing on:</p>
+<ul>
+<li><b>A) Call volume projections:</b> 87,163 tickets/yr converted to daily rates per site</li>
+<li><b>B) Distribution of sites:</b> 989 sites in 104 countries; geography sets minimum teams regardless of seats</li>
+<li><b>C) Estimated time on task:</b> ~6 incidents + 4 requests on-site and ~5 remote per tech/day at 85% utilization</li>
+<li><b>D) Data gaps handled conservatively:</b> no per-site time-on-task or ticket-type data yet; the ratio firms up as it lands</li>
+</ul>
+<p>Regional spread: NAM 234:1 . LATAM 290:1 . EMEA 423:1 . APJC 706:1. The spread is the model following the work.</p>
+<div class="card tint"><p><b class="t">Site-staffing ladder:</b> 1 tech at every site = 989 techs (52:1); 75% staffed = 742 (70:1); 50% = 494 (105:1); 25% = 247 (209:1) with three quarters of sites unstaffed. The model: 114 (453:1) covering 100% of sites, the headcount equivalent of staffing 11.5% of the estate.</p>
+<p><b class="t">Road map:</b> 90 techs at 750:1 (proposed long-term goal), 74 at 1000:1 (stretch horizon), 67 at 1200:1 and 63 at 1500:1 (art of the possible). Campus geographic minimums kept; each step unlocked by adoption data, stepped down by rule.</p>
+<p><b class="t">The trade:</b> each rung shifts cost, shipping, depot throughput, smart-hands dispatch and OEM warranty rise (Dell OEM warranty = strongest version of moving break-fix onto the manufacturer), offset by remote-first resolution and consolidated stock control. End state: Intune Autopilot + Dell Life Cycle Hub, installs and refresh become shipping events.</p></div>
+<div class="card"><p><b class="acc">China data quirk:</b> 6,417 reported users but only ~5 tickets/day (0.20 tix/user/yr, one-eighth the estate rate). Worth validating with Deal A; it materially skews any pure ratio view.</p></div>
+
+<h2>5. Watch items and open asks</h2>
+<ul>
+<li><b class="t">Malaysia:</b> 3.1 tickets/day KL cluster, just under the smallest organic own-campus (Japan, 3.8). Causeway shipping from Singapore is cheap, so it stays rolled; revisit if it keeps growing.</li>
+<li><b class="t">Address gaps:</b> 60 demand-carrying sites absent from the address extract, including the entire DR Congo (20 sites), Brazil Energisa bases (18), Australia BVAQ labs (7); request package prepared (DealA_Address_Request.xlsx).</li>
+<li><b class="t">Ticket split by type</b> (incident vs request) is the single modeled assumption left.</li>
+</ul>
+<div class="band">Every regenerated file reconciles to the v2 canonical numbers.</div>
+
+<div class="foot"><span>v2 Change Summary</span><span>Dell Site Services . Field Services Solution Design . 2026</span></div>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How We Built the Staffing Model . Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body class="suite-app suite-doc" data-page="how-we-built" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero"><div class="kicker">Dell Site Services . Solution Engineering Record</div><h1>How We Built the Global Staffing Model</h1>
+<div class="sub">The complete engineering record: the data, the files, the methodology transfer, and the case for AI-assisted solution design.</div>
+<div class="statrow"><div class="stat"><b>1</b><span>extract to start</span></div><div class="stat"><b>989</b><span>sites modeled</span></div><div class="stat"><b>9</b><span>deliverables</span></div><div class="stat"><b>1 day</b><span>v2 full rebuild</span></div><div class="stat acc"><b>97%</b><span>placement precision</span></div></div></div>
+
+<h2>Purpose of this document</h2>
+<p>This is the engineering record of how the Reference Deal A global staffing model was built: what data existed at the start, what files the project contains and what each one does, how the AI was taught the methodology it executes, and the case for running solution deals this way. It is written for two audiences: leaders deciding whether AI-assisted solution design should become standard practice, and solution architects who will run the next account through the same pipeline.</p>
+
+<div class="kick">Timeline</div>
+<h2>How it unfolded</h2>
+<div class="tl">
+<div class="ev"><div class="d">June 2026 . The starting point</div><h3>One ticket extract, nothing else</h3>
+<p>The customer provided a single extract: roughly 900 sites across 100+ countries with annual ticket counts. No street addresses, no user counts, no ticket-type classification, no second data source of any kind. Historically, mapping an estate of this size takes days of manual lookups and still comes back inaccurate; sizing it is weeks of spreadsheet work that one person can defend and nobody can reproduce.</p></div>
+<div class="ev"><div class="d">June 2026 . Sessions 1-3</div><h3>The methodology transfer and the v1 build</h3>
+<p>Rather than asking the AI for "a staffing model," the field-services methodology was taught to it as executable rules (detailed below). Out of those working sessions came the complete v1 solution: the virtual campus operating model (28 campuses, 909 sites, 110 technicians, every number derived by rule), two boardroom decks, two reconciled workbooks, a formal methodology document, and a world footprint map. Site geocoding and drive-time clustering, the task that used to take days, completed in an afternoon at higher accuracy than manual mapping ever achieved.</p></div>
+<div class="ev"><div class="d">Late June 2026 . The market test</div><h3>Customer presentation: impressed, and invested</h3>
+<p>the customer's response to the first pass was the strongest signal a customer can send: they went and pulled the data we told them would sharpen the model, full street addresses and per-site user counts for the entire estate, and returned it as a two-tab extract (DealA_Site_Data_Extract_V2.xlsx).</p></div>
+<div class="ev"><div class="d">July 6, 2026 . One working session</div><h3>The v2 rebuild: full model and all deliverables, same day</h3>
+<p>The entire model was rebuilt on the new extract in a single session: data reconciliation (which caught duplicate rows inflating the customer's own ticket totals by 12%), a fresh offline geocode of all 989 sites to 97% precision, re-derivation of every campus (all 28 original hubs held; Peru promoted to campus 29 by rule), and regeneration of every deliverable, decks, workbooks, methodology document, map, all reconciling to the new canonical numbers. The same day also produced the derived staffing-ratio analysis (453:1), the site-staffing ladder, the ratio road map to 750:1 and beyond, and the cost-shift and adoption-journey framing.</p></div>
+<div class="ev"><div class="d">July 2026 . Packaging</div><h3>Change summary, executive materials, customer data-request package</h3>
+<p>The refresh was documented (change summary, executive summary), the 60-site address gap was turned into a fill-in request workbook for the customer, and the build story itself was written up for Dell leadership in Word and PowerPoint form.</p></div>
+</div>
+
+<div class="kick">The inputs</div>
+<h2>What the customer gave us, and when</h2>
+<table>
+<tr><th>Input</th><th>Received</th><th>Contents</th><th>Gaps</th></tr>
+<tr><td><b>v1 ticket extract</b></td><td>June 2026</td><td>~909 sites, 101 countries, annual ticket counts per site</td><td>No addresses, no users, no ticket types</td></tr>
+<tr><td><b>DealA_Site_Data_Extract_V2.xlsx, tab "Site Data"</b></td><td>Early July 2026</td><td>916 rows of per-site annual ticket demand (contained 10 duplicated site rows, since reconciled)</td><td>60 demand-carrying sites have no matching address record</td></tr>
+<tr><td><b>DealA_Site_Data_Extract_V2.xlsx, tab "Site Data- Addresses"</b></td><td>Early July 2026</td><td>931 rows with full street address, ZIP, city and No. of Users per site (names suffixed "-SDWAN")</td><td>83 sites carry no ticket history (new sites, demand estimated from seats); ticket-type split still outstanding</td></tr>
+</table>
+
+<div class="kick">The project files</div>
+<h2>Complete file inventory: what exists, what each file does</h2>
+<h3>The data pipeline (Python + Node, the single source of truth)</h3>
+<table>
+<tr><th>File</th><th>Type</th><th>Built</th><th>What it does</th></tr>
+<tr><td>stage1b.py</td><td>Python</td><td>Jul 6, 2026</td><td>Parses the customer extract, sanitizes characters, deduplicates (same site exported twice vs genuinely distinct sites sharing a placeholder name), joins the demand tab to the address tab (exact normalized match, then same-country fuzzy match for suffix noise)</td></tr>
+<tr><td>stage2_enrich.py</td><td>Python</td><td>Jul 6, 2026</td><td>Builds the master site table: region and serving-campus assignment for every country, demand estimation for new sites (users x estate rate), user estimation for address-less sites, and fully offline geocoding (two gazetteer datasets plus a curated coordinates table), 959 of 989 sites placed precisely</td></tr>
+<tr><td>vc_model2.py</td><td>Python</td><td>Jul 6, 2026</td><td>THE model. Campus assignment with the France/India/USA splits, automatic hub selection by demand catchment, team sizing by throughput rules, leads and managers by span, costs by regional rate, hub/depot classification, the user_sizing(ratio) function behind the road map. Every builder imports from this file so numbers cannot drift</td></tr>
+<tr><td>dump_v2.py</td><td>Python</td><td>Jul 6, 2026</td><td>Exports the model into the JSON data files every document builder consumes (deck_data, country_cov, vc_volumes, methodology_data)</td></tr>
+<tr><td>map_vc2.py</td><td>Python</td><td>Jul 6, 2026</td><td>Draws the world footprint map (29 hub stars, Europe inset) directly from the model</td></tr>
+<tr><td>deck_vc.js</td><td>Node / pptxgenjs</td><td>Jul 6, 2026</td><td>Generates BOTH PowerPoint decks (customer and internal) from the JSON data and map, 25 slides each, with a COST=0/1 flag governing cost content</td></tr>
+<tr><td>build_wb2.py</td><td>Python / openpyxl</td><td>Jul 6, 2026</td><td>Generates both Excel workbooks (8 tabs each) including the interactive User-Ratio Sizing tab with live formulas</td></tr>
+<tr><td>methodology_doc.js</td><td>Node / docx</td><td>Jul 6, 2026</td><td>Generates the formal methodology Word document, embedding the current map</td></tr>
+<tr><td>deck_data.json, country_cov.json, vc_volumes.json, methodology_data.json</td><td>JSON</td><td>Jul 6, 2026</td><td>The exported model state each builder reads; regenerated on every model run</td></tr>
+<tr><td>staffing_engine.py + make_template.py (v1)</td><td>Python</td><td>June 2026</td><td>The generic reusable engine: reproduces the entire Deal A result from a blank intake template. The "next account starts 80% done" asset</td></tr>
+</table>
+<h3>The deliverables</h3>
+<table>
+<tr><th>File</th><th>Type</th><th>Audience</th><th>Contents</th></tr>
+<tr><td>DealA_HC_Model_Walkthrough.pptx</td><td>PowerPoint, 25 slides</td><td>Customer</td><td>Full model walkthrough, zero cost content: evidence, campus design, France example, footprint map, ratio, ladder with road map, cost-shift, adoption journey, what-the-new-data-changed, next steps</td></tr>
+<tr><td>DealA_Model_Walkthrough.pptx</td><td>PowerPoint, 25 slides</td><td>Dell internal</td><td>Same walkthrough with full cost data and candid speaker notes for the presenter</td></tr>
+<tr><td>DealA_Staffing_HC_Model.xlsx / DealA_Staffing_Model.xlsx</td><td>Excel, 8 tabs</td><td>Customer / internal</td><td>Dashboard, Virtual Campus Plan, interactive User-Ratio Sizing (derived 453:1 default, editable), Region and Country Summaries, 989-row Site Roster with estimate flags, Change Log, Settings</td></tr>
+<tr><td>DealA_Virtual_Campus_Methodology.docx</td><td>Word</td><td>Both</td><td>The formal methodology: rules, parameters, ratio justification, road map and trade, campus appendix</td></tr>
+<tr><td>DealA_Address_Request.xlsx</td><td>Excel</td><td>Customer</td><td>The 60 demand-carrying sites missing from their address extract, as a fill-in request form, plus 24 imprecise placements for verification</td></tr>
+<tr><td>DealA_v2_Change_Summary / DealA_v2_Executive_Summary</td><td>Docs</td><td>Dell internal</td><td>Full v1-to-v2 reconciliation and the plain-terms summary</td></tr>
+<tr><td>DealA_Build_Story_Executive (.docx / .pptx)</td><td>Word + PowerPoint</td><td>Dell leadership</td><td>The story of the build itself, this document's narrative in presentation form</td></tr>
+</table>
+
+<div class="kick">The method</div>
+<h2>How the AI was trained: methodology transfer, not prompting</h2>
+<p>The critical design decision was made on day one: <b class="t">the AI was not asked to produce a staffing model. It was taught one.</b> Twenty-plus years of field-services judgment was transferred as explicit, executable rules, and the AI's job was to apply them perfectly, at scale, and identically every time. The transfer happened in layers:</p>
+<div class="card"><h3>Layer 1: The operating concept</h3>
+<p>The virtual campus: every site belongs to exactly one campus team; each campus is a hub (chosen by demand catchment, not by preference), local sites within drive range, and a remote tail served by queue, dispatch and shipping. Three routed work queues per team so capacity follows demand. Campuses promote and fold automatically as demand moves; nothing is hand-picked.</p></div>
+<div class="card"><h3>Layer 2: The sizing arithmetic</h3>
+<p>Exact throughput rules a technician can actually sustain: about 6 incidents or 4 requests per day on-site, about 5 remote, at 85% utilization on 252 working days; a two-person floor per campus for resilience with a defined single-tech exception; leads 1 per 10 by region; managers 1 per 24. Every number in every deliverable derives from these rules, so every number can be defended.</p></div>
+<div class="card"><h3>Layer 3: The judgment no benchmark can see</h3>
+<p>Where customs borders break a shipping map (Brazil, UK, Canada, Australia, China, Japan stock domestically; Pakistan cannot be served from India). Which countries genuinely can support which (language, time zone, shipping reality). When a large country needs splitting (France into five, India into four, the US into three). When a rolled-up country earns its own campus (Peru, when the data proved Lima's cluster outworked existing hubs). Why geography sets team floors that no users-per-technician benchmark can see.</p></div>
+<div class="card"><h3>Layer 4: The narrative discipline</h3>
+<p>Two voices, never mixed: candid internal framing versus diplomatic customer framing of the same facts. Zero cost content in customer files, enforced by a build flag. The staffing ratio always presented as a derived output, never an assumed benchmark. And a standing quality bar: every file reconciles to the same canonical numbers, verified programmatically before anything ships.</p></div>
+<div class="band">The division of labor: the human supplies judgment and taste; the AI supplies speed, math and perfect consistency. That split is why the output survives customer scrutiny.</div>
+
+<div class="kick">The results</div>
+<h2>What this approach measurably delivered</h2>
+<div class="three">
+<div class="card tint"><b class="t">Speed</b><p style="margin-top:6px">v1: complete solution set in working sessions, not project phases. v2: full model rebuild plus every deliverable regenerated and reconciled in one session, same day the data was processed.</p></div>
+<div class="card tint"><b class="t">Accuracy</b><p style="margin-top:6px">989 sites geocoded and drive-time clustered to 97% precision, offline, repeatably. Manual mapping of the same estate historically took days and was never accurate.</p></div>
+<div class="card tint"><b class="t">Error detection</b><p style="margin-top:6px">The pipeline caught duplicate rows in the customer's own extract that overstated their demand by 12%, before the customer knew. We reconciled their data better than they had.</p></div>
+</div>
+<div class="three">
+<div class="card tint"><b class="t">Validation</b><p style="margin-top:6px">When better data arrived, all 28 original hub choices re-derived unchanged. The model was confirmed by the data, not rescued from it.</p></div>
+<div class="card tint"><b class="t">Reproducibility</b><p style="margin-top:6px">One command chain rebuilds everything from source. No orphaned spreadsheets, no numbers living only in someone's head, nothing that dies when a person changes roles.</p></div>
+<div class="card tint"><b class="t">Reusability</b><p style="margin-top:6px">A generic engine and intake template reproduce the entire approach for any account. The next solution deal starts at roughly 80% done.</p></div>
+</div>
+
+<h2>The case for an AI environment in solution deals</h2>
+<p>This engagement is the proof case for a standing capability, not a one-off experiment. The justification, in the terms that matter to the business:</p>
+<ul>
+<li><b class="t">Cycle time is a competitive weapon.</b> Responding to a customer data drop with a fully rebuilt, reconciled solution the same day changes the tempo of a deal. The customer experienced a partner that moves faster than their own data team.</li>
+<li><b class="t">One architect, team-scale output.</b> A single senior practitioner produced and maintains nine reconciled deliverables across four formats. The scarce resource, senior judgment, is amplified rather than consumed by production work.</li>
+<li><b class="t">Defensibility.</b> Because every number derives from stated rules, any figure in any file can be traced and defended in front of a customer. That is a stronger position than any hand-built spreadsheet has ever offered.</li>
+<li><b class="t">Quality control the customer notices.</b> Catching the customer's own data errors, and telling them, converts a vendor relationship into an advisory one.</li>
+<li><b class="t">Institutional memory.</b> The methodology now exists as executable rules and a written handoff, not tribal knowledge. It survives staff changes and transfers to the next account by design.</li>
+<li><b class="t">Governance fits inside it.</b> The same automation that builds the files enforces the controls: cost segregation between customer and internal variants, reconciliation sweeps, and formatting standards are applied programmatically, every build, without relying on anyone remembering.</li>
+</ul>
+<div class="card dark"><h3>The honest boundaries</h3>
+<p>What the AI did not do: it did not invent the methodology, make the judgment calls, decide what the customer should hear, or own the outcome. Where data was missing it estimated conservatively and flagged every estimate. The approach works because a domain expert directs it; it is a force multiplier for expertise, not a replacement for it.</p></div>
+
+<h2>What comes next</h2>
+<p>The customer closes the remaining data gaps (60 addresses, ticket-type split) with the request package already prepared. The next major build is the true cost model, transition costs, logistics and depot economics, OEM warranty attach and Life Cycle Hub, turning the ratio road map into a priced business case. The pipeline that exists makes that a build, not a research project.</p>
+<div class="band">The methodology is ours. The speed is new. And it is repeatable on every account after this one.</div>
+
+<div class="foot"><span>How We Built . Engineering Documentation</span><span>Dell Site Services . Field Services Solution Design . 2026</span></div>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+</body>
+</html>
