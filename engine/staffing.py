@@ -9,6 +9,54 @@ import pandas as pd
 from .config import num
 
 
+def allocate_role_lanes(field_techs: int, settings: Dict[str, Any]) -> Dict[str, Any]:
+    """Split field HC across Primary lanes for reporting. Secondary/Tertiary are flex labels, not additive HC."""
+    lanes = settings.get("role_lanes") or [
+        "Desktop-Incident", "Desktop-Requests", "Remote-Desktop", "Staging",
+        "Site-Lead", "Telecom", "Network-VDI", "Projects",
+    ]
+    mix = settings.get("role_lane_primary_mix") or {}
+    if not isinstance(mix, dict) or not mix:
+        mix = {lanes[0]: 1.0} if lanes else {}
+    weights = []
+    for lane in lanes:
+        weights.append(max(0.0, float(mix.get(lane, 0.0))))
+    total_w = sum(weights) or 1.0
+    weights = [w / total_w for w in weights]
+
+    primary_rows = []
+    assigned = 0
+    n = len(lanes)
+    for i, lane in enumerate(lanes):
+        if field_techs <= 0:
+            hc = 0
+        elif i < n - 1:
+            hc = int(round(field_techs * weights[i]))
+            assigned += hc
+        else:
+            hc = max(0, field_techs - assigned)
+        primary_rows.append({
+            "Lane": lane,
+            "PrimaryHC": hc,
+            "Share": round(weights[i], 4),
+            "Secondary": str(settings.get("role_lane_secondary_default") or "Desktop-Requests"),
+            "Tertiary": str(settings.get("role_lane_tertiary_default") or "Projects"),
+        })
+    # Fix rounding drift on largest lane
+    drift = field_techs - sum(r["PrimaryHC"] for r in primary_rows)
+    if drift and primary_rows:
+        idx = max(range(len(primary_rows)), key=lambda i: primary_rows[i]["PrimaryHC"])
+        primary_rows[idx]["PrimaryHC"] = max(0, primary_rows[idx]["PrimaryHC"] + drift)
+
+    schedule = settings.get("schedule_lanes") or ["M", "TL", "T", "W", "S", "RR"]
+    return {
+        "note": "Primary HC is a reporting split of sized field techs. Secondary/Tertiary are flex coverage, not additive headcount.",
+        "primary": primary_rows,
+        "schedule_lanes": list(schedule),
+        "field_techs": field_techs,
+    }
+
+
 def haversine_km(lat1, lon1, lat2, lon2) -> float:
     if any(pd.isna(x) for x in [lat1, lon1, lat2, lon2]):
         return 9e9
@@ -215,6 +263,7 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
         "virtual_techs": virtual_techs,
         "total_people": field + leads + mgrs + tech_bars + depot_techs + virtual_techs,
     }
+    role_lanes = allocate_role_lanes(field, settings)
 
     rates = {
         "NAM": num(settings, "rate_NAM", 85000),
@@ -246,6 +295,7 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
         "countries": int(df["Country"].nunique()),
         "vcs": int(len(R)),
         "overlays": overlays,
+        "role_lanes": role_lanes,
         "labor": labor,
         "by_region": by,
         "settings_echo": {

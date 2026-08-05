@@ -155,8 +155,22 @@ def write_deal_output(
     st["A11"] = "Region rollup"
     st["A11"].font = Font(bold=True, color=NAVY)
     by = staffing_summary.get("by_region")
+    region_end = 12
     if isinstance(by, pd.DataFrame):
         _write_df(st, by, start_row=12)
+        region_end = 12 + max(len(by), 1) + 2
+
+    lanes = staffing_summary.get("role_lanes") or {}
+    st.cell(region_end, 1, "Primary / Secondary / Tertiary role lanes")
+    st.cell(region_end, 1).font = Font(bold=True, color=NAVY)
+    st.cell(region_end + 1, 1, lanes.get("note", "Primary HC is a reporting split; Secondary/Tertiary are flex labels."))
+    primary = lanes.get("primary") or []
+    if primary:
+        _write_df(st, pd.DataFrame(primary), start_row=region_end + 2)
+    sched_row = region_end + 2 + max(len(primary), 1) + 2
+    st.cell(sched_row, 1, "Schedule reporting lanes")
+    st.cell(sched_row, 1).font = Font(bold=True, color=NAVY)
+    st.cell(sched_row + 1, 1, ", ".join(lanes.get("schedule_lanes") or []))
 
     # Overlays
     ol = wb.create_sheet("Overlays")

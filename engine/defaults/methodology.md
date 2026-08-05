@@ -43,6 +43,10 @@ From Deskside + Reference Deal J (FS Ops pack):
 - Common lanes: Desktop-Incident, Desktop-Requests, Remote Desktop, Staging, Site Lead, Telecom, Network/VDI, Projects.
 - Throughput differs by primary lane — do not blend staging/infra with deskside closure rates.
 - Schedule reporting lanes (optional): Manager / Team Lead / Tech / specialty (W, S, RR).
+- Engine reports Primary HC as a mix split of sized field techs (`role_lane_primary_mix`); Secondary/Tertiary defaults are labels only.
+
+## Site Services ≡ Field Services
+Locked: **Site Services and Field Services share the same process-flow model** (Reference Deal K FMO packs). Intake → misroute → contact/schedule → tower work → logistics → finalize applies to both labels.
 
 ## FS ops tooling expectations (SNAP / WAM pattern)
 - Tickets assigned by role, schedule, location, and active load — not tech self-select.

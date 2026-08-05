@@ -85,6 +85,18 @@
     "Network-VDI",
     "Projects"
   ],
+  "role_lane_primary_mix": {
+    "Desktop-Incident": 0.35,
+    "Desktop-Requests": 0.30,
+    "Remote-Desktop": 0.15,
+    "Staging": 0.05,
+    "Site-Lead": 0.05,
+    "Telecom": 0.04,
+    "Network-VDI": 0.03,
+    "Projects": 0.03
+  },
+  "role_lane_secondary_default": "Desktop-Requests",
+  "role_lane_tertiary_default": "Projects",
   "schedule_lanes": ["M", "TL", "T", "W", "S", "RR"],
 
   "vac_sick_uplift": 1.15,

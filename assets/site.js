@@ -60,7 +60,7 @@
             <div class="suite-mark">SS</div>
             <div class="suite-brand-text">
               <strong>Site Services</strong>
-              <span>Dell Field Services suite</span>
+              <span>Same process flows as Field Services</span>
             </div>
           </a>
           ${navHtml()}
