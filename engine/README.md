@@ -28,7 +28,13 @@ Sites without coordinates are never auto-Local/Staffed by distance.
 Edit the `Settings` sheet in the intake workbook, or `engine/defaults/parameters.json`.
 
 ## Methodology
-See `engine/defaults/methodology.md` and `engine/defaults/ops_kpis.json`.
+See `engine/defaults/methodology.md`, `engine/defaults/ops_kpis.json`, and `engine/defaults/field_services_delivery_metrics.md`.
 
 ## Footprint map
 Shared visual asset: `/assets/maps/footprint-map.png`
+
+## Cost model how-tos
+Each interactive cost page has a **Guide** tab (purpose, inputs, method, how to use, what not to confuse):
+- `/cost-model#pane-guide` — generic Site Services
+- `/cost-model-deal-a#pane-guide` — Reference Deal A campus estate
+- `/cost-model-deal-b#pane-guide` — Reference Deal B tech-bar pattern

@@ -73,9 +73,10 @@ details ul{margin:8px 0 4px 20px}
 <div class="hero"><div class="hero-inner">
 <div class="k">Site Services · Generic</div>
 <h1>Cost Model</h1>
-<div class="s">Primary economics sandbox for any estate — not a single-customer deal. Prefer loading a deal-engine summary so campuses and day-one techs are site-derived; ratios stay guardrails. For the Reference Deal A example, use <a href="/cost-model-deal-a" style="color:var(--acc)">Deal A Cost Model</a>.</div>
+<div class="s">Primary economics sandbox for any estate — not a single-customer deal. Prefer loading a deal-engine summary so campuses and day-one techs are site-derived; ratios stay guardrails. Labeled examples: <a href="/cost-model-deal-a" style="color:var(--acc)">Deal A (campus)</a> · <a href="/cost-model-deal-b" style="color:var(--acc)">Deal B (tech bar)</a>. · <a href="#pane-guide" style="color:var(--acc)" onclick="openGuide(event)">How this model was built</a></div>
 </div></div>
 <div class="toolbar"><div class="toolbar-inner">
+<button class="tab" data-p="guide">Guide</button>
 <button class="tab on" data-p="inputs">1 . Inputs</button>
 <button class="tab" data-p="scen">2 . Scenarios</button>
 <button class="tab" data-p="results">3 . Results &amp; Charts</button>
@@ -87,6 +88,49 @@ details ul{margin:8px 0 4px 20px}
 <button class="btn" onclick="window.print()">Print / PDF</button>
 </div></div>
 <div class="wrap">
+
+<!-- ================= PANE 0: GUIDE ================= -->
+<div class="pane" id="pane-guide">
+<div class="kick">How this model was built</div>
+<h2 class="sec">Generic Site Services cost model</h2>
+<p class="note">On-page guide for the product sandbox — not a single-customer deal. Sibling examples: <a href="/cost-model-deal-a">Deal A (campus estate)</a> · <a href="/cost-model-deal-b">Deal B (tech bar)</a>. Methodology: <a href="/structure">Structure</a>. Engine: <code>engine/README.md</code>.</p>
+
+<div class="card"><h3>Purpose</h3>
+<p>Primary economics sandbox for <b>any</b> estate. It prices structure and cost-shift (labor → logistics / OEM / zero-touch), not one contract’s campus count. Use it when the next deal should start from Site Services defaults and an engine summary — not by copying Deal A or Deal B numbers.</p></div>
+
+<div class="grid g2">
+<div class="card"><h3>Inputs</h3>
+<ul style="margin:8px 0 0 18px">
+<li><b>Engine JSON</b> — prefer <code>/assets/engine-summary.json</code> from <code>python -m engine run …</code> (see <code>engine/README.md</code>). Campuses and day-one techs lock as site-derived.</li>
+<li><b>Intake assumptions</b> — sites, users, tickets/user, physical-touch share, throughput, utilization, regional labor mix, logistics / dispatch / OEM / transition rates (editable placeholders).</li>
+<li><b>Ratio bands</b> — commercial guardrails on Scenarios (and <a href="/structure">Structure</a>), not day-one sizing truth. Day one follows demand + VC floors.</li>
+</ul></div>
+<div class="card"><h3>Method</h3>
+<ul style="margin:8px 0 0 18px">
+<li><b>Engine pipeline</b> — intake → demand → virtual campuses / staffing → overlays → scenarios → cost / cash JSON published for this page.</li>
+<li><b>Interactive panes</b> — Inputs (estate + rates + engine bridge) → Scenarios (ratio ladder, deflection, zero-touch) → Results (annual cost + composition) → Transition &amp; Cash → Sensitivity → Model Logic (defensible formulas).</li>
+<li>Road-map rungs size HC from users÷ratio floored by campuses×team floor; uncovered physical touches route to smart-hands and OEM.</li>
+</ul></div>
+</div>
+
+<div class="card"><h3>How to use</h3>
+<ol style="margin:8px 0 0 18px">
+<li>Open <b>1 . Inputs</b>. Click <b>Load sample engine summary</b> (or upload a deal’s <code>Deal_Output.json</code>) so campuses and day-one techs stay reconciled.</li>
+<li>Refresh labor / logistics / OEM rates for the deal; leave structure defaults unless you have better evidence.</li>
+<li>On <b>2 . Scenarios</b>, edit yellow cells (ratio, deflection, zero-touch, year reached). Keep the GOAL rung as the target for Sensitivity.</li>
+<li>Read <b>3 . Results</b> for steady-state annual cost and the labor-to-logistics shift; use <b>4 . Cash</b> for transition one-time and 7-year net vs as-is.</li>
+<li><b>Print / PDF</b> exports the visible panes; <b>Reset defaults</b> restores the page snapshot. Rebuild engine outputs with the README quick-start, then re-copy JSON into <code>/assets/</code>.</li>
+</ol></div>
+
+<div class="card"><h3>What not to confuse</h3>
+<ul style="margin:8px 0 0 18px">
+<li><b>Deal A numbers are not universal</b> — 989 sites / 29 campuses / ~453:1 derived ratio belong to that example only (<a href="/cost-model-deal-a">/cost-model-deal-a</a>).</li>
+<li><b>Deal B tech-bar ≠ campus map</b> — walk-in bars and ~1500:1–2000:1 band are a different pattern (<a href="/cost-model-deal-b">/cost-model-deal-b</a>).</li>
+<li>Ratios do not invent campus count; geography and hub catchment live in the Python engine. Dollar rates are modern placeholders.</li>
+</ul></div>
+
+<div class="band">Also see: <a href="/structure" style="color:#fff">Structure &amp; methodology</a> · <a href="/cost-model-deal-a" style="color:#fff">Deal A cost</a> · <a href="/cost-model-deal-b" style="color:#fff">Deal B cost</a> · <code>python -m engine run</code></div>
+</div>
 
 <!-- ================= PANE 1: INPUTS ================= -->
 <div class="pane on" id="pane-inputs">
@@ -223,6 +267,13 @@ details ul{margin:8px 0 4px 20px}
 <li>Road-map rungs: technicians = max(campuses x floor, ceil(users / ratio)). Ratios are commercial guardrails, not the day-one sizing driver. Leads = ceil(techs/lead span); managers = ceil(techs/mgr span).</li>
 <li>Blended tech rate = regional mix-weighted salary x (1 + burden). Leads at premium x blended; managers flat + burden.</li>
 </ul></details>
+<details open><summary>Ops KPIs (delivery optimization)</summary>
+<ul>
+<li>Industry-typical ranges for deal QA — not customer truth. Full note: <a href="/structure">Structure → Delivery optimization metrics</a> and <code>engine/defaults/field_services_delivery_metrics.md</code>.</li>
+<li>Design band: utilization 85% (typical 75–85%), SLO 95%, FTFR target ≥85%, travel share &lt;20% of workday, DOH green ≤1.5.</li>
+<li>Deflection in this model is the commercial twin of avoidable-dispatch / remote-resolve (industry avoidable-dispatch median ~14%; ~1 in 5 cases remotely resolvable).</li>
+<li>Failed first visits typically lift total resolution cost ~34–44% vs a single work order — which is why parts fill, remote triage, and FTFR matter as much as headcount.</li>
+</ul></details>
 <details open><summary>Logistics, dispatch and OEM (the shift)</summary>
 <ul>
 <li>Physical touches = adjusted tickets x physical-touch share. Staff on-site capacity = techs x on-site allocation (60% of capacity) x rate x days x utilization.</li>
@@ -236,7 +287,7 @@ details ul{margin:8px 0 4px 20px}
 <li>Cash view: each year charges the annual cost of the active rung plus any step one-time; cumulative line compares against staying at current state.</li>
 </ul></details>
 <details><summary>What this model deliberately is not</summary>
-<p>It is the <b>generic Site Services</b> cost model: it prices structure and shifts, not a specific contract. Reference Deal A has its own page at <a href="/cost-model-deal-a">/cost-model-deal-a</a>. Site geography, hub selection, and VC floors live in the Python deal engine (<code>python -m engine run</code>). Load an engine summary JSON so campus count and day-one techs stay reconciled. Dollar rates are modern placeholders — refresh per deal (older PFS models inform structure only).</p></details>
+<p>It is the <b>generic Site Services</b> cost model: it prices structure and shifts, not a specific contract. Reference Deal A (campus estate) lives at <a href="/cost-model-deal-a">/cost-model-deal-a</a>; Reference Deal B (tech-bar pattern, ~1500:1–2000:1) at <a href="/cost-model-deal-b">/cost-model-deal-b</a>. Site geography, hub selection, and VC floors live in the Python deal engine (<code>python -m engine run</code>). Load an engine summary JSON so campus count and day-one techs stay reconciled. Dollar rates are modern placeholders — refresh per deal (older PFS models inform structure only).</p></details>
 <div class="band">The ratio road map is a cost shift, not just a labor cut. This tool makes the shift visible and priceable.</div>
 </div>
 
@@ -553,6 +604,7 @@ function recalc(rebuildScen=true){
  if(rebuildScen)rScenTable(R); else updateScenComputed(R);
  rLadder(R);rCostTable(R);rStack(R);rKpis(R);rCash(R);rTornado(R);
 }
+function openGuide(e){if(e)e.preventDefault();const t=document.querySelector('.tab[data-p="guide"]');if(t)t.click();}
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
@@ -560,6 +612,7 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 }));
 document.querySelectorAll('.pane input').forEach(e=>e.addEventListener('input',()=>recalc(true)));
 snapshot();recalc();
+if(location.hash==='#pane-guide')openGuide();
 
 </script>
 </body>

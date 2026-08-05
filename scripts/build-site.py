@@ -19,6 +19,7 @@ DOC_PAGES = {
 TOOL_PAGES = {
     "cost-model": ("Site Services · Generic Cost Model", "suite-tool"),
     "cost-model-deal-a": ("Reference Deal A · Cost Model", "suite-tool"),
+    "cost-model-deal-b": ("Reference Deal B · Cost Model", "suite-tool"),
     "deck": ("Virtual Campus Model · Deck (CUSTOMER)", "suite-tool suite-dark-tool"),
     "deck-internal": ("Virtual Campus Model · Deck (INTERNAL)", "suite-tool suite-dark-tool"),
     "workbook": ("Staffing Model Workbook · CUSTOMER", "suite-tool"),

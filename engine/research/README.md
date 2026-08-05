@@ -9,3 +9,4 @@ Place original source artifacts here for local reference only.
 - Reference Deal K = FMO process-diagram packs (`FMO_Process_Flows_V2.pdf`, `FMO_Process_Diagrams_A03.pdf`). **Site Services and Field Services share the same process flows.** Sanitized notes: `engine/defaults/reference_deal_k_fmo_process.md`.
 - Public map asset lives at `/assets/maps/footprint-map.png` (sanitized filename).
 - Older PFS cost workbooks (~2012) inform **structure and drivers only**. Do not treat their dollar rates as current defaults.
+- Delivery optimization metrics (public, sanitized): `engine/defaults/field_services_delivery_metrics.md` + `ops_kpis.json` → `delivery_optimization`.
