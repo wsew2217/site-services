@@ -15,18 +15,20 @@
         { href: "/summary", id: "summary", title: "Executive Summary" },
         { href: "/changes", id: "changes", title: "What Changed" },
         { href: "/methodology", id: "methodology", title: "Deal A Methodology" },
+        { href: "/coverage-deal-a", id: "coverage-deal-a", title: "Campus Coverage Map" },
         { href: "/cost-model-deal-a", id: "cost-model-deal-a", title: "Cost Model (Deal A)" },
         { href: "/story", id: "story", title: "Build Story" },
         { href: "/how-we-built", id: "how-we-built", title: "How We Built" },
-      ],
-    },
-    {
-      label: "Deal A Tools",
-      items: [
         { href: "/deck", id: "deck", title: "Customer Deck" },
         { href: "/deck-internal", id: "deck-internal", title: "Internal Deck" },
         { href: "/workbook", id: "workbook", title: "Customer Workbook" },
         { href: "/workbook-internal", id: "workbook-internal", title: "Internal Workbook" },
+      ],
+    },
+    {
+      label: "Reference Deal B",
+      items: [
+        { href: "/deal-b", id: "deal-b", title: "Tech Bar Pattern" },
       ],
     },
   ];
