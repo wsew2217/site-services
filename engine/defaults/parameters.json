@@ -1,7 +1,10 @@
 {
   "working_days": 252,
-  "drive_radius_km": 60,
+  "staging_radius_miles": 25,
   "drive_minutes": 60,
+  "avg_drive_speed_mph": 40,
+  "remote_max_tpd": 1.2,
+  "drive_radius_km": 60,
   "incident_share": 0.5,
   "onsite_incident_rate": 6.0,
   "onsite_request_rate": 4.0,
@@ -9,7 +12,6 @@
   "utilization": 0.85,
   "team_floor": 2,
   "single_tech_threshold": 2.5,
-  "promotion_threshold_tpd": 4.5,
   "hub_workload_threshold": 0.5,
   "lead_span": 10,
   "mgr_span": 24,
@@ -69,7 +71,6 @@
   "overlay_virtual_techs": 0,
   "overlay_depot_techs_per_depot_campus": 1,
   "overlay_tech_bar_threshold_users": 400,
-  "staging_radius_miles": 25,
   "quarantine_hold_days": 14,
   "smart_hands_max_tot_minutes": 60,
   "ratio_guardrail_seats_per_tech": 600,
@@ -126,5 +127,6 @@
   "hours_per_year_tm": 2080,
   "sla_dispatch_urgency": 1.15,
   "fast_sla_spares_flag": 1,
-  "rate_note": "Modern placeholders only. Reference Deals G–I inform structure; do not ship 2012 wage/unit tables."
+  "rate_note": "Modern placeholders only. Reference Deals G–I inform structure; do not ship 2012 wage/unit tables.",
+  "catchment_note": "Local if haversine miles ≤ staging_radius_miles (25) OR estimated drive minutes ≤ drive_minutes (60) at avg_drive_speed_mph (40 → ~40 mi for the 1-hr limb; engine uses the more inclusive bound). Remote+dispatch only when tpd < remote_max_tpd (1.2) and outside local range; otherwise far sites promote to Staffed. drive_radius_km is legacy/unused."
 }

@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any, Dict, Tuple
 
 import pandas as pd
 from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.utils import get_column_letter
 
 from .config import default_settings, merge_settings
 
@@ -24,29 +26,17 @@ COUNTRY_HEADERS = [
 
 
 def write_intake_template(path: Path) -> Path:
-    """Create a blank editable intake workbook."""
+    """Create a blank editable intake workbook (headers only on Sites)."""
     path = Path(path)
     wb = Workbook()
 
-    # Sites
+    # Sites — blank rows under correct headers
     ws = wb.active
     ws.title = "Sites"
     for j, h in enumerate(SITE_HEADERS, 1):
         c = ws.cell(1, j, h)
         c.font = Font(bold=True, color="FFFFFF")
         c.fill = PatternFill("solid", fgColor="13294B")
-    sample = [
-        ["Site Alpha HQ", "USA", "NAM", "Austin", "TX", "", "", 30.27, -97.74, 4200, 1800, "", "", "USA-Central", "", "", "", "", "Y", "Campus", ""],
-        ["Site Alpha East", "USA", "NAM", "Dallas", "TX", "", "", 32.78, -96.80, 900, 400, "", "", "USA-Central", "", "", "", "", "", "Metro", ""],
-        ["Site Beta Hub", "Germany", "EMEA", "Frankfurt", "", "", "", 50.11, 8.68, 3100, 1200, "", "", "", "Y", "", "", "", "", "Campus", ""],
-        ["Site Beta Spoke", "Germany", "EMEA", "Mainz", "", "", "", 49.99, 8.27, 180, 80, "", "", "", "", "", "", "", "", "", ""],
-        ["Site Gamma Remote", "Brazil", "LATAM", "Manaus", "", "", "", "", "", "", 60, "", "", "", "Y", "", "Dispatch", "", "", "Remote", "No coords — remote/uncertain"],
-        ["Site Delta Devices Only", "Singapore", "APJC", "Singapore", "", "", "", 1.29, 103.85, "", "", "", 500, "", "", "", "", "", "", "", "Demand from devices"],
-    ]
-    for i, row in enumerate(sample, 2):
-        for j, v in enumerate(row, 1):
-            ws.cell(i, j, v)
-    from openpyxl.utils import get_column_letter
     widths = [22, 12, 8, 14, 8, 18, 10, 10, 10, 10, 8, 8, 8, 12, 9, 12, 14, 10, 10, 10, 28]
     for j, w in enumerate(widths, 1):
         ws.column_dimensions[get_column_letter(j)].width = w
@@ -61,22 +51,26 @@ def write_intake_template(path: Path) -> Path:
         st[c].fill = PatternFill("solid", fgColor="13294B")
     notes = {
         "working_days": "Standard working days / year",
-        "drive_radius_km": "Local/Staffed catchment radius",
+        "staging_radius_miles": "Local if haversine miles ≤ this (OR drive-time proxy)",
+        "drive_minutes": "Local if estimated drive minutes ≤ this (at avg_drive_speed_mph)",
+        "avg_drive_speed_mph": "Speed for drive-time proxy; 40 mph → ~40 mi for 60 min",
+        "remote_max_tpd": "Remote+dispatch only below this tpd AND outside local range",
+        "drive_radius_km": "Legacy — unused; catchment uses miles + drive_minutes",
         "incident_share": "0-1; calibrate from ticket extract when available",
         "include_cost": "1 = include labor/cost tabs",
         "estate_tickets_per_user": "Used when tickets missing but users/seats present",
         "estate_tickets_per_device": "Used when only device counts present",
         "placeholder_tickets_per_site": "Last-resort demand when no volume fields",
         "team_floor": "Minimum techs per VC for resilience",
-        "single_tech_threshold": "Tickets/day below which 1-tech exception allowed",
+        "single_tech_threshold": "Tickets/day below which 1-tech team exception allowed (sizing only)",
     }
     for i, (k, v) in enumerate(default_settings().items(), 2):
         st.cell(i, 1, k)
-        st.cell(i, 2, v)
+        st.cell(i, 2, json.dumps(v) if isinstance(v, (list, dict)) else v)
         st.cell(i, 3, notes.get(k, ""))
     st.column_dimensions["A"].width = 36
     st.column_dimensions["B"].width = 14
-    st.column_dimensions["C"].width = 48
+    st.column_dimensions["C"].width = 56
 
     # CountryPolicy
     cp = wb.create_sheet("CountryPolicy")
@@ -105,13 +99,18 @@ def write_intake_template(path: Path) -> Path:
     readme["A1"].font = Font(bold=True, size=16, color="13294B")
     lines = [
         "",
-        "1. Fill the Sites tab. TicketsYr and/or Users/Seats and/or Devices are all accepted.",
-        "2. Leave DepotHub blank to default one virtual campus per Country.",
-        "3. Tweak Settings (yellow conceptually — all Value cells are inputs).",
-        "4. Optional CountryPolicy for customs/language/partner notes.",
-        "5. Run:  python -m engine run path/to/this.xlsx -o Deal_Output.xlsx",
+        "1. Fill the Sites tab (headers only — add one row per site).",
+        "2. Geocode addresses externally; put Latitude / Longitude on each site row.",
+        "3. Leave DepotHub blank to default one virtual campus per Country.",
+        "4. Tweak Settings as needed (catchment: staging_radius_miles, drive_minutes, remote_max_tpd).",
+        "5. Optional CountryPolicy for customs/language/partner notes.",
+        "6. Run:  python -m engine run path/to/this.xlsx -o Deal_Output.xlsx [--json summary.json]",
+        "",
+        "Site columns: " + ", ".join(SITE_HEADERS),
         "",
         "Demand resolution order: tickets → users/seats × rate → devices × rate → placeholder (flagged).",
+        "Catchment: Local if ≤25 mi OR ≤~60 drive-min (40 mph proxy); Remote only if <1.2 tpd and far;",
+        "far sites with ≥1.2 tpd promote to Staffed campus. No separate geo GUI — Lat/Lon in Excel.",
         "Sites without coordinates are never auto-classified Local/Staffed by distance.",
         "No customer names belong in this template — use generic site labels.",
     ]

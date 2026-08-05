@@ -19,13 +19,18 @@ Customer-name-free operating defaults for the deal engine.
 - On-site: 6 incidents / tech / day, 4 requests / tech / day.
 - Remote: 5 tickets / tech / day.
 - Utilization: 85%.
-- Team floor: 2 (single-tech exception below 2.5 tickets/day).
+- Team floor: 2 (single-tech sizing exception below 2.5 tickets/day — not the Remote gate).
 - Leads: 1 per 10 techs (by region). Managers: 1 per 24 field techs.
 
-## Hub selection
+## Hub selection & catchment
 - Prefer home-country sites with coordinates.
-- Hub maximizes catchment volume inside drive radius (default 60 km / ~60 minutes).
+- Primary hub maximizes catchment volume inside **local range**.
+- **Local range** (inclusive OR): haversine ≤ `staging_radius_miles` (25) **or** estimated drive ≤ `drive_minutes` (60) at `avg_drive_speed_mph` (40 → ~40 mi for the 1-hour limb).
+- Near any Staffed campus → always **Local** (never Remote + dispatch).
+- **Remote + dispatch** only when tickets/day &lt; `remote_max_tpd` (1.2) **and** outside local range.
+- Outside local range and ≥ 1.2 tpd → promote to **Staffed** campus (additional hub).
 - Sites without coordinates are Remote/Uncertain — never auto-local.
+- Legacy `drive_radius_km` (60 km) is unused; do not use it for Local classification.
 
 ## Demand resolution
 1. Annual tickets if present  
