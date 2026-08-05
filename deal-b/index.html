@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reference Deal B · Tech Bar Pattern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.flow {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 22px;
+}
+.flow-step {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 14px 16px;
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  background: #fff;
+}
+.flow-step b.n {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #13294B;
+  color: #fff;
+  font-size: 13px;
+}
+.metro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin: 12px 0 20px;
+}
+.metro {
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #F4F6FB;
+  font-size: 13.5px;
+}
+.metro strong { display: block; color: #13294B; margin-bottom: 4px; }
+.metro span { color: #54607A; }
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="deal-b" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">Reference Deal B · Tech-bar-heavy pattern</div>
+  <h1>Walk-in bars + virtual coverage</h1>
+  <div class="sub">Second labeled example — contrast to Deal A’s campus footprint. Established tech bars, one dedicated virtual technician, roving cover, and every office mapped walk-in or virtual.</div>
+  <div class="statrow" id="deal-b-stats">
+    <div class="stat"><b>13</b><span>technicians</span></div>
+    <div class="stat"><b>8</b><span>tech bars</span></div>
+    <div class="stat"><b>65</b><span>offices</span></div>
+    <div class="stat"><b>13 / 52</b><span>walk-in / virtual</span></div>
+    <div class="stat acc"><b>~73%</b><span>util vs demand</span></div>
+  </div>
+</div>
+
+<p>Deal B is a <b class="t">tech-bar operating pattern</b>, not a global campus redesign. Depot and device logistics stay with a lifecycle hub / third-party path and carry no headcount in this model. No new bars are proposed — coverage is made explicit for existing bars.</p>
+
+<h2>How a user gets support</h2>
+<div class="flow">
+  <div class="flow-step"><b class="n">1</b><div><b class="t">Tech bars (8)</b><p style="margin:4px 0 0">One dedicated technician per established bar, business hours 8×5. Walk-up for users in the metro.</p></div></div>
+  <div class="flow-step"><b class="n">2</b><div><b class="t">Dedicated virtual tech (1)</b><p style="margin:4px 0 0">Based at a home-office location; covers that office plus named remote metros remotely.</p></div></div>
+  <div class="flow-step"><b class="n">3</b><div><b class="t">Roving (4)</b><p style="margin:4px 0 0">Ticket queue, overflow at busy bars, and absence cover.</p></div></div>
+  <div class="flow-step"><b class="n">4</b><div><b class="t">Virtual offices (52)</b><p style="margin:4px 0 0">Beyond the walk-in radius (~25 mi): Service Desk + remote support; hardware via lifecycle hub.</p></div></div>
+</div>
+
+<h2>Demand check</h2>
+<div class="card">
+  <p style="margin:0">~1,710 deskside tickets / month across the eight bars × 45 min AHT ÷ productive capacity ≈ <b class="t">9.5 FTE</b> of walk-in demand. Team of 13 leaves headroom for peaks, absences, and the virtual lane (~73% utilization).</p>
+</div>
+
+<h2>Established bars (sanitized metros)</h2>
+<div class="metro-grid" id="bar-grid"></div>
+
+<h2>Contrast with Deal A</h2>
+<ul>
+<li><b class="t">Deal A</b> — virtual campuses, hub catchment, global footprint map, throughput-sized field teams.</li>
+<li><b class="t">Deal B</b> — fixed tech-bar footprint, walk-in radius, virtual + roving overlays, depot out of HC scope.</li>
+</ul>
+<p>Both sit on the same generic FMO stage chain (intake → contact/schedule → tower work → logistics → finalize). See <a href="/structure">Structure</a> for how Site Services works inside an environment.</p>
+
+<div class="band">Tech-bar pattern · walk-in ≤25 mi · virtual for the rest · ratios are guidance only</div>
+<p style="margin-top:18px">
+  <a class="chip" href="/structure">Structure &amp; FMO</a>
+  <a class="chip" href="/coverage">Generic coverage atlas</a>
+  <a class="chip" href="/coverage-deal-a">Deal A campus map</a>
+  <a class="chip" href="/cost-model">Generic cost model</a>
+</p>
+
+<div class="foot"><span>Reference Deal B · Tech bar pattern</span><span>Field Services Solution Design · 2026</span></div>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+<script>
+fetch("/assets/deal-b-tech-bar-summary.json")
+  .then((r) => r.json())
+  .then((d) => {
+    const t = d.team || {};
+    const c = d.coverage || {};
+    const dem = d.demand || {};
+    document.getElementById("deal-b-stats").innerHTML = `
+      <div class="stat"><b>${t.total ?? 13}</b><span>technicians</span></div>
+      <div class="stat"><b>${c.established_tech_bars ?? 8}</b><span>tech bars</span></div>
+      <div class="stat"><b>${c.offices ?? 65}</b><span>offices</span></div>
+      <div class="stat"><b>${c.walk_in ?? 13} / ${c.virtual ?? 52}</b><span>walk-in / virtual</span></div>
+      <div class="stat acc"><b>${dem.team_utilization ? Math.round(dem.team_utilization * 100) + "%" : "~73%"}</b><span>util vs demand</span></div>`;
+    const grid = document.getElementById("bar-grid");
+    grid.innerHTML = (d.bars || [])
+      .map(
+        (b) => `<div class="metro"><strong>${b.location}</strong><span>${b.tickets_mo} tickets/mo · ${b.walk_in_offices} walk-in office(s)</span></div>`
+      )
+      .join("");
+  })
+  .catch(() => {});
+</script>
+</body>
+</html>

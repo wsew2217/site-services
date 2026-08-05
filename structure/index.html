@@ -7,6 +7,39 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
+<style>
+.fmo-chain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 20px;
+  align-items: center;
+}
+.fmo-chain .node {
+  background: #13294B;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12.5px;
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+.fmo-chain .arrow { color: #8A93A6; font-weight: 700; }
+.role-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 12px 0 20px;
+}
+.role-card {
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fff;
+}
+.role-card h3 { margin: 0 0 6px; font-size: 16px; }
+.role-card p { margin: 0; font-size: 13.5px; color: #54607A; }
+.ratio-table td:nth-child(2) { font-weight: 700; color: #13294B; white-space: nowrap; }
+</style>
 </head>
 <body class="suite-app suite-doc" data-page="structure" data-mode="shell">
 <div data-suite-content>
@@ -15,11 +48,37 @@
 <div class="hero">
   <div class="kicker">Site Services · Generic</div>
   <h1>Structure & methodology</h1>
-  <div class="sub">The operating model for any estate — not one account’s campus list. Same process flows as Field Services.</div>
+  <div class="sub">How Site Services works inside a customer environment — FMO process flows, role lanes, tech bar / remote overlays, and editable ratio guidance. Same skeleton as Field Services.</div>
 </div>
 
 <h2>What Site Services is</h2>
 <p>Site Services (and Field Services — same process skeleton) organizes deskside and field work into <b class="t">virtual campuses</b>: one accountable team per site, three routed queues, and overlays for depot, tech bar, and critical coverage. Demand sizes the team; geography chooses the hub; commercial ratios are outputs and guardrails, not day-one drivers.</p>
+
+<h2>How we work within an environment</h2>
+<p>The Future Mode of Operation (FMO) pack describes the operating system <b class="t">inside</b> an estate — not a staffing spreadsheet. Tickets enter from Service Desk, self-service, chat, or walk-up; quality and misroute gates fire; remote-eligible work tries remote first; everything else contacts and schedules into a work tower; logistics (hot swap, ship, receive, quarantine, Smart Hands) feed finalize and asset updates.</p>
+
+<div class="fmo-chain" aria-label="FMO stage chain">
+  <span class="node">Intake</span><span class="arrow">→</span>
+  <span class="node">Misroute / QA</span><span class="arrow">→</span>
+  <span class="node">Remote?</span><span class="arrow">→</span>
+  <span class="node">Contact &amp; schedule</span><span class="arrow">→</span>
+  <span class="node">Tower work</span><span class="arrow">→</span>
+  <span class="node">Logistics</span><span class="arrow">→</span>
+  <span class="node">Finalize</span>
+</div>
+
+<div class="card">
+  <h3>Process catalog (FS001–FS021 pattern)</h3>
+  <p style="margin:0 0 10px">Initiation · Mis-routed · Contact &amp; scheduling · Hardware break/fix campus · Hardware break/fix remote · Repair / RMA · Deskside software · New hire campus/remote · IMAC de-install / add-change / move · Asset disposition · Quarantine · Data wipe · Resolve · Re-image · Hot swap · Shipping · Smart Hands · Receiving · Swivel-seat / partner dispatch</p>
+  <p style="margin:0;font-size:13.5px;color:#54607A">Campus vs remote and partner dispatch are <b>routing overlays</b>, not separate methodologies. Site Services ≡ Field Services on this ladder.</p>
+</div>
+
+<ul>
+<li>Contact ≥ 2× per business day; incidents unreachable after ~3 business days / 3 attempts; requests after ~2 weeks.</li>
+<li>Escalate after more than 2 misroute transfers; high-priority events prefer voice handoff.</li>
+<li>Smart Hands: guided short tasks (cap near 60 minutes TOT) — not full break/fix.</li>
+<li>Quarantine hold default 14 calendar days before reuse / disposition.</li>
+</ul>
 
 <h2>Virtual campus anatomy</h2>
 <ul>
@@ -28,6 +87,24 @@
 <li><b class="t">Remote</b> — Outside drive range or missing coordinates; remote queue + smart-hands / OEM dispatch and shipping.</li>
 </ul>
 <p>Every site belongs to exactly one campus. No orphans. Campuses promote or fold from settings and demand — not hand-picked exceptions as the primary design.</p>
+
+<h2>Primary / Secondary / Tertiary role lanes</h2>
+<p>From deskside operating practice and FS ops packs: every technician has one <b class="t">primary</b> lane. Secondary and tertiary are flex coverage — <b>not additive headcount</b>. Throughput differs sharply by primary lane; do not blend staging/infra with deskside closure rates.</p>
+<div class="role-grid">
+  <div class="role-card"><h3>Primary</h3><p>Home queue and schedule identity — Desktop-Incident, Desktop-Requests, Remote-Desktop, Staging, Site-Lead, Telecom, Network-VDI, Projects.</p></div>
+  <div class="role-card"><h3>Secondary</h3><p>Flex when primary is light — typically Desktop-Requests or peer deskside lane. Used for overflow, not a second FTE.</p></div>
+  <div class="role-card"><h3>Tertiary</h3><p>Surge / specialty cover — often Projects or adjacent tower. Reporting label for ops design.</p></div>
+</div>
+<p>Tickets assign by role, schedule, location, and active load — not tech self-select. Action-code updates (DSCTM-style) keep workflow coordinators honest on status and availability.</p>
+
+<h2>Tech bar, virtual tech bar &amp; remote support</h2>
+<ul>
+<li><b class="t">On-site tech bar</b> — Walk-up incidents/requests, refresh/peripheral handoff, new-hire onboarding help, visible IT presence (deskside delivery model).</li>
+<li><b class="t">Virtual tech / remote desktop</b> — Resolve before dispatch when eligible; dedicated virtual technicians can cover named remote metros from a home office (see <a href="/deal-b">Deal B</a>).</li>
+<li><b class="t">Remote resolution team</b> — Advanced remote support for deskside/mobility that L1 cannot close; shift-left keeps deskside for break/fix, IMACD, and projects.</li>
+<li><b class="t">Staging / depot</b> — Campus staging within ~25 mi; centralized depot for remote sites + remote support tech; inventory lifecycle, hot swap, RMA, refresh.</li>
+<li><b class="t">Smart Hands / partner dispatch</b> — Physical touch when not local; complements remote software support.</li>
+</ul>
 
 <h2>Demand when data is sparse</h2>
 <ol>
@@ -43,21 +120,37 @@
 <li>Working days: 252 · Utilization: ~85% · Team floor: typically 2</li>
 <li>On-site: ~6 incidents / tech / day, ~4 requests / tech / day</li>
 <li>Remote: ~5 tickets / tech / day</li>
-<li>Vac/sick, travel utilization, SLA mix, and 24×7 floors are settings overlays (structure from legacy PFS; rates are modern placeholders)</li>
-<li><b class="t">Primary / Secondary / Tertiary</b> role lanes are reporting splits of sized headcount — secondary/tertiary are flex, not additive HC</li>
+<li>Vac/sick, travel utilization, SLA mix, and 24×7 floors are settings overlays</li>
+<li>Industry guidance (MetricNet / HDI lineage): size from <b class="t">workload</b>, not a fixed seats-per-tech myth — ratios below are commercial guidance bands only</li>
 </ul>
+
+<h2>Vertical ratio guidance (editable, not Deal A truth)</h2>
+<p>Use these as conversation rungs and cost-model guardrails. Day-one HC still comes from throughput + geography.</p>
+<table class="ratio-table">
+<thead><tr><th>Pattern</th><th>Users : tech</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Some lean / mature deals</td><td>~2000 : 1</td><td>High deflection, remote-first, strong L1 / self-service</td></tr>
+<tr><td>Healthcare</td><td>250 : 1 – 750 : 1</td><td>Dense clinical / shared-device / walk-by demand</td></tr>
+<tr><td>Manufacturing</td><td>750 : 1 – 1000 : 1</td><td>Plant sites, rounding, mixed deskside + field</td></tr>
+<tr><td>Administrative / office</td><td>1000 : 1 – 1500 : 1</td><td>Standard campus / metro deskside</td></tr>
+<tr><td>Tech bar–heavy</td><td>1500 : 1 – 2000 : 1</td><td>Walk-in bars + virtual offices (Deal B pattern)</td></tr>
+</tbody>
+</table>
 
 <h2>Overlays</h2>
 <p>Depot / staging, tech bars, VIP, virtual techs, critical 24×7, partner-remote share. Coverage classes: dedicated business hours, local drive-range, dispatch/remote, critical 24×7.</p>
 
-<h2>Cost & scenarios</h2>
-<p>Day-one cost follows throughput-sized staffing plus dispatch, shipment, depot, stock, refresh, and transition cash. Ratio rungs (750:1 → 1500:1) are a commercial road map and cost-shift story — not the engine that invents campus count. Use the <a href="/cost-model">generic cost model</a> for any estate; Reference Deal A has its own <a href="/cost-model-deal-a">deal-specific cost model</a>.</p>
+<h2>Cost &amp; scenarios</h2>
+<p>Day-one cost follows throughput-sized staffing plus dispatch, shipment, depot, stock, refresh, and transition cash. Ratio rungs are a commercial road map and cost-shift story — not the engine that invents campus count. Use the <a href="/cost-model">generic cost model</a> for any estate; Reference Deal A has its own <a href="/cost-model-deal-a">deal-specific cost model</a>.</p>
 
-<h2>Process flows</h2>
-<p>Intake → misroute check → contact / schedule → tower work → logistics → finalize. Site Services and Field Services share this ladder (FMO process packs). Action codes, auto-assign by role/location/load, and ops KPIs (DOH, aging, staffing gap, SLO) sit on top for design QA and live control.</p>
-
-<div class="band">Build any deal from sparse intake · <code>python -m engine run intake.xlsx</code> · then adjust economics in the cost model</div>
-<p style="margin-top:18px"><a class="chip" href="/cost-model">Generic cost model</a> <a class="chip" href="/cost-model-deal-a">Deal A cost model</a> <a class="chip" href="/coverage">Coverage atlas</a> <a class="chip" href="/methodology">Reference Deal A parameters</a></p>
+<div class="band">Build any deal from sparse intake · FMO inside the environment · ratios as guardrails</div>
+<p style="margin-top:18px">
+  <a class="chip" href="/coverage">Coverage atlas</a>
+  <a class="chip" href="/deal-b">Deal B tech-bar</a>
+  <a class="chip" href="/coverage-deal-a">Deal A campus map</a>
+  <a class="chip" href="/cost-model">Generic cost model</a>
+  <a class="chip" href="/methodology">Deal A parameters</a>
+</p>
 
 <div class="foot"><span>Site Services · Generic structure</span><span>Field Services Solution Design · 2026</span></div>
 </div>
