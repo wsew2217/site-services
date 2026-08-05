@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Site Services · Generic Cost Model</title>
+<title>Reference Deal A · Cost Model</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
@@ -69,11 +69,11 @@ details ul{margin:8px 0 4px 20px}
 .toolbar{top:52px}
 </style>
 </head>
-<body class="suite-app suite-tool" data-page="cost-model" data-mode="tool">
+<body class="suite-app suite-tool" data-page="cost-model-deal-a" data-mode="tool">
 <div class="hero"><div class="hero-inner">
-<div class="k">Site Services · Generic</div>
+<div class="k">Reference Deal A · Single-customer example</div>
 <h1>Cost Model</h1>
-<div class="s">Primary economics sandbox for any estate — not a single-customer deal. Prefer loading a deal-engine summary so campuses and day-one techs are site-derived; ratios stay guardrails. For the Reference Deal A example, use <a href="/cost-model-deal-a" style="color:var(--acc)">Deal A Cost Model</a>.</div>
+<div class="s">Economics for one example estate (989 sites · 29 campuses · 114 day-one techs). Not the generic Site Services product defaults — those live at <a href="/cost-model" style="color:var(--acc)">Generic Cost Model</a>.</div>
 </div></div>
 <div class="toolbar"><div class="toolbar-inner">
 <button class="tab on" data-p="inputs">1 . Inputs</button>
@@ -91,23 +91,23 @@ details ul{margin:8px 0 4px 20px}
 <!-- ================= PANE 1: INPUTS ================= -->
 <div class="pane on" id="pane-inputs">
 <h2 class="sec">Estate &amp; delivery inputs</h2>
-<p class="note">Defaults describe a large, distributed global estate. Prefer loading an engine summary so campuses and day-one techs are site-derived, not invented.</p>
+<p class="note">Defaults match the Reference Deal A v2 estate. Day-one techs lock from the Deal A engine summary; commercial rates remain editable placeholders.</p>
 <div class="card" style="margin-bottom:16px">
 <h3>Deal engine bridge</h3>
-<div class="sub">Load <code>/assets/engine-summary.json</code> produced by <code>python -m engine run …</code> (or upload a file). Campuses lock as derived; day-one techs come from the site model.</div>
+<div class="sub">Loads <code>/assets/engine-summary-deal-a.json</code> (or upload another summary). Campuses and day-one techs stay estate-derived for this example.</div>
 <div class="frow"><label>Engine JSON</label><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-<button class="btn ghost" type="button" id="btn_load_engine">Load sample engine summary</button>
+<button class="btn ghost" type="button" id="btn_load_engine">Reload Deal A summary</button>
 <input type="file" id="i_engine_file" accept="application/json,.json" style="font-size:12px">
 </span></div>
-<div class="note" id="engine_status">No engine file loaded — campuses are manual until you load a summary.</div>
+<div class="note" id="engine_status">Loading Reference Deal A engine summary…</div>
 </div>
 <div class="grid g3">
-<div class="card"><h3>Estate</h3><div class="sub">The footprint being served</div>
-<div class="frow"><label>Sites in scope</label><input type="number" id="i_sites" value="1000"></div>
-<div class="frow"><label>Users (seats)</label><input type="number" id="i_users" value="50000"></div>
-<div class="frow"><label>Tickets per user / yr<span class="hint">demand intensity; 1.0-1.8 typical field-heavy</span></label><input type="number" id="i_tpu" value="1.6" step="0.1"></div>
-<div class="frow"><label>Virtual campuses<span class="hint" id="camp_hint">from engine when loaded; else manual</span></label><input type="number" id="i_camp" value="28"></div>
-<div class="frow"><label>Physical-touch share of tickets<span class="hint">% needing hands on hardware</span></label><input type="number" id="i_touch" value="35"></div>
+<div class="card"><h3>Estate</h3><div class="sub">Reference Deal A footprint</div>
+<div class="frow"><label>Sites in scope</label><input type="number" id="i_sites" value="989"></div>
+<div class="frow"><label>Users (seats)</label><input type="number" id="i_users" value="51680"></div>
+<div class="frow"><label>Tickets per user / yr<span class="hint">estate rate from observed demand</span></label><input type="number" id="i_tpu" value="1.686" step="0.001"></div>
+<div class="frow"><label>Virtual campuses<span class="hint" id="camp_hint">from Deal A engine when loaded</span></label><input type="number" id="i_camp" value="29"></div>
+<div class="frow"><label>Physical-touch share of tickets<span class="hint">% needing hands on hardware</span></label><input type="number" id="i_touch" value="41"></div>
 <div class="frow"><label>On-site reach at day one %<span class="hint">share of touches within staff drive range</span></label><input type="number" id="i_cov" value="55"></div>
 <div class="frow"><label>Devices per user</label><input type="number" id="i_dpu" value="1.2" step="0.1"></div>
 <div class="frow"><label>Refresh cycle (years)</label><input type="number" id="i_refresh" value="4"></div>
@@ -151,7 +151,7 @@ details ul{margin:8px 0 4px 20px}
 <div class="frow"><label>Refresh shipping per device</label><input type="number" id="i_rship" value="24"></div>
 </div>
 <div class="card"><h3>Current state &amp; transition</h3><div class="sub">Where the customer is today</div>
-<div class="frow"><label>Current field technicians</label><input type="number" id="i_curtech" value="150"></div>
+<div class="frow"><label>Current field technicians<span class="hint">customer presence today; above day-one model</span></label><input type="number" id="i_curtech" value="180"></div>
 <div class="frow"><label>Current mgmt overhead % of tech cost</label><input type="number" id="i_curmgmt" value="16"></div>
 <div class="frow"><label>Current logistics spend / yr<span class="hint">lump sum; shown in the Parts shipping column for current state</span></label><input type="number" id="i_curlog" value="900000"></div>
 <div class="frow"><label>Severance per exiting head</label><input type="number" id="i_sev" value="30000"></div>
@@ -224,8 +224,8 @@ details ul{margin:8px 0 4px 20px}
 <li>Cash view: each year charges the annual cost of the active rung plus any step one-time; cumulative line compares against staying at current state.</li>
 </ul></details>
 <details><summary>What this model deliberately is not</summary>
-<p>It is the <b>generic Site Services</b> cost model: it prices structure and shifts, not a specific contract. Reference Deal A has its own page at <a href="/cost-model-deal-a">/cost-model-deal-a</a>. Site geography, hub selection, and VC floors live in the Python deal engine (<code>python -m engine run</code>). Load an engine summary JSON so campus count and day-one techs stay reconciled. Dollar rates are modern placeholders — refresh per deal (older PFS models inform structure only).</p></details>
-<div class="band">The ratio road map is a cost shift, not just a labor cut. This tool makes the shift visible and priceable.</div>
+<p>It is the <b>Reference Deal A</b> single-customer cost example — not generic Site Services defaults (see <a href="/cost-model">/cost-model</a>). Site geography and VC floors for this estate come from the published Deal A staffing model; dollar rates are modern placeholders. OEM warranty / lifecycle-hub lines are Dell commercial attach opportunities in the cost-shift story, not a claim that Site Services is a Dell program owned by this customer.</p></details>
+<div class="band">Reference Deal A · single-customer example · cost shift made visible and priceable.</div>
 </div>
 
 </div>
@@ -319,14 +319,15 @@ async function loadEngineUrl(url){
   $('engine_status').textContent='Could not load '+url+' — '+e.message;
  }
 }
-$('btn_load_engine').addEventListener('click',()=>loadEngineUrl('/assets/engine-summary.json'));
+$('btn_load_engine').addEventListener('click',()=>loadEngineUrl('/assets/engine-summary-deal-a.json'));
 $('i_engine_file').addEventListener('change',ev=>{
  const f=ev.target.files&&ev.target.files[0]; if(!f) return;
  const reader=new FileReader();
  reader.onload=()=>{try{applyEngine(JSON.parse(reader.result));}catch(e){$('engine_status').textContent='Invalid JSON: '+e.message;}};
  reader.readAsText(f);
 });
-// Generic page keeps round-number defaults until the user loads an engine summary.
+// Deal A page auto-loads the example estate summary
+loadEngineUrl('/assets/engine-summary-deal-a.json');
 
 function costFor(sc,I){
  const techs=techsFor(sc,I);

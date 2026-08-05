@@ -6,7 +6,7 @@
         { href: "/", id: "home", title: "Home" },
         { href: "/structure", id: "structure", title: "Structure & Methodology" },
         { href: "/coverage", id: "coverage", title: "Coverage" },
-        { href: "/cost-model", id: "cost-model", title: "Cost Model" },
+        { href: "/cost-model", id: "cost-model", title: "Cost Model (Generic)" },
       ],
     },
     {
@@ -15,6 +15,7 @@
         { href: "/summary", id: "summary", title: "Executive Summary" },
         { href: "/changes", id: "changes", title: "What Changed" },
         { href: "/methodology", id: "methodology", title: "Deal A Methodology" },
+        { href: "/cost-model-deal-a", id: "cost-model-deal-a", title: "Cost Model (Deal A)" },
         { href: "/story", id: "story", title: "Build Story" },
         { href: "/how-we-built", id: "how-we-built", title: "How We Built" },
       ],
@@ -86,7 +87,8 @@
     const toolLinks = [
       { id: "structure", href: "/structure", label: "Structure" },
       { id: "coverage", href: "/coverage", label: "Coverage" },
-      { id: "cost-model", href: "/cost-model", label: "Cost Model" },
+      { id: "cost-model", href: "/cost-model", label: "Cost (Generic)" },
+      { id: "cost-model-deal-a", href: "/cost-model-deal-a", label: "Cost (Deal A)" },
       { id: "deck", href: "/deck", label: "Deck A" },
       { id: "workbook", href: "/workbook", label: "Workbook A" },
     ]

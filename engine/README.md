@@ -14,7 +14,7 @@ cp samples/out/Deal_Output.json assets/engine-summary.json
 
 Outputs:
 - `Deal_Output.xlsx` — Dashboard, VC Plan, Site Roster, Staffing, Overlays, Dispatch, Cost, Scenarios, Cash, Ops, Data Quality, Assumptions
-- `Deal_Output.json` — summary for `/cost-model` (publish as `/assets/engine-summary.json`)
+- `Deal_Output.json` — summary for `/cost-model` (generic) or `/cost-model-deal-a` (publish Deal A as `/assets/engine-summary-deal-a.json`)
 
 ## Demand rules
 1. `TicketsYr` if present  

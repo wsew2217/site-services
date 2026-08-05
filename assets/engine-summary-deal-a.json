@@ -1,0 +1,35 @@
+{
+  "source": "site-services-deal-engine",
+  "version": "1.0.0",
+  "deal": "Reference Deal A",
+  "note": "Single-customer example estate (Reference Deal A). Campuses and day-one techs are demand-model outputs for this estate only — not generic Site Services defaults.",
+  "sites": 989,
+  "users": 51680,
+  "tickets_yr": 87163,
+  "campuses": 29,
+  "day1_techs": 114,
+  "tpu": 1.686,
+  "overlays": {
+    "field_techs": 114,
+    "leads": 13,
+    "managers": 5,
+    "tech_bars": 0,
+    "depot_techs": 0,
+    "virtual_techs": 0,
+    "total_people": 132
+  },
+  "settings_subset": {
+    "working_days": 252,
+    "utilization": 0.85,
+    "team_floor": 2,
+    "physical_touch_share": 0.41,
+    "day_one_reach": 0.55,
+    "vac_sick_uplift": 1.15,
+    "partner_remote_share": 0.25
+  },
+  "warnings": [
+    "Reference Deal A example only — not universal Site Services defaults.",
+    "Refresh commercial rates within 90 days of customer use.",
+    "Dollar rates are modern placeholders; geography and HC are estate-derived."
+  ]
+}
