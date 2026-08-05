@@ -89,6 +89,8 @@
     const toolLinks = [
       { id: "structure", href: "/structure", label: "Structure" },
       { id: "coverage", href: "/coverage", label: "Coverage" },
+      { id: "coverage-deal-a", href: "/coverage-deal-a", label: "Map A" },
+      { id: "deal-b", href: "/deal-b", label: "Deal B" },
       { id: "cost-model", href: "/cost-model", label: "Cost (Generic)" },
       { id: "cost-model-deal-a", href: "/cost-model-deal-a", label: "Cost (Deal A)" },
       { id: "deck", href: "/deck", label: "Deck A" },

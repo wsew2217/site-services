@@ -166,6 +166,18 @@ details ul{margin:8px 0 4px 20px}
 <div class="pane" id="pane-scen">
 <h2 class="sec">Scenario ladder</h2>
 <p class="note">Yellow cells are editable per rung: the users-per-tech ratio, the demand deflection adoption assumption (self-service + remote-first removing tickets), the zero-touch maturity %, and the year each rung is reached (drives the cash view). The day-one row is computed from throughput, not a ratio.</p>
+<div class="card">
+<h3>Vertical ratio guidance (editable guardrails)</h3>
+<div class="sub">Not day-one sizing truth — use when setting road-map rungs. Size from workload; bands are commercial conversation ranges. Full write-up on <a href="/structure">Structure</a>.</div>
+<table>
+<tr><th style="text-align:left">Pattern</th><th>Users : tech</th></tr>
+<tr><td>Some lean / mature deals</td><td>~2000 : 1</td></tr>
+<tr><td>Healthcare</td><td>250 : 1 – 750 : 1</td></tr>
+<tr><td>Manufacturing</td><td>750 : 1 – 1000 : 1</td></tr>
+<tr><td>Administrative / office</td><td>1000 : 1 – 1500 : 1</td></tr>
+<tr><td>Tech bar–heavy</td><td>1500 : 1 – 2000 : 1</td></tr>
+</table>
+</div>
 <div class="card" style="overflow-x:auto"><table id="t_scen"></table>
 <p class="note">Deflection removes tickets before staffing math. Zero-touch maturity scales how much of the device-refresh workload ships direct with no technician touch. Staff coverage of physical touches falls as headcount falls; the uncovered remainder routes to smart-hands dispatch and OEM warranty at the costs set in Inputs.</p></div>
 <div class="card"><h3>Live staffing ladder</h3><div class="sub">Bars scale to technician count; the accent bar is the day-one model</div>
