@@ -283,9 +283,14 @@ def write_deal_output(
     ass["A1"] = "Settings used for this run"
     ass["A1"].font = Font(bold=True, size=14, color=NAVY)
     ass["A2"] = "Dollar rates are modern placeholders — refresh per deal. Older PFS workbooks inform structure only."
+    warn_row = 3
+    for w in cost.get("warnings") or []:
+        ass.cell(warn_row, 1, f"• {w}")
+        warn_row += 1
+    start = warn_row + 1
     for j, h in enumerate(["Parameter", "Value"], 1):
-        _header(ass.cell(4, j, h))
-    for i, (k, v) in enumerate(sorted(settings.items()), 5):
+        _header(ass.cell(start, j, h))
+    for i, (k, v) in enumerate(sorted(settings.items()), start + 1):
         _cell(ass.cell(i, 1, k))
         _cell(ass.cell(i, 2, v if not isinstance(v, (dict, list)) else json.dumps(v)))
     ass.column_dimensions["A"].width = 40
@@ -331,7 +336,12 @@ def write_web_summary(path: Path, staffing_summary: Dict[str, Any], cost: Dict[s
             "team_floor": settings.get("team_floor"),
             "physical_touch_share": settings.get("physical_touch_share"),
             "day_one_reach": settings.get("day_one_reach"),
+            "vac_sick_uplift": settings.get("vac_sick_uplift"),
+            "partner_remote_share": settings.get("partner_remote_share"),
         },
+        "day1_categories": cost.get("day1_categories"),
+        "unit_economics": cost.get("unit_economics"),
+        "warnings": cost.get("warnings"),
     }
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     return path

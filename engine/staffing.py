@@ -46,6 +46,15 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
     depot_per = int(num(settings, "overlay_depot_techs_per_depot_campus", 1))
     virtual_techs = int(num(settings, "overlay_virtual_techs", 0))
     hub_wl = num(settings, "hub_workload_threshold", 0.5)
+    vac_sick = num(settings, "vac_sick_uplift", 1.15)
+    travel_util = max(num(settings, "travel_utilization", 0.5), 0.15)
+    floor_247 = int(num(settings, "critical_24x7_floor_techs", 2))
+    sla_uplift = (
+        num(settings, "sla_mix_2h", 0.10) * num(settings, "sla_uplift_2h", 0.45)
+        + num(settings, "sla_mix_4h", 0.20) * num(settings, "sla_uplift_4h", 0.33)
+        + num(settings, "sla_mix_nbd", 0.55) * num(settings, "sla_uplift_nbd", 0.0)
+        + num(settings, "sla_mix_extended_hours", 0.15) * num(settings, "sla_uplift_extended_hours", 0.125)
+    )
 
     df = sites.copy()
     df["dkm"] = 9e9
@@ -89,23 +98,41 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
         hubs[key] = hub_idx
 
         on = df.loc[sub.index][df.loc[sub.index, "Role"].isin(["Staffed", "Local"])]
+        hub_sites = df.loc[sub.index][df.loc[sub.index, "Role"] == "Staffed"]
+        local_sites = df.loc[sub.index][df.loc[sub.index, "Role"] == "Local"]
         rem = df.loc[sub.index][df.loc[sub.index, "Role"] == "Remote"]
+        hub_tpd = float(hub_sites["tpd"].sum()) if len(hub_sites) else 0.0
+        local_tpd = float(local_sites["tpd"].sum()) if len(local_sites) else 0.0
         on_tpd = float(on["tpd"].sum()) if len(on) else 0.0
         rem_tpd = float(rem["tpd"].sum()) if len(rem) else 0.0
         served = float(sub["tpd"].sum())
 
-        on_t = int(ceil((on_tpd * inc_share / inc_rate + on_tpd * (1 - inc_share) / req_rate) / util)) if on_tpd > 0 else 0
+        def _onsite_heads(tpd: float, util_eff: float) -> int:
+            if tpd <= 0 or util_eff <= 0:
+                return 0
+            return int(ceil((tpd * inc_share / inc_rate + tpd * (1 - inc_share) / req_rate) / util_eff))
+
+        # Hub work at full util; Local/drive work at travel_utilization (PFS structure)
+        on_t = _onsite_heads(hub_tpd, util) + _onsite_heads(local_tpd, util * travel_util)
         rem_t = int(ceil(rem_tpd / (rem_rate * util))) if rem_tpd > 0 else 0
         natural = on_t + rem_t
+        # SLA mix + vac/sick uplifts (structure from G/I; rates are modern settings)
+        uplifted = int(ceil(natural * (1.0 + sla_uplift) * vac_sick)) if natural > 0 else 0
         staffed_flag = bool(sub["CustomerStaffedFlag"].any())
-        if natural <= 1 and served < low_thresh:
-            team = max(1, natural) if natural > 0 else (1 if staffed_flag else 0)
+        critical = int(sub["Critical24x7Flag"].sum())
+        if uplifted <= 1 and served < low_thresh:
+            team = max(1, uplifted) if uplifted > 0 else (1 if staffed_flag else 0)
         else:
-            team = max(floor, natural) if natural > 0 or staffed_flag else 0
+            team = max(floor, uplifted) if uplifted > 0 or staffed_flag else 0
         if staffed_flag and on_t < 1 and served > 0:
             on_t = 1
             team = max(team, 1)
+        if critical > 0 and team > 0:
+            team = max(team, floor_247)
         if team > 0:
+            # Preserve on/remote split shape after uplift
+            if natural > 0:
+                on_t = max(on_t, int(round(team * (on_t / natural)))) if on_t else on_t
             rem_t = max(0, team - on_t)
         else:
             rem_t = 0
@@ -116,7 +143,6 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
         users_sum = float(pd.to_numeric(sub["UsersEff"], errors="coerce").fillna(0).sum())
         tech_bar = 1 if users_sum >= tech_bar_users and team >= floor else 0
         depot_techs = depot_per if campus_mode == "Depot-led" and team > 0 else 0
-        critical = int(sub["Critical24x7Flag"].sum())
 
         vc_rows.append({
             "VC": str(key),
@@ -139,6 +165,8 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
             "TechBar": tech_bar,
             "DepotTechs": depot_techs,
             "CriticalSites": critical,
+            "NaturalTechs": natural,
+            "UpliftedTechs": uplifted,
         })
 
     R = pd.DataFrame(vc_rows)
@@ -147,6 +175,7 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
             "VC", "Region", "Hub", "Countries", "StaffedSites", "LocalSites", "RemoteSites",
             "Served", "WorkDay", "TicketsYr", "Users", "OnSite", "Remote", "Team",
             "CampusMode", "Customs", "Staffed", "TechBar", "DepotTechs", "CriticalSites",
+            "NaturalTechs", "UpliftedTechs",
         ])
     else:
         R = R.sort_values(["Region", "WorkDay"], ascending=[True, False]).reset_index(drop=True)
@@ -231,6 +260,10 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
             "single_tech_threshold": low_thresh,
             "lead_span": per_lead,
             "mgr_span": per_mgr,
+            "vac_sick_uplift": vac_sick,
+            "travel_utilization": travel_util,
+            "sla_uplift_weighted": round(sla_uplift, 4),
+            "critical_24x7_floor_techs": floor_247,
         },
     }
     return df, R, summary

@@ -6,16 +6,16 @@
   "users": 3540,
   "tickets_yr": 8876,
   "campuses": 4,
-  "day1_techs": 12,
+  "day1_techs": 19,
   "tpu": 2.507,
   "overlays": {
-    "field_techs": 12,
+    "field_techs": 19,
     "leads": 4,
     "managers": 1,
     "tech_bars": 2,
     "depot_techs": 1,
     "virtual_techs": 0,
-    "total_people": 20
+    "total_people": 27
   },
   "scenarios": [
     {
@@ -26,7 +26,7 @@
       "zt": 10,
       "year": null,
       "techs": 150,
-      "total": 17349089.0,
+      "total": 16817687.0,
       "ratioImplied": 24
     },
     {
@@ -36,9 +36,9 @@
       "defl": 0,
       "zt": 15,
       "year": 0,
-      "techs": 12,
-      "total": 2131154.0,
-      "ratioImplied": 295
+      "techs": 19,
+      "total": 2759264.0,
+      "ratioImplied": 186
     },
     {
       "key": "r750",
@@ -48,7 +48,7 @@
       "zt": 40,
       "year": 2,
       "techs": 5,
-      "total": 1378514.0,
+      "total": 1395429.0,
       "ratioImplied": 708
     },
     {
@@ -59,7 +59,7 @@
       "zt": 60,
       "year": 4,
       "techs": 4,
-      "total": 1251419.0,
+      "total": 1264047.0,
       "ratioImplied": 885
     },
     {
@@ -70,7 +70,7 @@
       "zt": 75,
       "year": 5,
       "techs": 4,
-      "total": 1216000.0,
+      "total": 1226900.0,
       "ratioImplied": 885
     },
     {
@@ -81,7 +81,7 @@
       "zt": 90,
       "year": 6,
       "techs": 4,
-      "total": 1180582.0,
+      "total": 1189752.0,
       "ratioImplied": 885
     }
   ],
@@ -90,6 +90,34 @@
     "utilization": 0.85,
     "team_floor": 2,
     "physical_touch_share": 0.35,
-    "day_one_reach": 0.55
-  }
+    "day_one_reach": 0.55,
+    "vac_sick_uplift": 1.15,
+    "partner_remote_share": 0.25
+  },
+  "day1_categories": {
+    "labor": 1725440.0,
+    "management": 406232.0,
+    "dispatch": 64493.0,
+    "partner_dispatch": 21498.0,
+    "shipment": 150475.0,
+    "depot": 190252.0,
+    "stock": 32400.0,
+    "refresh": 113515.0,
+    "oem": 20760.0,
+    "on_call": 0.0,
+    "training_tools": 34200.0,
+    "warranty_credit": -0.0
+  },
+  "unit_economics": {
+    "per_seat": 779.45,
+    "per_event": 310.87,
+    "tm_hourly": 43.66,
+    "oppm_hourly": 65.49
+  },
+  "warnings": [
+    "Refresh commercial rates within 90 days of customer use.",
+    "Volume change-order band \u00b15% (structure from PFS; enforce in SOW).",
+    "Warranty labor credit is 0 \u2014 set per OEM program when known.",
+    "On-call line disabled \u2014 enable when 24\u00d77 coverage is contracted."
+  ]
 }

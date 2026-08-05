@@ -58,7 +58,12 @@ def normalize_sites(df: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.Data
 
     tpu = num(settings, "estate_tickets_per_user", 1.6)
     tpdv = num(settings, "estate_tickets_per_device", 0.8)
+    fail_desktop = num(settings, "fail_rate_desktop", 1.6)
+    fail_laptop = num(settings, "fail_rate_laptop", 1.8)
+    # Blended fail-rate for seat/device bootstrap (PFS structure; modern seeds)
+    fail_blend = 0.6 * fail_desktop + 0.4 * fail_laptop
     placeholder = num(settings, "placeholder_tickets_per_site", 12)
+    use_fail = bool(num(settings, "use_fail_rate_bootstrap", 0))
 
     tickets = []
     sources = []
@@ -68,6 +73,10 @@ def normalize_sites(df: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.Data
             tickets.append(float(row["TicketsYr"]))
             sources.append("tickets")
             confidence.append("high")
+        elif use_fail and pd.notna(row["UsersEff"]) and float(row["UsersEff"]) > 0:
+            tickets.append(float(row["UsersEff"]) * fail_blend)
+            sources.append("seats_x_fail_rate")
+            confidence.append("medium")
         elif pd.notna(row["UsersEff"]) and float(row["UsersEff"]) > 0:
             tickets.append(float(row["UsersEff"]) * tpu)
             sources.append("users_x_rate")

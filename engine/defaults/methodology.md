@@ -64,3 +64,11 @@ Optional FMO calibration: `techs ≈ (monthly_tickets / working_days_month) / ta
 - Settings dollar amounts are **modern placeholders** (Cost Model v2 / World Class lineage).
 - Older PFS cost workbooks (Reference Deals G–I era) are leveraged for tab structure, cost categories, and driver logic only.
 - Always refresh labor, dispatch, shipment, and burden rates per deal before customer-facing use.
+
+## PFS structure knobs (G–I, modern seeds)
+- `vac_sick_uplift` on sized heads; `travel_utilization` lowers Local-drive productivity.
+- SLA mix × uplift multipliers add headcount pressure (tunable; not sacred).
+- `critical_24x7_floor_techs` floors teams with 24×7 sites.
+- `partner_remote_share` splits remote dispatch economics (campus vs partner).
+- Warranty labor credit and on-call lines default off/zero until deal-calibrated.
+- Never load legacy 2012 salary or unit-cost tables into live defaults.
