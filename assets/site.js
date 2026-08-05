@@ -36,6 +36,11 @@
   const page = document.body.dataset.page || "home";
   const mode = document.body.dataset.mode || "shell";
 
+  const dealAPages = new Set(
+    (NAV.find((g) => g.label === "Reference Deal A") || { items: [] }).items.map((i) => i.id)
+  );
+  if (dealAPages.has(page)) document.body.classList.add("theme-deal-a");
+
   function navHtml(compact = false) {
     return NAV.map((group) => {
       const links = group.items
