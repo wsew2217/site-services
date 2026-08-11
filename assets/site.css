@@ -750,6 +750,119 @@ body.theme-deal-a .suite-doc-frame h3 {
   margin: 24px 0;
 }
 
+/* Doc-page chips (light surface) — default .chip assumes dark chrome */
+.suite-doc-frame .chip {
+  border-color: var(--doc-line);
+  background: #fff;
+  color: var(--navy);
+}
+.suite-doc-frame .chip:hover {
+  border-color: #2fd6c2;
+  background: #e8faf7;
+  color: var(--navy);
+}
+
+/* Kit downloads + help tips (VC kit / coverage) */
+.suite-doc-frame .kit-dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+.suite-doc-frame .kit-dl a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--doc-line);
+  background: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #13294B;
+}
+.suite-doc-frame .kit-dl a:hover { border-color: #2fd6c2; }
+.suite-doc-frame .kit-dl a.primary {
+  background: #13294B;
+  border-color: #13294B;
+  color: #fff;
+  min-height: 40px;
+  padding: 0 16px;
+}
+.suite-doc-frame .kit-dl a.primary:hover {
+  background: #1a3a63;
+  border-color: #2fd6c2;
+  color: #fff;
+}
+
+.suite-doc-frame .kit-callout {
+  border-left: 4px solid #d86a44;
+  padding: 12px 14px;
+  background: #fff6f1;
+  border-radius: 0 12px 12px 0;
+  margin: 14px 0 20px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.suite-doc-frame .kit-callout.soft {
+  border-left-color: #149887;
+  background: #e8faf7;
+}
+
+.suite-doc-frame .help-tip {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+.suite-doc-frame .help-tip-btn {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--doc-line);
+  background: #eef3fa;
+  color: #13294B;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  cursor: help;
+  padding: 0;
+}
+.suite-doc-frame .help-tip-btn:hover,
+.suite-doc-frame .help-tip-btn:focus-visible {
+  border-color: #2fd6c2;
+  outline: 2px solid rgba(47, 214, 194, 0.35);
+  outline-offset: 1px;
+}
+.suite-doc-frame .help-tip-panel {
+  display: none;
+  position: absolute;
+  z-index: 20;
+  left: 50%;
+  top: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: min(280px, 70vw);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--doc-line);
+  background: #13294B;
+  color: #eaf0f8;
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  box-shadow: 0 12px 28px rgba(19, 41, 75, 0.22);
+}
+.suite-doc-frame .help-tip:hover .help-tip-panel,
+.suite-doc-frame .help-tip:focus-within .help-tip-panel {
+  display: block;
+}
+.suite-doc-frame .file-inventory td:first-child {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
 /* Interactive tools keep their own styles; suite only adds the top chrome */
 body.suite-app.suite-tool {
   background: #f7f8fb;

@@ -20,6 +20,7 @@
       </p>
       <div class="home-cta">
         <a class="btn btn-primary" href="/vc-kit">Start with VC kit</a>
+        <a class="btn btn-ghost" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>Download sample Excel</a>
         <a class="btn btn-ghost" href="/structure">Structure & methodology</a>
         <a class="btn btn-ghost" href="/cost-model">Open generic cost model</a>
       </div>
@@ -38,7 +39,7 @@
         <a class="dest" href="/coverage">
           <div class="kicker">Atlas</div>
           <h3>Coverage</h3>
-          <p>Country-level Staffed vs Capability matrix — not a single-customer campus map.</p>
+          <p>Interactive country Staffed vs Capability matrix — click a row for detail. Not a single-customer campus map.</p>
           <div class="go">Open <span>→</span></div>
         </a>
         <a class="dest" href="/cost-model">
@@ -52,12 +53,17 @@
 
     <section class="home-section" aria-label="VC Kit">
       <h2>VC Mapper / Solutioning Kit</h2>
-      <p>Excel template → Python mapper → Cost_Model_Load → <a href="/cost-model" style="color:var(--accent)">/cost-model</a>. Generic starter downloads only.</p>
+      <p>Excel template → <code>python vc_mapper.py</code> → Cost_Model_Load → <a href="/cost-model" style="color:var(--accent)">/cost-model</a>. Live site ships generic samples only — no customer deal data. Prefer the mapper path; <code>python -m engine run</code> is the older/parallel full staffing path.</p>
+      <div class="home-cta" style="margin:0 0 18px">
+        <a class="btn btn-primary" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>vc_template_pack_v1_0.xlsx</a>
+        <a class="btn btn-ghost" href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>Mapped sample</a>
+        <a class="btn btn-ghost" href="/coverage">Capability atlas</a>
+      </div>
       <div class="dest-grid">
         <a class="dest" href="/vc-kit">
           <div class="kicker">Overview</div>
           <h3>Kit Overview</h3>
-          <p>Pipeline, build order, and downloads for the assembled solutioning kit.</p>
+          <p>Pipeline, tooltips, file inventory, and downloads for the assembled solutioning kit.</p>
           <div class="go">Open <span>→</span></div>
         </a>
         <a class="dest" href="/vc-kit/template">

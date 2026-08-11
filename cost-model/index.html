@@ -101,8 +101,8 @@ details ul{margin:8px 0 4px 20px}
 <div class="grid g2">
 <div class="card"><h3>Inputs</h3>
 <ul style="margin:8px 0 0 18px">
-<li><b>Engine JSON</b> — prefer <code>/assets/engine-summary.json</code> from <code>python -m engine run …</code> (see <code>engine/README.md</code>). Campuses and day-one techs lock as site-derived.</li>
-<li><b>VC Mapper bridge</b> — after mapping, use <a href="/vc-kit/mapper">Cost_Model_Load → bridge</a> then prefer a full engine run before uploading JSON here.</li>
+<li><b>Engine JSON</b> — load <code>/assets/engine-summary.json</code> from <code>python -m engine run …</code> (see <code>engine/README.md</code>) when you need site-derived campuses and day-one techs. This is the deal-engine path.</li>
+<li><b>VC Mapper bridge</b> — preferred start for the <a href="/vc-kit">VC kit</a>: map → <a href="/vc-kit/mapper">Cost_Model_Load → bridge</a>; optionally run the engine on the bridged Sites file before uploading JSON here.</li>
 <li><b>Intake assumptions</b> — sites, users, tickets/user, physical-touch share, throughput, utilization, regional labor mix, logistics / dispatch / OEM / transition rates (editable placeholders).</li>
 <li><b>Ratio bands</b> — commercial guardrails on Scenarios (and <a href="/structure">Structure</a>), not day-one sizing truth. Day one follows demand + VC floors.</li>
 </ul></div>
@@ -125,9 +125,9 @@ details ul{margin:8px 0 4px 20px}
 
 <div class="card"><h3>From VC Mapper · Cost_Model_Load</h3>
 <ul style="margin:8px 0 0 18px">
-<li>Map sites with the <a href="/vc-kit">VC Solutioning Kit</a>; review Exceptions before trusting roles.</li>
+<li><b>Preferred for new VC solutioning:</b> map with <a href="/vc-kit">VC Solutioning Kit</a> (<code>python vc_mapper.py</code>), review Exceptions, then bridge — see <a href="/vc-kit/mapper">mapper</a>.</li>
 <li>Bridge sheet → engine Sites intake: <code>python3 tools/vc_mapper/cost_model_bridge.py --input mapped.xlsx --sites-out engine_sites.xlsx --json-out bridge.json</code></li>
-<li>Prefer a full engine pass: <code>python -m engine run engine_sites.xlsx -o Deal_Output.xlsx</code>, then upload <code>Deal_Output.json</code> here.</li>
+<li><b>Optional full staffing lock:</b> <code>python -m engine run engine_sites.xlsx -o Deal_Output.xlsx</code>, then upload <code>Deal_Output.json</code> here. Engine run is the older/parallel deal-engine path — not required to start mapping.</li>
 <li><code>bridge.json</code> is a rough sandbox only (<code>day1_techs_hint</code> ≠ final staffing). Cost_Model_Load is not a priced proposal.</li>
 </ul></div>
 

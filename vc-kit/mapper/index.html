@@ -8,25 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <style>
-.kit-dl {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 12px 0 18px;
-}
-.kit-dl a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 0 12px;
-  border-radius: 10px;
-  border: 1px solid var(--doc-line);
-  background: #fff;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #13294B;
-}
-.kit-dl a:hover { border-color: #2fd6c2; }
 .role-legend {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -116,6 +97,26 @@ pre.cmd {
   font-size: 12.5px;
   line-height: 1.45;
 }
+.tool-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0 20px;
+}
+@media (max-width: 720px) { .tool-compare { grid-template-columns: 1fr; } }
+.tool-compare .preferred {
+  border-color: #2fd6c2;
+  box-shadow: 0 0 0 2px rgba(47,214,194,0.18);
+}
+.badge-pref {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #149887;
+  margin-bottom: 6px;
+}
 </style>
 </head>
 <body class="suite-app suite-doc" data-page="vc-kit-mapper" data-mode="shell">
@@ -128,13 +129,38 @@ pre.cmd {
   <div class="sub">Normalize intake, assign Hub / Local / Remote, emit Cost_Model_Load. Rules from <code>default_rules.yaml</code> v1.</div>
 </div>
 
+<div class="kit-callout" role="note">
+  <b class="t">Live site does not include customer deal data.</b>
+  Run pilots against Desktop address-request workbooks. Downloads here are generic samples only.
+</div>
+
 <div class="kit-dl">
+  <a class="primary" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download title="Blank intake template">vc_template_pack_v1_0.xlsx</a>
+  <a class="primary" href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download title="Pre-mapped starter output">Sample mapped output</a>
   <a href="/assets/vc-kit/vc_mapper.py" download>vc_mapper.py</a>
   <a href="/assets/vc-kit/default_rules.yaml" download>default_rules.yaml</a>
   <a href="/assets/vc-kit/column_aliases.yaml" download>column_aliases.yaml</a>
   <a href="/assets/vc-kit/requirements.txt" download>requirements.txt</a>
   <a href="/assets/vc-kit/vc_mapper_package.zip" download>Full package (.zip)</a>
-  <a href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>Sample mapped output</a>
+</div>
+
+<h2>Mapper vs deal engine
+  <span class="help-tip">
+    <button type="button" class="help-tip-btn" aria-describedby="tip-mapper-vs-engine" title="Which command to run">?</button>
+    <span role="tooltip" id="tip-mapper-vs-engine" class="help-tip-panel">Prefer python vc_mapper.py for this kit. python -m engine run is the full deal-engine path (Excel + Deal_Output.json) — older/parallel, not the first step for VC solutioning.</span>
+  </span>
+</h2>
+<div class="tool-compare">
+  <div class="card preferred">
+    <div class="badge-pref">Preferred here</div>
+    <h3><code>python vc_mapper.py</code></h3>
+    <p style="margin:0">Maps <code>vc_template_pack</code> → <code>VC_Mapped_Sites</code> / <code>VC_Summary</code> / <code>Cost_Model_Load</code>. Then use <code>cost_model_bridge.py</code> and optionally the cost-model page.</p>
+  </div>
+  <div class="card tint">
+    <div class="badge-pref" style="color:#8A93A6">Older / parallel</div>
+    <h3><code>python -m engine run</code></h3>
+    <p style="margin:0">Deal engine in <code>engine/</code>: Sites intake → full staffing workbook + <code>Deal_Output.json</code> for <a href="/cost-model">/cost-model</a>. Use after bridging when you need site-derived campuses and day-one techs.</p>
+  </div>
 </div>
 
 <h2>Catchment rules (v1)</h2>
@@ -174,7 +200,12 @@ pre.cmd {
   <b class="t">Staffed</b> — Selected as a campus/hub (catchment maximize + ticket priority) or promoted when far from existing Staffed and tickets/day ≥ 1.2. Sets DepotHub for Local spokes.
 </div>
 
-<h2>Mac setup &amp; run</h2>
+<h2>Mac setup &amp; run
+  <span class="help-tip">
+    <button type="button" class="help-tip-btn" aria-describedby="tip-run" title="Typical Mac commands">?</button>
+    <span role="tooltip" id="tip-run" class="help-tip-panel">Create a venv, install requirements, then run vc_mapper.py with --input and --output. Add --skip-geocode if lat/lon are already filled.</span>
+  </span>
+</h2>
 <pre class="cmd">cd ~/Desktop/site_services_vc_mapper   # or: cd tools/vc_mapper in this repo
 python3 -m venv .venv
 source .venv/bin/activate
@@ -189,14 +220,35 @@ python3 vc_mapper.py \
 # Optional when lat/lon already present:
 python3 vc_mapper.py --input … --output … --operator-name "…" --skip-geocode</pre>
 
-<h2>Cost_Model_Load → engine / cost page</h2>
+<h2>Cost_Model_Load → engine / cost page
+  <span class="help-tip">
+    <button type="button" class="help-tip-btn" aria-describedby="tip-bridge" title="Bridge then optional engine run">?</button>
+    <span role="tooltip" id="tip-bridge" class="help-tip-panel">After mapping: bridge to Sites xlsx / JSON. Bridge JSON is approximate. For locked day-one techs, run the deal engine on the bridged Sites file, then upload Deal_Output.json.</span>
+  </span>
+</h2>
 <ol>
 <li>Review Exceptions, then roles on VC_Mapped_Sites / VC_Summary</li>
 <li>Export Sites intake: <code>python3 cost_model_bridge.py --input mapped.xlsx --sites-out engine_sites.xlsx --json-out bridge.json</code></li>
-<li>Prefer full engine: <code>python -m engine run engine_sites.xlsx -o Deal_Output.xlsx</code></li>
+<li>Optional full staffing: <code>python -m engine run engine_sites.xlsx -o Deal_Output.xlsx</code></li>
 <li>Load <code>Deal_Output.json</code> (or bridge JSON for a rough sandbox) on <a href="/cost-model">/cost-model</a></li>
 </ol>
-<p class="mute">Bridge JSON is approximate — day1_techs_hint is not final staffing.</p>
+<p class="mute">Bridge JSON is approximate — day1_techs_hint is not final staffing. Preferred kit path is mapper → bridge; engine run is the parallel full-pass option.</p>
+
+<h2>Files you can download</h2>
+<table class="file-inventory">
+  <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td><a href="/assets/vc-kit/vc_mapper.py" download>vc_mapper.py</a></td><td>Role / catchment mapper</td></tr>
+    <tr><td><a href="/assets/vc-kit/cost_model_bridge.py" download>cost_model_bridge.py</a></td><td>Mapped → Sites / bridge JSON</td></tr>
+    <tr><td><a href="/assets/vc-kit/default_rules.yaml" download>default_rules.yaml</a></td><td>25 mi / 1.2 tpd rules</td></tr>
+    <tr><td><a href="/assets/vc-kit/column_aliases.yaml" download>column_aliases.yaml</a></td><td>Header aliases</td></tr>
+    <tr><td><a href="/assets/vc-kit/requirements.txt" download>requirements.txt</a></td><td>pip deps</td></tr>
+    <tr><td><a href="/assets/vc-kit/vc_mapper_package.zip" download>vc_mapper_package.zip</a></td><td>Full Desktop package</td></tr>
+    <tr><td><a href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>…_mapped_sample.xlsx</a></td><td>Generic mapped starter</td></tr>
+    <tr><td><a href="/assets/vc-kit/engine_sites_from_vc_sample.xlsx" download>engine_sites_from_vc_sample.xlsx</a></td><td>Sample bridged Sites file</td></tr>
+    <tr><td><a href="/assets/vc-kit/vc_bridge_summary_sample.json" download>vc_bridge_summary_sample.json</a></td><td>Sample bridge summary</td></tr>
+  </tbody>
+</table>
 
 <div class="band">Kit: <a href="/vc-kit" style="color:#fff">Overview</a> · <a href="/vc-kit/template" style="color:#fff">Template</a> · <a href="/vc-kit/agent" style="color:#fff">Agent</a> · <a href="/vc-kit/runbook" style="color:#fff">Runbook</a></div>
 <div class="foot">Rules version 1.0.0 · no live routing API in v1 (haversine proxy)</div>
