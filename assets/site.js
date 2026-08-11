@@ -13,6 +13,9 @@
       label: "VC Mapper / Solutioning Kit",
       items: [
         { href: "/vc-kit", id: "vc-kit", title: "Kit Overview" },
+        { href: "/sandbox", id: "sandbox", title: "Deal Sandbox" },
+        { href: "/sandbox/map", id: "sandbox-map", title: "Deal Map" },
+        { href: "/vc-kit/chat", id: "vc-kit-chat", title: "Kit Chat" },
         { href: "/vc-kit/template", id: "vc-kit-template", title: "Template Pack" },
         { href: "/vc-kit/mapper", id: "vc-kit-mapper", title: "Mapper & Rules" },
         { href: "/vc-kit/agent", id: "vc-kit-agent", title: "SalesChat Agent Pack" },
@@ -106,6 +109,8 @@
       { id: "structure", href: "/structure", label: "Structure" },
       { id: "coverage", href: "/coverage", label: "Coverage" },
       { id: "vc-kit", href: "/vc-kit", label: "VC Kit" },
+      { id: "sandbox", href: "/sandbox", label: "Sandbox" },
+      { id: "vc-kit-chat", href: "/vc-kit/chat", label: "Chat" },
       { id: "coverage-deal-a", href: "/coverage-deal-a", label: "Map A" },
       { id: "deal-b", href: "/deal-b", label: "Deal B" },
       { id: "cost-model", href: "/cost-model", label: "Cost (Generic)" },
