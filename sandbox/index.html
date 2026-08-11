@@ -8,10 +8,33 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/assets/site.css">
 <style>
+.sb-hero-cta {
+  margin: 18px 0 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.sb-hero-cta .btn-try {
+  border: 0;
+  background: var(--acc);
+  color: #fff;
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: .01em;
+  border-radius: 24px;
+  padding: 14px 28px;
+  cursor: pointer;
+  box-shadow: 0 10px 28px rgba(47,214,194,.28);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.sb-hero-cta .btn-try:hover { transform: translateY(-1px); box-shadow: 0 14px 32px rgba(47,214,194,.35); }
+.sb-hero-cta .btn-try:disabled { opacity: .65; cursor: wait; transform: none; }
+.sb-hero-cta .mute { font-size: 13px; max-width: 28rem; }
 .sb-drop {
   border: 2px dashed var(--doc-line);
   border-radius: 14px;
-  padding: 28px 20px;
+  padding: 22px 18px;
   text-align: center;
   background: linear-gradient(165deg, #fff 0%, #f4f6fb 70%, #e8faf7 100%);
   transition: border-color .2s, box-shadow .2s;
@@ -22,7 +45,7 @@
 }
 .sb-drop input[type=file] { max-width: 100%; margin-top: 12px; }
 .sb-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
-.sb-actions .btn, .sb-actions button {
+.sb-actions .btn, .sb-actions a.btn, .sb-actions button {
   border: 1px solid var(--acc);
   background: var(--acc);
   color: #fff;
@@ -31,6 +54,9 @@
   border-radius: 20px;
   padding: 8px 16px;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
 }
 .sb-actions button.ghost, .sb-actions a.ghost {
   background: #fff;
@@ -64,8 +90,51 @@
   border-left: 4px solid var(--acc);
   font-size: 13px;
 }
+.sb-success {
+  border: 1px solid #b6ebe3;
+  background: linear-gradient(160deg, #e8faf7 0%, #fff 55%);
+  border-radius: 16px;
+  padding: 18px 18px 14px;
+  margin: 16px 0;
+}
+.sb-success h3 { margin: 0 0 6px; color: var(--navy); }
+.sb-success .lede { margin: 0 0 14px; color: var(--doc-mute); font-size: 14px; }
+.sb-success .statrow { margin: 0 0 14px; }
+.sb-success .stat b { font-size: 22px; }
+.sb-next { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.sb-next a.primary, .sb-next button.primary {
+  border: 0;
+  background: var(--navy);
+  color: #fff;
+  font-weight: 800;
+  font-size: 13px;
+  border-radius: 20px;
+  padding: 10px 16px;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+.sb-next a.secondary, .sb-next button.secondary {
+  border: 1px solid var(--acc);
+  background: #fff;
+  color: var(--acc);
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 20px;
+  padding: 9px 14px;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
 .suite-doc-frame table.sb-table { font-size: 12.5px; }
 .suite-doc-frame table.sb-table th { background: var(--navy); color: #fff; }
+.sb-privacy {
+  font-size: 12.5px;
+  color: var(--doc-mute);
+  margin: 10px 0 0;
+}
 </style>
 </head>
 <body class="suite-app suite-doc" data-page="sandbox" data-mode="shell">
@@ -75,12 +144,16 @@
 <div class="hero">
   <div class="kicker">Site Services · One-click sandbox</div>
   <h1>Deal sandbox</h1>
-  <div class="sub">Upload a site Excel → browser catchment → engine-summary JSON → <a href="/cost-model">/cost-model</a>. Generic samples only — no customer PII in defaults.</div>
+  <div class="sub">Try a generic sample in one click — browser catchment → sessionStorage → map &amp; cost model. No customer data in defaults.</div>
   <div class="statrow">
     <div class="stat"><b>JS</b><span>in-browser</span></div>
     <div class="stat"><b>25 mi</b><span>local range</span></div>
     <div class="stat"><b>1.2</b><span>remote tpd</span></div>
     <div class="stat acc"><b>v1</b><span>bridge, not full engine</span></div>
+  </div>
+  <div class="sb-hero-cta">
+    <button type="button" class="btn-try" id="btn_try_sample">Try sample deal</button>
+    <span class="mute">Loads the VC kit sample workbook, runs catchment, and saves the deal for map / cost model / export.</span>
   </div>
 </div>
 
@@ -105,30 +178,23 @@
   </div>
 </div>
 
-<div class="card">
-  <h3>Upload site workbook
-    <span class="help-tip">
-      <button type="button" class="help-tip-btn" aria-describedby="tip-upload" title="Accepted sheets">?</button>
-      <span role="tooltip" id="tip-upload" class="help-tip-panel">Prefers VC_Mapped_Sites, Cost_Model_Load, or VC_Site_Input_Template. Also accepts engine Sites sheets. Column aliases match column_aliases.yaml.</span>
-    </span>
-  </h3>
-  <div class="sb-drop" id="dropzone">
-    <p style="margin:0;font-weight:700;color:var(--navy)">Drop Excel here or choose a file</p>
-    <p class="mute" style="margin:6px 0 0">.xlsx / .xls · VC template or address-request-like sheets</p>
-    <input type="file" id="file_input" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+<p class="sb-status" id="status">Ready — try the sample deal, or upload your own workbook below.</p>
+
+<div class="sb-success" id="success" hidden>
+  <h3>Sample deal ready</h3>
+  <p class="lede" id="success_lede">Catchment complete · saved to sessionStorage.</p>
+  <div class="statrow" id="success_stats"></div>
+  <div class="sb-next">
+    <a class="primary" id="btn_next_map" href="/sandbox/map">View map</a>
+    <a class="primary" id="btn_next_cost" href="/cost-model?from=sandbox">Open cost model</a>
+    <button type="button" class="secondary" id="btn_next_export">Download proposal pack</button>
   </div>
-  <div class="sb-actions">
-    <button type="button" id="btn_sample">Run generic sample</button>
-    <button type="button" class="ghost" id="btn_mapped_fetch">Load mapped sample from kit</button>
-    <a class="ghost" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>Download blank template</a>
-  </div>
-  <p class="sb-status" id="status">Ready — no deal loaded.</p>
 </div>
 
 <div id="scenario_host" hidden></div>
 
 <div class="card" id="results" hidden>
-  <h3>Results</h3>
+  <h3>Site results</h3>
   <div class="statrow" id="result_stats"></div>
   <div class="sb-actions">
     <a class="btn" id="btn_cost" href="/cost-model?from=sandbox">Open in cost model</a>
@@ -144,6 +210,25 @@
     </thead>
     <tbody id="site_rows"></tbody>
   </table>
+</div>
+
+<div class="card">
+  <h3>Or upload a real deal workbook
+    <span class="help-tip">
+      <button type="button" class="help-tip-btn" aria-describedby="tip-upload" title="Accepted sheets">?</button>
+      <span role="tooltip" id="tip-upload" class="help-tip-panel">Prefers VC_Mapped_Sites, Cost_Model_Load, or VC_Site_Input_Template. Also accepts engine Sites sheets. Column aliases match column_aliases.yaml.</span>
+    </span>
+  </h3>
+  <div class="sb-drop" id="dropzone">
+    <p style="margin:0;font-weight:700;color:var(--navy)">Drop Excel here or choose a file</p>
+    <p class="mute" style="margin:6px 0 0">.xlsx / .xls · VC template or address-request-like sheets</p>
+    <input type="file" id="file_input" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+  </div>
+  <div class="sb-actions">
+    <a class="ghost" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>Download blank template</a>
+    <a class="ghost" href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>Download mapped sample</a>
+  </div>
+  <p class="sb-privacy">No customer deal data is shipped on this live suite by default — samples are generic Reference Deal A geography only. Keep real client workbooks off shared demos.</p>
 </div>
 
 <div class="two" style="margin-top:18px">
@@ -167,8 +252,15 @@
   const $ = (id) => document.getElementById(id);
   const status = $("status");
   const results = $("results");
+  const success = $("success");
   const dropzone = $("dropzone");
+  const tryBtn = $("btn_try_sample");
   let current = null;
+
+  const SAMPLE_URLS = [
+    "/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx",
+    "/assets/vc-kit/vc_template_pack_v1_0.xlsx",
+  ];
 
   function dealLabel() {
     return SSSandbox.sanitizeDealLabel($("deal_label").value || "Sample");
@@ -179,10 +271,29 @@
     status.textContent = msg;
   }
 
-  function render(pack) {
+  function esc(s) {
+    return String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function renderSuccess(pack, sourceNote) {
+    const s = pack.summary;
+    const role = s.role_split || {};
+    success.hidden = false;
+    $("success_lede").textContent =
+      `Catchment complete from ${sourceNote} · Staffed ${role.Staffed || 0} · Local ${role.Local || 0} · Remote ${role.Remote || 0} · saved to sessionStorage.`;
+    $("success_stats").innerHTML = `
+      <div class="stat"><b>${role.Staffed || 0}</b><span>Staffed</span></div>
+      <div class="stat"><b>${role.Local || 0}</b><span>Local</span></div>
+      <div class="stat"><b>${role.Remote || 0}</b><span>Remote</span></div>
+      <div class="stat"><b>${s.campuses}</b><span>campuses</span></div>
+      <div class="stat acc"><b>${s.day1_techs}</b><span>day-one techs</span></div>`;
+  }
+
+  function render(pack, opts = {}) {
     current = pack;
     if (!pack) {
       results.hidden = true;
+      success.hidden = true;
       $("scenario_host").hidden = true;
       return;
     }
@@ -190,6 +301,8 @@
     $("deal_label").value = pack.dealLabel || "Sample";
     const s = pack.summary;
     const role = s.role_split || {};
+    const sourceNote = opts.sourceNote || pack.source_file || pack.sheet_used || "sample";
+    renderSuccess(pack, sourceNote);
     results.hidden = false;
     $("scenario_host").hidden = false;
     SSScenarioStrip.injectStyles();
@@ -198,67 +311,112 @@
       <div class="stat"><b>${s.sites}</b><span>sites</span></div>
       <div class="stat"><b>${s.campuses}</b><span>campuses</span></div>
       <div class="stat"><b>${s.day1_techs}</b><span>day-one techs</span></div>
-      <div class="stat acc"><b>${role.Staffed||0}/${role.Local||0}/${role.Remote||0}</b><span>S / L / R</span></div>`;
-    $("gap_note").innerHTML = `<b>Gap vs python -m engine run</b><ul style="margin:6px 0 0 18px">${(s.gap_vs_engine||[]).map(g=>`<li>${g}</li>`).join("")}</ul>`;
-    $("site_rows").innerHTML = (pack.sites||[]).map(r => `
+      <div class="stat acc"><b>${role.Staffed || 0}/${role.Local || 0}/${role.Remote || 0}</b><span>S / L / R</span></div>`;
+    $("gap_note").innerHTML = `<b>Gap vs python -m engine run</b><ul style="margin:6px 0 0 18px">${(s.gap_vs_engine || []).map((g) => `<li>${g}</li>`).join("")}</ul>`;
+    $("site_rows").innerHTML = (pack.sites || [])
+      .map(
+        (r) => `
       <tr>
-        <td>${esc(r.site_name||r.site_id)}</td>
-        <td>${esc(r.city||"")}</td>
+        <td>${esc(r.site_name || r.site_id)}</td>
+        <td>${esc(r.city || "")}</td>
         <td><span class="role-pill role-${esc(r.mapped_role)}">${esc(r.mapped_role)}</span></td>
         <td>${r.tickets_per_day ?? ""}</td>
         <td>${r.users ?? ""}</td>
-        <td>${esc(r.campus_id||"")}</td>
+        <td>${esc(r.campus_id || "")}</td>
         <td>${r.distance_to_hub_miles ?? "—"}</td>
-      </tr>`).join("");
-    setStatus(`Loaded “${pack.dealLabel}” from ${pack.sheet_used || "sample"} · saved to sessionStorage.`, "ok");
-  }
-
-  function esc(s) {
-    return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+      </tr>`
+      )
+      .join("");
+    setStatus(`Loaded “${pack.dealLabel}” from ${sourceNote} · saved to sessionStorage.`, "ok");
+    if (opts.scroll !== false) {
+      success.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
   }
 
   async function runBuffer(buf, name) {
+    setStatus("Running catchment…");
+    const pack = await SSSandbox.parseWorkbookArrayBuffer(buf, { dealLabel: dealLabel() });
+    pack.source_file = name || "upload.xlsx";
+    render(pack, { sourceNote: name || "upload" });
+  }
+
+  async function fetchSampleWorkbook() {
+    let lastErr = null;
+    for (const url of SAMPLE_URLS) {
+      try {
+        const r = await fetch(url);
+        if (!r.ok) throw new Error("HTTP " + r.status + " for " + url);
+        const name = url.split("/").pop();
+        return { buf: await r.arrayBuffer(), name };
+      } catch (e) {
+        lastErr = e;
+      }
+    }
+    throw lastErr || new Error("Could not fetch sample workbook");
+  }
+
+  async function trySampleDeal() {
+    tryBtn.disabled = true;
     try {
-      setStatus("Running catchment…");
-      const pack = await SSSandbox.parseWorkbookArrayBuffer(buf, { dealLabel: dealLabel() });
-      pack.source_file = name || "upload.xlsx";
-      render(pack);
+      setStatus("Fetching sample deal…");
+      try {
+        const { buf, name } = await fetchSampleWorkbook();
+        await runBuffer(buf, name);
+      } catch (fetchErr) {
+        setStatus("Kit fetch failed — using embedded mini sample. (" + fetchErr.message + ")");
+        const pack = SSSandbox.runSample(dealLabel());
+        pack.source_file = "embedded-sample.json";
+        render(pack, { sourceNote: "embedded mini sample (kit fetch failed)" });
+      }
     } catch (e) {
       setStatus("Failed: " + e.message, "err");
+      success.hidden = true;
+    } finally {
+      tryBtn.disabled = false;
     }
   }
+
+  async function exportPack() {
+    if (!current) return;
+    try {
+      const res = await SSProposalExport.exportPack(current, { dealLabel: dealLabel() });
+      setStatus(`Exported ${res.filename} (${res.mode}).`, "ok");
+    } catch (e) {
+      setStatus("Export failed: " + e.message, "err");
+    }
+  }
+
+  tryBtn.addEventListener("click", trySampleDeal);
 
   $("file_input").addEventListener("change", async (ev) => {
     const f = ev.target.files && ev.target.files[0];
     if (!f) return;
-    const buf = await f.arrayBuffer();
-    await runBuffer(buf, f.name);
+    try {
+      await runBuffer(await f.arrayBuffer(), f.name);
+    } catch (e) {
+      setStatus("Failed: " + e.message, "err");
+    }
   });
 
-  ["dragenter","dragover"].forEach((ev) => {
-    dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.add("is-drag"); });
+  ["dragenter", "dragover"].forEach((ev) => {
+    dropzone.addEventListener(ev, (e) => {
+      e.preventDefault();
+      dropzone.classList.add("is-drag");
+    });
   });
-  ["dragleave","drop"].forEach((ev) => {
-    dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.remove("is-drag"); });
+  ["dragleave", "drop"].forEach((ev) => {
+    dropzone.addEventListener(ev, (e) => {
+      e.preventDefault();
+      dropzone.classList.remove("is-drag");
+    });
   });
   dropzone.addEventListener("drop", async (e) => {
     const f = e.dataTransfer.files && e.dataTransfer.files[0];
     if (!f) return;
-    await runBuffer(await f.arrayBuffer(), f.name);
-  });
-
-  $("btn_sample").addEventListener("click", () => {
-    render(SSSandbox.runSample(dealLabel()));
-  });
-
-  $("btn_mapped_fetch").addEventListener("click", async () => {
     try {
-      setStatus("Fetching mapped sample…");
-      const r = await fetch("/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx");
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      await runBuffer(await r.arrayBuffer(), "vc_template_pack_v1_0_mapped_sample.xlsx");
-    } catch (e) {
-      setStatus("Could not fetch mapped sample: " + e.message, "err");
+      await runBuffer(await f.arrayBuffer(), f.name);
+    } catch (err) {
+      setStatus("Failed: " + err.message, "err");
     }
   });
 
@@ -267,35 +425,32 @@
     const blob = new Blob([JSON.stringify(current.summary, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = `engine_summary_${dealLabel().replace(/\s+/g,"_")}.json`;
+    a.download = `engine_summary_${dealLabel().replace(/\s+/g, "_")}.json`;
     a.click();
   });
 
-  $("btn_export").addEventListener("click", async () => {
-    if (!current) return;
-    try {
-      const res = await SSProposalExport.exportPack(current, { dealLabel: dealLabel() });
-      setStatus(`Exported ${res.filename} (${res.mode}).`, "ok");
-    } catch (e) {
-      setStatus("Export failed: " + e.message, "err");
-    }
-  });
+  $("btn_export").addEventListener("click", exportPack);
+  $("btn_next_export").addEventListener("click", exportPack);
 
   $("btn_clear").addEventListener("click", () => {
     SSSandbox.clearDeal();
     current = null;
     results.hidden = true;
+    success.hidden = true;
     $("scenario_host").hidden = true;
     $("scenario_host").innerHTML = "";
     setStatus("Sandbox cleared.");
   });
 
-  $("btn_cost").addEventListener("click", () => {
+  function saveBeforeNav() {
     if (current) SSSandbox.saveDeal(current);
-  });
+  }
+  $("btn_cost").addEventListener("click", saveBeforeNav);
+  $("btn_next_cost").addEventListener("click", saveBeforeNav);
+  $("btn_next_map").addEventListener("click", saveBeforeNav);
 
   const existing = SSSandbox.loadDeal();
-  if (existing) render(existing);
+  if (existing) render(existing, { scroll: false, sourceNote: existing.source_file || "session" });
 })();
 </script>
 </body>
