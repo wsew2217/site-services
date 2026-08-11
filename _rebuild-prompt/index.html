@@ -58,9 +58,17 @@
     cursor: pointer;
     background: #13294B;
     color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
   }
   .rp-btn:hover { filter: brightness(1.08); }
   .rp-btn:disabled { opacity: 0.7; cursor: default; }
+  .rp-btn.ghost {
+    background: #fff;
+    color: #13294B;
+    border: 1px solid #d9e2ef;
+  }
   .rp-status {
     font-size: 13px;
     color: #54607A;
@@ -92,307 +100,53 @@
   <div class="rp-wrap">
     <p class="rp-kicker">Hidden · noindex · not in suite nav</p>
     <h1>Rebuild prompt</h1>
-    <p class="rp-instr">Copy the prompt below into another model to recreate this suite as an Excel workbook, PowerPoint deck, or standalone HTML.</p>
+    <p class="rp-instr">Copy the prompt below into another model to recreate this suite as an Excel workbook, PowerPoint deck, or standalone HTML. Source of truth: <code>/assets/vc-kit/AI_REBUILD_PROMPT.txt</code>.</p>
     <div class="rp-toolbar">
-      <button type="button" class="rp-btn" id="rp-copy">Copy</button>
-      <span class="rp-status" id="rp-status" aria-live="polite"></span>
+      <a class="rp-btn" href="/assets/vc-kit/AI_REBUILD_PROMPT.txt" download>Download .txt</a>
+      <button type="button" class="rp-btn ghost" id="rp-copy">Copy</button>
+      <span class="rp-status" id="rp-status" aria-live="polite">Loading prompt…</span>
     </div>
     <textarea class="rp-prompt" id="rp-prompt" readonly spellcheck="false"></textarea>
-    <p class="rp-foot">Path <code>/_rebuild-prompt/</code> · not linked from home or sidebar.</p>
+    <p class="rp-foot">Path <code>/_rebuild-prompt/</code> · not linked from home or sidebar · synced from <code>/assets/vc-kit/AI_REBUILD_PROMPT.txt</code>.</p>
   </div>
 <script>
-const PROMPT = String.raw`# Rebuild brief — Generic Site Services documentation suite
+(function () {
+  const SRC = "/assets/vc-kit/AI_REBUILD_PROMPT.txt";
+  const ta = document.getElementById("rp-prompt");
+  const status = document.getElementById("rp-status");
+  const btn = document.getElementById("rp-copy");
 
-You are rebuilding a **Site Services / Field Services solution-design suite** in one of three deliverable forms (ask the user which):
-1. **Excel workbook** (multi-sheet operating + cost model),
-2. **PowerPoint narrative deck**, or
-3. **Single-file (or small multi-page) standalone HTML**.
+  fetch(SRC, { cache: "no-store" })
+    .then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.text();
+    })
+    .then(function (text) {
+      ta.value = text;
+      status.textContent = "Loaded from " + SRC;
+      setTimeout(function () { status.textContent = ""; }, 1800);
+    })
+    .catch(function () {
+      status.textContent = "Could not load prompt. Use Download .txt.";
+      ta.value = "Failed to load " + SRC + "\n\nOpen that URL directly or use Download .txt.";
+    });
 
-This brief describes the *finished* product architecture. Recreate the substance and IA; you do not need pixel-perfect CSS. Sanitize all content: **no real customer brand names** (no Bureau Veritas, Elevance, or other account names). Use only **Reference Deal A** and **Reference Deal B** as labeled single-customer examples. **Dell** appears only as **vendor chrome / OEM attach** on Deal A pages — Dell does **not** own Site Services, and Deal A is not “Dell Site Services.”
-
----
-
-## 1. Product framing
-
-### What Site Services is
-- **Site Services** and **Field Services** share the **same process-flow skeleton** (Future Mode of Operation / FMO). Commercial labels differ; the operating ladder does not.
-- The product is a **methodology + deal engine + documentation suite** for designing deskside / field coverage for any estate from sparse site data.
-- Day-one headcount is sized from **workload + geography**, not from a fixed users:tech myth. Users:tech ratios are **commercial guardrails / road-map rungs**, not the day-one driver.
-
-### Reference deals (examples only)
-| Label | Pattern | What it demonstrates | What it is NOT |
-| --- | --- | --- | --- |
-| **Generic Site Services** | Methodology + engine + atlas + generic cost sandbox | How to build the next deal | A single customer’s campus count or headcount |
-| **Reference Deal A** | Global **virtual-campus** footprint | ~989 sites · ~29 campuses · ~114 field techs · ~132 total team · derived ~453:1 | Universal Site Services defaults; not Dell-owned Site Services |
-| **Reference Deal B** | **Tech-bar** walk-in + virtual coverage | ~65 offices · 8 bars · 13 day-one techs (8 bar + 1 virtual + 4 roving) · ratio band ~1500:1–2000:1 | Deal A’s campus estate; not generic defaults |
-
-Sanitize sample geography and numbers as “example estate” parameters. Dell Blue chrome is allowed on Deal A surfaces only.
-
----
-
-## 2. Information architecture / routes
-
-Recreate (or map into Excel sheets / PPT sections) these routes:
-
-### Site Services (generic)
-- \`/\` — Suite home: Generic / **VC Mapper kit** / Deal A / Deal B destination cards. Primary CTA can point at \`/vc-kit\`. **Do not** feature a rebuild-prompt link on the homepage.
-- \`/structure\` — Structure & methodology (FMO, roles, tech bar/remote, ratio bands, **delivery optimization metrics** cards).
-- \`/coverage\` — Country **capability atlas** (Staffed vs Capability matrix) — **not** a single-customer campus map.
-- \`/cost-model\` — Generic cost-model sandbox (primary economics tool for any estate). Guide tab documents engine JSON **and** VC Mapper \`Cost_Model_Load\` bridge.
-
-### VC Mapper / Solutioning Kit
-- \`/vc-kit\` — Kit overview: Excel template → \`vc_mapper.py\` → \`Cost_Model_Load\` → \`/cost-model\`
-- \`/vc-kit/template\` — Workbook tabs/headers + download \`vc_template_pack_v1_0.xlsx\`
-- \`/vc-kit/mapper\` — Mac run commands, catchment rules (25 mi / 1.2 tpd / near=always Local), role legend, bridge helper
-- \`/vc-kit/agent\` — SalesChat agent text pack (copy/download). **UI publish is manual** — no live SalesChat hosting
-- \`/vc-kit/runbook\` — First pilot checklist + acceptance criteria
-- Static downloads under \`/assets/vc-kit/\` (template, YAML, mapper zip, SalesChat \`.txt\` pack, **generic** mapped sample only)
-- Python package: \`tools/vc_mapper/\` (+ \`cost_model_bridge.py\`, tests). Customer pilot workbooks stay **off git**
-
-### Reference Deal A
-- \`/summary\` — Executive summary
-- \`/changes\` — What changed (v1→v2)
-- \`/methodology\` — Deal A methodology + campus appendix
-- \`/coverage-deal-a\` — Campus coverage map (Deal A footprint only; rehomed off generic Coverage)
-- \`/cost-model-deal-a\` — Deal A cost ladder
-- \`/story\` · \`/how-we-built\` — Build narrative / engineering story
-- \`/deck\` · \`/deck-internal\` — Customer vs internal decks
-- \`/workbook\` · \`/workbook-internal\` — Customer vs internal workbooks
-
-### Reference Deal B
-- \`/deal-b\` — Tech-bar pattern brief
-- \`/cost-model-deal-b\` — Tech-bar cost ladder
-
-### Supporting assets / engine
-- \`/assets/site.css\`, \`/assets/site.js\` — shared chrome (Generic teal/navy; Deal A theme override)
-- Engine summaries: \`engine-summary.json\`, \`engine-summary-deal-a.json\`, \`deal-b-tech-bar-summary.json\`
-- Capability atlas JSON; maps under \`/assets/maps/\`
-- Python deal engine: \`python -m engine run\` (intake → demand → VC → staffing → dispatch → cost → Excel/JSON)
-- Defaults: \`engine/defaults/parameters.json\`, \`ops_kpis.json\`, \`methodology.md\`, \`field_services_delivery_metrics.md\`
-
-### Hard constraint on navigation
-- Persistent suite sidebar groups: **Site Services** · **VC Mapper / Solutioning Kit** · **Reference Deal A** · **Reference Deal B**.
-- A hidden rebuild-prompt page (this document’s host) must **not** appear in nav or on the homepage.
-
----
-
-## 3. Operating model (must recreate)
-
-### FMO stage chain (inside the customer environment)
-\`\`\`
-Intake → Misroute / QA → Remote? → Contact & schedule → Tower work → Logistics → Finalize
-\`\`\`
-Process catalog pattern (FS001–FS021 style): initiation, mis-routed, contact & scheduling, hardware break/fix campus, hardware break/fix remote, repair/RMA, deskside software, new hire campus/remote, IMAC de-install / add-change / move, asset disposition, quarantine, data wipe, resolve, re-image, hot swap, shipping, Smart Hands, receiving, swivel-seat / partner dispatch.
-
-Campus vs remote and partner dispatch are **routing overlays**, not separate methodologies.
-
-Cadence defaults:
-- Contact ≥ 2× per business day
-- Incidents unreachable after ~3 business days / 3 attempts; requests after ~2 weeks
-- Escalate after >2 misroute transfers
-- Smart Hands: guided short tasks, **≤ ~60 min TOT** — not full break/fix
-- Quarantine hold default **14** calendar days
-- Close codes: RSLV / CNRC; status-code driven updates (DSCTM-style)
-
-### Primary / Secondary / Tertiary role lanes
-- Every tech has one **Primary** lane (home queue): Desktop-Incident, Desktop-Requests, Remote-Desktop, Staging, Site-Lead, Telecom, Network-VDI, Projects.
-- **Secondary** / **Tertiary** = flex coverage labels — **not additive FTE**.
-- Do not blend staging/infra throughput with deskside closure rates.
-- Tickets assign by role, schedule, location, active load — not tech self-select.
-
-### Virtual campus anatomy (hub-and-spoke)
-- **Hub (Staffed)** — anchor maximizing catchment inside drive radius (default **~60 km / ~60 min**)
-- **Local** — inside drive range; on-site reach
-- **Remote** — outside range or no coordinates; remote queue + Smart Hands / OEM + shipping
-- Every site belongs to **exactly one** campus (no orphans)
-- Hub-led vs depot-led by on-site workload share; campuses promote/fold from rules + demand
-
-### Tech bar / virtual tech / remote overlays
-- On-site tech bar (walk-up)
-- Virtual tech / remote desktop (resolve before dispatch)
-- Remote resolution team (shift-left)
-- Staging / depot (~25 mi campus staging; central depot for remote)
-- Smart Hands / partner dispatch for physical touch when not local
-
-### Staffing math (defaults)
-- Working days: **252** · Utilization: **~85%** · Team floor: typically **2** (single-tech exception below ~2.5 tickets/day)
-- On-site: **~6** incidents / tech / day, **~4** requests / tech / day
-- Remote: **~5** tickets / tech / day
-- Leads **1:10**, managers **1:24**
-- Optional FMO calibration: ~**7** tickets / tech / day
-- Demand when sparse: annual tickets → else users × estate rate → else devices × device rate → else placeholder + low-confidence flag
-- Sites without coordinates stay Remote / Uncertain — never auto-Local
-
-### Vertical ratio guidance (guardrails only)
-| Pattern | Users : tech |
-| --- | --- |
-| Lean / mature | ~2000 : 1 |
-| Healthcare | 250 : 1 – 750 : 1 |
-| Manufacturing | 750 : 1 – 1000 : 1 |
-| Administrative / office | 1000 : 1 – 1500 : 1 |
-| Tech bar–heavy | 1500 : 1 – 2000 : 1 |
-
----
-
-## 4. Delivery optimization metrics (required)
-
-Surface on \`/structure\` as metric cards + deeper note in \`engine/defaults/field_services_delivery_metrics.md\`. Targets live under \`ops_kpis.json\` → \`delivery_optimization\`. Label everything **industry-typical**, not named-customer truth.
-
-### Ranked deal-design KPIs
-1. **First-time fix / first-visit resolution (FTFR)** — Design target **≥85%**. Industry median ~**75–77%**; top ~**86–88%**; bottom ~**53–60%**. Deskside first-visit avg ~**84%**. Prefer **30-day** related-ticket window.
-2. **Avoidable dispatch / remote-resolve potential** — Industry median avoidable dispatch **~14%** (top ~**3%**, bottom ~**24%**). ~**1 in 5** cases remotely resolvable; ~**33%** of queries solvable without a field pro. Prices tech-bar / virtual / remote overlays.
-3. **SLA / SLO attainment** — Suite internal **SLO 95%** (tighter than contractual SLA). Industry ops floors often ≥90%.
-4. **Technician utilization** — Typical **75–85%**; suite designs at **85%**; pacesetters ~**90%**. Do not smash mid-80s at the expense of response slack.
-5. **Travel vs wrench time** — Travel share target **&lt;20%** of workday. Wrench time often **25–35%**; best-in-class **45–55%**.
-6. **Cost per resolution / cost-to-serve** — Failed first visit lifts resolution cost **~34–44%** vs single work-order cost. Failed visits ≈ **25%** of service cost at median.
-7. **Parts fill / logistics readiness** — Mature segmented discussion band **92–96%**.
-8. **Schedule adherence** — Strong ops often **~85–90%+** on-time.
-9. **Productivity & coverage ratios** — Suite throughputs above; users:tech = guardrails only.
-10. **Backlog health (DOH) & aging** — DOH green **≤1.5**, amber **≤2.5**; aging bands 0–3 … 30+.
-11. **CSAT / NPS / revisit / abandon** — CSAT often 80–85% “good”, 90%+ strong; abandon healthy ~2–5%.
-12. **Dispatch / routing optimization** — Automation rate often **&gt;80%** target; split KPIs by Campus / Local / Remote.
-
-### Deal-design reading order
-1. FTFR + avoidable dispatch + SLO  
-2. Utilization band + throughput (HC); ratios stay guardrails  
-3. Price remote / tech-bar deflection **before** cutting Local heads  
-4. Show parts / depot / dispatch rising as labor falls (cost-to-serve shift)  
-5. DOH / aging / CSAT as post-design QA — not day-one HC formula  
-
-### \`ops_kpis.json\` highlights to carry
-- \`slo_target\`: 0.95  
-- \`delivery_optimization.first_time_fix_rate_target\`: 0.85  
-- \`avoidable_dispatch_rate_industry_median\`: 0.14  
-- \`technician_utilization_design\`: 0.85  
-- \`travel_share_of_workday_target_max\`: 0.20  
-- \`resolution_cost_uplift_after_failed_first_visit_low/high\`: 0.34 / 0.44  
-- \`doh_green_max\` / \`doh_amber_max\`: 1.5 / 2.5  
-- Smart Hands max TOT 60; reopen_days 15; productivity_closed_per_tech_day_target 5; fmo_tickets_per_tech_day_target 7  
-
----
-
-## 5. Dual / triple cost models
-
-Build **three** related cost tools that share the same labor→logistics shift logic but different defaults and bridges:
-
-| Tool | Route | Bridge input | Day-one sizing | Road-map band |
-| --- | --- | --- | --- | --- |
-| Generic | \`/cost-model\` | Optional \`engine-summary.json\` (manual until loaded) | Throughput + campus floor (or engine-derived) | Editable; often 750→1500 |
-| Deal A | \`/cost-model-deal-a\` | Auto-load \`engine-summary-deal-a.json\` | Estate-derived (~114 techs, 29 campuses) | Same ladder shape as generic; Deal A numbers |
-| Deal B | \`/cost-model-deal-b\` | Auto-load \`deal-b-tech-bar-summary.json\` | Bars + virtual + roving (~13 techs, 8 bars) | **1500 / 1750 / 2000** |
-
-Shared panes / sheets: **Inputs · Scenarios · Results & charts · Transition & cash · Sensitivity · Model logic**.
-
-Shared economics idea: the ratio road map is a **cost shift** (labor → shipping / depot / Smart Hands / OEM), not a pure labor cut. Show composition stacks, step one-time costs, multi-year cash vs as-is, and tornado sensitivity (±15% drivers).
-
-### Required UI section on each cost model: “How this model was built / How to use”
-Instruct the rebuild to include an explicit **How this model was built / How to use** block (or Excel “Read me” sheet / PPT appendix slide) for **each** of the three cost models, covering:
-
-1. **Purpose** — what commercial question it answers  
-2. **Inputs** — what the user edits vs what locks from engine/summary  
-3. **Method** — day-one HC math, deflection, zero-touch, uncovered-touch routing, logistics knobs  
-4. **Steps** — recommended click-path (load bridge → set estate → edit scenario rungs → read results/cash/sensitivity)  
-5. **What not to confuse** — vs the other two models and vs the Python site/VC engine  
-
-Use the content below (adapt wording to Excel/PPT/HTML form).
-
-#### A) Generic Cost Model (\`/cost-model\`)
-- **Purpose:** Primary economics sandbox for **any** estate. Prices structure and the labor→logistics shift; not a specific contract.
-- **Inputs:** Sites, users, tickets/user, campuses (manual until engine loaded), physical-touch %, day-one on-site reach, throughput rates, utilization, team floor, lead/mgr spans, regional labor mix + burden, logistics/depot/stock, Smart Hands + OEM attach, current-state HC/logistics, transition costs. Optional load of \`/assets/engine-summary.json\` (or upload) locks campuses + day-one techs.
-- **Method:** Tickets/yr = users × TPU; deflection removes tickets before staffing. Day one from engine when loaded; else ≈ on-site + remote throughput floors by campuses × team floor. Road-map rungs: max(campuses × floor, ceil(users / ratio)). Uncovered physical touches → OEM (break/fix share × attach) + Smart Hands. Parts/depot/stock + refresh (zero-touch vs touch+ship). Cash: current → day one (Y0) → rungs by “year reached” with severance/hire/parallel/PMO one-times.
-- **Steps:** (1) Prefer Load sample engine summary or upload deal JSON. (2) Refresh dollar rates for the deal. (3) Set vertical ratio guardrails on Scenarios. (4) Edit yellow cells (ratio / deflection / zero-touch / year). (5) Read Results composition + Transition cash + Sensitivity tornado. (6) Open Model Logic for the defensible write-up.
-- **What not to confuse:** Not Deal A’s 989-site truth; not Deal B’s tech-bar band. Does not pick hubs/VCs — that is \`python -m engine run\`. Dollar rates are modern placeholders. Ratios are guardrails, not day-one sizing.
-
-#### B) Reference Deal A Cost Model (\`/cost-model-deal-a\`)
-- **Purpose:** Economics for **one** campus-footprint example (~989 sites · 29 campuses · 114 day-one techs). Makes that estate’s cost shift priceable.
-- **Inputs:** Same control surface as generic, but defaults + auto-load \`engine-summary-deal-a.json\` lock campuses/day-one techs to the example. Commercial rates remain editable placeholders. Dell OEM / lifecycle-hub lines are **attach opportunities in the cost-shift story**, not a claim that Site Services is a Dell program owned by the customer.
-- **Method:** Same labor→logistics ladder as generic; day-one HC and campus count come from the published Deal A staffing/engine summary. Scenario ladder typically Current → Day one → 750 (goal) → 1000 → 1200 → 1500 with deflection/zero-touch maturity rising.
-- **Steps:** (1) Confirm Deal A summary loaded (Reload if needed). (2) Keep estate-derived campuses/day-one unless exploring a sandbox. (3) Tune rates and scenario yellow cells. (4) Walk Results / Cash / Sensitivity. (5) Cross-link Structure metrics and Methodology appendix when briefing.
-- **What not to confuse:** Not generic Site Services product defaults (\`/cost-model\`). Not Deal B. Dell Blue theme = vendor chrome on this example only. OEM warranty lines ≠ “Dell owns Site Services.”
-
-#### C) Reference Deal B Cost Model (\`/cost-model-deal-b\`)
-- **Purpose:** Economics for the **tech-bar walk-in + virtual** pattern (~65 offices · 8 bars · 13 day-one techs). Commercial band ~**1500:1–2000:1**.
-- **Inputs:** Parallel UI, but “campuses” become **established tech bars**; floor = dedicated tech per bar. Auto-load \`deal-b-tech-bar-summary.json\`. Day-one = bar techs + dedicated virtual + roving. Depot/lifecycle hub is **logistics cost**, not bar headcount. No new bars proposed — coverage map for existing bars.
-- **Method:** Day one demand-sized from walk-in + virtual queues (summary team 8+1+4). Road-map rungs **1500 (goal) / 1750 / 2000** with deflection & zero-touch. Same uncovered-touch → dispatch/OEM and parts/depot/stock logic, stocked per bar rather than per campus.
-- **Steps:** (1) Confirm Deal B summary loaded. (2) Review bar count + day-one techs. (3) Edit rates and 1500–2000 rungs. (4) Read shift / cash / sensitivity. (5) Keep pattern brief (\`/deal-b\`) beside the model when presenting.
-- **What not to confuse:** Not Deal A’s VC floors or 750:1 campus ladder. Not generic round-number sandbox. Depot lines ≠ tech-bar FTE. Day-one is bars+virtual+roving, not campus team floors.
-
----
-
-## 6. Python deal engine (for Excel parity / HTML bridge)
-
-Pipeline: **intake → demand normalize → virtual-campus staffing → dispatch → cost → ops dashboard → Excel workbook + web JSON summary**.
-
-\`\`\`
-python -m engine run <intake.xlsx> --out <deal.xlsx> [--json summary.json]
-\`\`\`
-
-Modules: intake, demand, staffing (VC plan), dispatch, cost, ops, workbook. Defaults from \`parameters.json\` + \`ops_kpis.json\`. Cost-model pages consume the JSON summary so campus/bar counts and day-one techs stay reconciled with the site model.
-
----
-
-## 7. Brand & visual rules
-
-### Generic Site Services
-- Distinct teal/navy system (not Dell): accent teal \`#2FD6C2\`, navy \`#13294B\`, doc surfaces light gray-blue, accent coral \`#D86A44\` sparingly.
-- Fonts: display **Sora**, body **Manrope** (or close equivalents).
-
-### Reference Deal A only
-- Dell vendor chrome tokens: Blue **\`#0076CE\`**, charcoal **\`#454545\`**, gallery **\`#EFEFEF\`**, white **\`#FFFFFF\`**.
-- Apply via a scoped theme (e.g. \`theme-deal-a\`) on Deal A pages only — do not paint the whole suite Dell Blue.
-
-### Hard constraints
-- No real customer names anywhere in customer-facing copy.
-- Dell as vendor chrome / OEM attach on Deal A only.
-- Generic Coverage atlas ≠ Deal A campus map (separate routes).
-- Do not put rebuild-prompt / lab pages in production nav or homepage.
-
----
-
-## 8. Output options (offer the user one)
-
-### Option A — Excel workbook
-Suggested sheets: ReadMe · Structure_FMO · Role_Lanes · Ratio_Bands · Delivery_Metrics · Coverage_Atlas · DealA_Campuses · DealA_Methodology · DealB_TechBars · Cost_Generic_Inputs · Cost_Generic_Scenarios · Cost_Generic_Results · Cost_DealA_* · Cost_DealB_* · Engine_Parameters · Ops_KPIs · HowTo_Cost_Generic · HowTo_Cost_DealA · HowTo_Cost_DealB.
-
-### Option B — PowerPoint narrative
-Suggested arc: What Site Services is → FMO chain → Roles & overlays → Hub-spoke campuses → Ratio guardrails → Delivery metrics (FTFR, avoidable dispatch, SLO, util, travel, failed-visit cost) → Capability atlas idea → Deal A example → Deal B contrast → Triple cost-model story + How to use each → Cost-shift punchline → Sanitization / brand rules.
-
-### Option C — Standalone HTML
-Single file or small static set mirroring the routes above, with shared nav groups, Deal A theme scope, three cost-model calculators (even if simplified), Structure metrics cards, and a hidden \`/_rebuild-prompt/\` page that is noindex and unlinked.
-
----
-
-## 9. Acceptance checklist
-- [ ] Generic ≠ Deal A ≠ Deal B clearly labeled
-- [ ] FMO chain + P/S/T roles + hub-spoke + tech-bar/remote overlays present
-- [ ] Ratio bands listed as guardrails; day-one from workload
-- [ ] Delivery metrics include FTFR ≥85% design, avoidable dispatch ~14%, SLO 95%, util 75–85%, travel &lt;20%, failed-visit cost +34–44%
-- [ ] Three cost models with How-this-was-built / How-to-use (purpose, inputs, method, steps, what not to confuse)
-- [ ] No real customer names; Dell chrome on Deal A only
-- [ ] Engine bridge story (intake→JSON/Excel) explained
-- [ ] Chosen output form (Excel / PPT / HTML) is coherent end-to-end
-`;
-
-const ta = document.getElementById("rp-prompt");
-const status = document.getElementById("rp-status");
-const btn = document.getElementById("rp-copy");
-ta.value = PROMPT;
-
-btn.addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText(ta.value);
-    status.textContent = "Copied.";
-    btn.disabled = true;
-    setTimeout(() => {
-      btn.disabled = false;
-      status.textContent = "";
-    }, 1600);
-  } catch (e) {
-    ta.focus();
-    ta.select();
-    status.textContent = "Select all and copy manually (clipboard blocked).";
-  }
-});
+  btn.addEventListener("click", async function () {
+    try {
+      await navigator.clipboard.writeText(ta.value);
+      status.textContent = "Copied.";
+      btn.disabled = true;
+      setTimeout(function () {
+        btn.disabled = false;
+        status.textContent = "";
+      }, 1600);
+    } catch (e) {
+      ta.focus();
+      ta.select();
+      status.textContent = "Select all and copy manually (clipboard blocked).";
+    }
+  });
+})();
 </script>
 </body>
 </html>

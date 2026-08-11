@@ -16,12 +16,22 @@
 .dot-staffed { background:#2E7D32; }
 .dot-cap { background:#D86A44; }
 .dot-none { background:#C9D2E4; }
+.atlas-toolbar {
+  display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+  margin:0 0 14px;
+}
+.atlas-search {
+  flex:1 1 220px; min-height:38px; padding:0 12px;
+  border:1px solid var(--doc-line); border-radius:10px;
+  background:#fff; color:#13294B; font:inherit; font-size:13.5px;
+}
 .atlas-filters { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; }
-.atlas-filters button {
+.atlas-filters button, .cap-filters button {
   border:1px solid var(--doc-line); background:#fff; color:#54607A;
   font-weight:700; font-size:12.5px; border-radius:20px; padding:6px 14px; cursor:pointer;
 }
-.atlas-filters button.on { background:#13294B; color:#fff; border-color:#13294B; }
+.atlas-filters button.on, .cap-filters button.on { background:#13294B; color:#fff; border-color:#13294B; }
+.cap-filters { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; }
 .atlas-table-wrap { overflow-x:auto; border:1px solid var(--doc-line); border-radius:12px; background:#fff; }
 .atlas-table { width:100%; border-collapse:collapse; font-size:12.5px; min-width:920px; }
 .atlas-table th {
@@ -31,6 +41,35 @@
 .atlas-table td { padding:7px 9px; border-bottom:1px solid var(--doc-line); white-space:nowrap; }
 .atlas-table tr:nth-child(even) td { background:#F4F6FB; }
 .atlas-table .country { font-weight:700; color:#13294B; }
+.atlas-table tr.country-row {
+  cursor:pointer;
+}
+.atlas-table tr.country-row:hover td,
+.atlas-table tr.country-row.is-open td { background:#e8faf7; }
+.atlas-table tr.country-row:focus-visible { outline:2px solid #2fd6c2; outline-offset:-2px; }
+.atlas-table .expand-hint {
+  display:inline-block; margin-left:6px; font-size:11px; font-weight:700;
+  color:#8A93A6; letter-spacing:0.04em; text-transform:uppercase;
+}
+.atlas-table tr.detail-row td {
+  background:#eef3fa !important;
+  white-space:normal;
+  padding:12px 14px;
+  border-bottom:1px solid var(--doc-line);
+}
+.detail-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+  gap:8px;
+  margin-top:8px;
+}
+.detail-grid div {
+  border:1px solid var(--doc-line);
+  border-radius:10px;
+  background:#fff;
+  padding:8px 10px;
+}
+.detail-grid b { display:block; font-size:11px; color:#8A93A6; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px; }
 .pill {
   display:inline-block; min-width:72px; text-align:center; font-size:11px; font-weight:700;
   border-radius:999px; padding:2px 8px;
@@ -39,12 +78,13 @@
 .pill-cap { background:#FBEFE9; color:#9A3412; }
 .pill-empty { background:#EEF1F6; color:#8A93A6; }
 .region-h {
-  margin:28px 0 8px; font-family:Cambria,Georgia,serif; color:#13294B; font-size:20px;
+  margin:28px 0 8px; font-family:var(--font-display),Sora,system-ui; color:#13294B; font-size:20px;
 }
 .deal-a-callout {
   margin-top:28px; padding:16px 18px; border-radius:12px; border:1px solid var(--doc-line);
   background:#F4F6FB; font-size:14px; line-height:1.45; color:#54607A;
 }
+.atlas-empty { padding:18px; color:#54607A; }
 </style>
 </head>
 <body class="suite-app suite-doc" data-page="coverage" data-mode="shell">
@@ -54,7 +94,7 @@
 <div class="hero">
   <div class="kicker">Site Services · Generic</div>
   <h1>Coverage atlas</h1>
-  <div class="sub">Country-level Site Services capability — Staffed vs Capability — from the portfolio capability matrix. Not a single-customer campus map.</div>
+  <div class="sub">Interactive country capability matrix — Staffed vs Capability by service. Not a single-customer campus map.</div>
   <div class="statrow" id="atlas-stats">
     <div class="stat"><b>—</b><span>countries with presence</span></div>
     <div class="stat"><b>—</b><span>staffed deskside</span></div>
@@ -64,7 +104,15 @@
   </div>
 </div>
 
-<p>Generic coverage answers <b class="t">what can be delivered in a country</b>, not where one account’s hubs sit. For a campus footprint example, see <a href="/coverage-deal-a">Reference Deal A coverage</a>. For a tech-bar walk-in pattern, see <a href="/deal-b">Reference Deal B</a>.</p>
+<p>Generic coverage answers <b class="t">what can be delivered in a country</b>, not where one account’s hubs sit. Click any country row for a service-by-service breakdown. For a campus footprint example, see <a href="/coverage-deal-a">Reference Deal A coverage</a>. For a tech-bar walk-in pattern, see <a href="/deal-b">Reference Deal B</a>.</p>
+
+<div class="kit-dl" aria-label="Capability matrix downloads">
+  <a class="primary" href="/assets/capability-atlas.json" download title="Sanitized country rollup used by this page">Download capability atlas (JSON)</a>
+  <a href="/coverage#atlas-body" title="Jump to the interactive matrix">Jump to matrix</a>
+  <button type="button" class="kit-dl-btn" onclick="suiteDownloadPageHtml({filename:'coverage-atlas.html',title:'Coverage Atlas'})">Download this page as HTML</button>
+  <button type="button" class="kit-dl-btn" onclick="window.print()">Print / PDF</button>
+</div>
+<p class="mute" style="margin-top:-8px">Source rollup: Site Services Capability Matrix (sanitized country presence only — no account names on this site).</p>
 
 <div class="atlas-legend">
   <span><i class="dot-staffed"></i> Staffed — dedicated / assigned HC</span>
@@ -72,7 +120,12 @@
   <span><i class="dot-none"></i> Blank — no matrix flag for that service</span>
 </div>
 
+<div class="atlas-toolbar">
+  <label class="mute" for="atlas-search" style="font-size:12.5px;font-weight:700">Find country</label>
+  <input class="atlas-search" id="atlas-search" type="search" placeholder="e.g. Germany, Brazil…" autocomplete="off">
+</div>
 <div class="atlas-filters" id="atlas-filters" aria-label="Filter by region"></div>
+<div class="cap-filters" id="cap-filters" aria-label="Filter by staffing flag"></div>
 <div id="atlas-body"><p class="coverage-note">Loading capability atlas…</p></div>
 
 <div class="deal-a-callout">
@@ -81,12 +134,13 @@
   <a href="/coverage-deal-a">/coverage-deal-a</a> so generic Site Services coverage is not mistaken for one customer’s hubs.
 </div>
 
-<div class="band">Capability matrix → country atlas · campus maps stay deal-specific</div>
+<div class="band">Country atlas from the capability matrix · campus maps stay deal-specific</div>
 <p style="margin-top:18px">
   <a class="chip" href="/structure">Structure &amp; methodology</a>
   <a class="chip" href="/coverage-deal-a">Deal A campus map</a>
   <a class="chip" href="/deal-b">Deal B tech-bar pattern</a>
   <a class="chip" href="/cost-model">Generic cost model</a>
+  <a class="chip" href="/assets/capability-atlas.json" download>Capability atlas JSON</a>
 </p>
 
 <div class="foot"><span>Site Services · Generic coverage atlas</span><span>Field Services Solution Design · 2026</span></div>
@@ -109,21 +163,54 @@
     "Dispatch NBD": "D-NBD",
   };
 
+  let atlasData = null;
+  let activeRegion = "ALL";
+  let activeFlag = "ALL";
+  let query = "";
+  let openCountry = null;
+
   function pill(v) {
     if (v === "Staffed") return '<span class="pill pill-staffed">Staffed</span>';
     if (v === "Capability") return '<span class="pill pill-cap">Capability</span>';
     return '<span class="pill pill-empty">—</span>';
   }
 
-  function render(data, region) {
+  function countryMatches(c) {
+    if (activeRegion !== "ALL" && c.region !== activeRegion) return false;
+    if (query) {
+      const hay = `${c.country} ${c.sub_region || ""} ${c.region}`.toLowerCase();
+      if (!hay.includes(query)) return false;
+    }
+    if (activeFlag !== "ALL") {
+      const vals = Object.values(c.capabilities || {});
+      if (activeFlag === "ANY") return vals.some((v) => v === "Staffed" || v === "Capability");
+      if (!vals.includes(activeFlag)) return false;
+    }
+    return true;
+  }
+
+  function detailHtml(c, colSpan) {
+    const caps = atlasData.capabilities;
+    const cells = caps.map((cap) => {
+      const v = (c.capabilities || {})[cap];
+      return `<div><b>${cap}</b>${pill(v)}</div>`;
+    }).join("");
+    return `<tr class="detail-row" data-detail-for="${c.country}"><td colspan="${colSpan}">
+      <b class="t">${c.country}</b> · ${c.region}${c.sub_region ? " / " + c.sub_region : ""} · engagements ${c.engagements || "—"}
+      <div class="detail-grid">${cells}</div>
+      <p class="mute" style="margin:10px 0 0;font-size:12.5px">Staffed = dedicated/assigned HC. Capability = partner or shared capacity. Blank = no matrix flag.</p>
+    </td></tr>`;
+  }
+
+  function render() {
+    const data = atlasData;
     const caps = data.capabilities;
-    const rows = data.countries.filter((c) => !region || region === "ALL" || c.region === region);
+    const rows = data.countries.filter(countryMatches);
     const byRegion = {};
-    rows.forEach((c) => {
-      (byRegion[c.region] ||= []).push(c);
-    });
+    rows.forEach((c) => { (byRegion[c.region] ||= []).push(c); });
 
     const body = document.getElementById("atlas-body");
+    const colSpan = 3 + caps.length;
     let html = "";
     Object.keys(byRegion).sort().forEach((reg) => {
       html += `<h2 class="region-h">${reg}</h2><div class="atlas-table-wrap"><table class="atlas-table"><thead><tr>
@@ -136,20 +223,58 @@
         .slice()
         .sort((a, b) => a.country.localeCompare(b.country))
         .forEach((c) => {
-          html += `<tr><td class="country">${c.country}</td><td>${c.sub_region || ""}</td><td>${c.engagements || "—"}</td>`;
+          const open = openCountry === c.country;
+          html += `<tr class="country-row${open ? " is-open" : ""}" tabindex="0" role="button"
+            aria-expanded="${open ? "true" : "false"}"
+            data-country="${c.country}"
+            title="Click to ${open ? "collapse" : "expand"} ${c.country} capability detail">
+            <td class="country">${c.country}<span class="expand-hint">${open ? "hide" : "detail"}</span></td>
+            <td>${c.sub_region || ""}</td><td>${c.engagements || "—"}</td>`;
           caps.forEach((cap) => {
-            html += `<td>${pill(c.capabilities[cap])}</td>`;
+            html += `<td>${pill((c.capabilities || {})[cap])}</td>`;
           });
           html += `</tr>`;
+          if (open) html += detailHtml(c, colSpan);
         });
       html += `</tbody></table></div>`;
     });
-    body.innerHTML = html || "<p>No countries match this filter.</p>";
+    body.innerHTML = html || `<p class="atlas-empty">No countries match this filter. Clear search or choose All regions.</p>`;
   }
 
+  function toggleCountry(name) {
+    openCountry = openCountry === name ? null : name;
+    render();
+    if (openCountry) {
+      const row = document.querySelector(`tr.country-row[data-country="${CSS.escape(openCountry)}"]`);
+      row?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }
+
+  document.getElementById("atlas-body").addEventListener("click", (e) => {
+    const row = e.target.closest("tr.country-row");
+    if (!row) return;
+    toggleCountry(row.dataset.country);
+  });
+  document.getElementById("atlas-body").addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const row = e.target.closest("tr.country-row");
+    if (!row) return;
+    e.preventDefault();
+    toggleCountry(row.dataset.country);
+  });
+
+  document.getElementById("atlas-search").addEventListener("input", (e) => {
+    query = (e.target.value || "").trim().toLowerCase();
+    render();
+  });
+
   fetch("/assets/capability-atlas.json")
-    .then((r) => r.json())
+    .then((r) => {
+      if (!r.ok) throw new Error("atlas fetch failed");
+      return r.json();
+    })
     .then((data) => {
+      atlasData = data;
       const s = data.stats || {};
       const stats = document.getElementById("atlas-stats");
       const regionCount = Object.keys(s.regions || {}).length;
@@ -162,22 +287,40 @@
 
       const filters = document.getElementById("atlas-filters");
       const regions = ["ALL", ...Object.keys(s.regions || {}).sort()];
-      let active = "ALL";
       filters.innerHTML = regions
         .map((r) => `<button type="button" data-r="${r}" class="${r === "ALL" ? "on" : ""}">${r === "ALL" ? "All regions" : r}</button>`)
         .join("");
       filters.addEventListener("click", (e) => {
         const btn = e.target.closest("button[data-r]");
         if (!btn) return;
-        active = btn.dataset.r;
-        filters.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.r === active));
-        render(data, active);
+        activeRegion = btn.dataset.r;
+        filters.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.r === activeRegion));
+        render();
       });
-      render(data, active);
+
+      const capFilters = document.getElementById("cap-filters");
+      const flagOpts = [
+        ["ALL", "All flags"],
+        ["Staffed", "Has Staffed"],
+        ["Capability", "Has Capability"],
+        ["ANY", "Any flagged service"],
+      ];
+      capFilters.innerHTML = flagOpts
+        .map(([v, label]) => `<button type="button" data-f="${v}" class="${v === "ALL" ? "on" : ""}">${label}</button>`)
+        .join("");
+      capFilters.addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-f]");
+        if (!btn) return;
+        activeFlag = btn.dataset.f;
+        capFilters.querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.f === activeFlag));
+        render();
+      });
+
+      render();
     })
     .catch(() => {
       document.getElementById("atlas-body").innerHTML =
-        "<p>Could not load <code>/assets/capability-atlas.json</code>.</p>";
+        "<p>Could not load <code>/assets/capability-atlas.json</code>. Check the download link above or redeploy assets.</p>";
     });
 })();
 </script>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · VC Kit Offline Hub</title>
+<style>
+:root {
+  --navy: #13294B;
+  --slate: #54607A;
+  --acc: #D86A44;
+  --tint: #F4F6FB;
+  --line: #E4E8F0;
+  --ink: #232A35;
+  --mute: #8A93A6;
+  --green: #149887;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Calibri, "Segoe UI", system-ui, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(165deg, #eef2f8 0%, #f7f8fb 40%, #fff6f1 100%);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 28px 20px 64px; }
+.hero {
+  background: var(--navy);
+  color: #fff;
+  border-radius: 16px;
+  padding: 28px 26px 22px;
+  margin-bottom: 22px;
+  box-shadow: 0 12px 40px rgba(19,41,75,.22);
+}
+.hero .k { color: var(--acc); font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; }
+.hero h1 { font-family: Cambria, Georgia, serif; font-size: 30px; margin: 8px 0 6px; font-weight: 700; }
+.hero .s { color: #C9D2E4; font-size: 14px; margin: 0; }
+.badge {
+  display: inline-block; margin-top: 12px; padding: 5px 10px; border-radius: 8px;
+  background: rgba(47,214,194,.18); color: #9ef0e4; font-size: 12px; font-weight: 700;
+}
+.callout {
+  border-left: 4px solid var(--acc);
+  background: #fff6f1;
+  border-radius: 0 12px 12px 0;
+  padding: 12px 14px;
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+.callout.soft { border-left-color: var(--green); background: #e8faf7; }
+h2 { font-family: Cambria, Georgia, serif; color: var(--navy); font-size: 22px; margin: 28px 0 8px; }
+h3 { font-family: Cambria, Georgia, serif; color: var(--navy); font-size: 17px; margin: 0 0 6px; }
+p, li { color: var(--ink); }
+.mute { color: var(--mute); font-size: 13px; }
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0;
+  box-shadow: 0 2px 8px rgba(133,149,176,.12);
+}
+.card.pref { border-color: #2fd6c2; box-shadow: 0 0 0 2px rgba(47,214,194,.16); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+.flow { display: grid; gap: 8px; margin: 12px 0; }
+.step {
+  display: grid; grid-template-columns: 36px 1fr; gap: 10px; align-items: start;
+  padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: #fff;
+}
+.step b.n {
+  display: inline-flex; width: 28px; height: 28px; align-items: center; justify-content: center;
+  border-radius: 8px; background: var(--navy); color: #fff; font-size: 13px;
+}
+pre, code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+}
+pre {
+  background: var(--tint);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 8px 0; }
+th { background: var(--navy); color: #fff; text-align: left; padding: 8px 10px; }
+td { border: 1px solid var(--line); padding: 7px 10px; background: #fff; }
+tr:nth-child(even) td { background: var(--tint); }
+.tag {
+  display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--green); margin-bottom: 4px;
+}
+.tag.mute { color: var(--mute); }
+.dl { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+.dl a, .dl button {
+  appearance: none; display: inline-flex; align-items: center; min-height: 36px;
+  padding: 0 14px; border-radius: 10px; border: 1px solid var(--line);
+  background: #fff; color: var(--navy); font: inherit; font-weight: 700; font-size: 13px;
+  text-decoration: none; cursor: pointer;
+}
+.dl a.primary, .dl button.primary { background: var(--navy); border-color: var(--navy); color: #fff; }
+.band {
+  margin-top: 28px; background: var(--navy); color: #fff; text-align: center;
+  font-weight: 700; border-radius: 12px; padding: 14px 18px; font-size: 14px;
+}
+.foot { margin-top: 18px; color: var(--mute); font-size: 12.5px; text-align: center; }
+details { margin: 10px 0; }
+details summary { cursor: pointer; font-weight: 700; color: var(--navy); }
+@media print {
+  body { background: #fff; }
+  .dl button { display: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <div class="k">Site Services · Offline pack</div>
+    <h1>VC Mapper / Solutioning Kit</h1>
+    <p class="s">Self-contained hub for offline reading — pipeline how-to, catchment rules, local file instructions. Generic starter samples only.</p>
+    <span class="badge">No customer deal data · rates/scenarios as-exported when used with cost reports</span>
+  </div>
+
+  <div class="callout" role="note">
+    <b>Live site does not include customer deal data.</b>
+    Keep address-request / pilot workbooks on Desktop or governed folders. This pack ships generic samples and instructions only.
+  </div>
+
+  <div class="dl">
+    <button type="button" class="primary" id="btn-save-page">Save this hub as HTML</button>
+    <a class="primary" href="/assets/vc-kit/vc_mapper_package.zip" download>Mapper package (.zip)</a>
+    <a class="primary" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>Blank template (.xlsx)</a>
+    <a class="primary" href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>Mapped sample (.xlsx)</a>
+    <a class="primary" href="/assets/vc-kit/AI_REBUILD_PROMPT.txt" download>Download AI rebuild prompt (.txt)</a>
+    <a href="/assets/vc-kit/site-services-offline.zip" download>Offline pack (.zip)</a>
+  </div>
+  <p class="mute">All kit downloads use absolute <code>/assets/vc-kit/…</code> paths so they work on the live Vercel site (including when this hub is opened as <code>/assets/vc-kit/offline</code> without a trailing slash). When you save this HTML for local reading, open the same URLs from the deployed site or keep sibling files beside a local copy.</p>
+
+  <h2>Pipeline how-to</h2>
+  <div class="flow">
+    <div class="step"><b class="n">1</b><div><b>Template</b> — Fill <code>VC_Site_Input_Template</code> in <code>vc_template_pack_v1_0.xlsx</code> (one row per site; country + a demand signal required).</div></div>
+    <div class="step"><b class="n">2</b><div><b>Mapper</b> — Run <code>python vc_mapper.py</code> with <code>default_rules.yaml</code> → Hub / Local / Remote on <code>VC_Mapped_Sites</code> plus Summary, Cost_Model_Load, Exceptions.</div></div>
+    <div class="step"><b class="n">3</b><div><b>Cost_Model_Load</b> — Engine-aligned bridge sheet. Review Exceptions first. Not a priced proposal by itself.</div></div>
+    <div class="step"><b class="n">4</b><div><b>Cost model</b> — Bridge helper → Sites intake / JSON → optional full engine run → upload <code>Deal_Output.json</code> on the cost-model sandbox (or use Export HTML report there for an offline snapshot).</div></div>
+  </div>
+
+  <h2>Two tools — which one?</h2>
+  <div class="grid2">
+    <div class="card pref">
+      <div class="tag">Preferred for this kit</div>
+      <h3><code>python vc_mapper.py</code></h3>
+      <p style="margin:0">VC kit mapper: template → Mapped_Sites / Summary / Cost_Model_Load. Then bridge helper → cost model. Use this for new VC solutioning.</p>
+    </div>
+    <div class="card">
+      <div class="tag mute">Older / parallel path</div>
+      <h3><code>python -m engine run</code></h3>
+      <p style="margin:0">Deal engine in <code>engine/</code>: intake → Excel + <code>Deal_Output.json</code> → cost-model upload. Full staffing / VC pipeline — not required to start mapping.</p>
+    </div>
+  </div>
+
+  <h2>Mac setup &amp; commands</h2>
+  <div class="card">
+    <h3>Setup</h3>
+<pre>cd ~/Desktop/site_services_vc_mapper
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip
+pip install -r requirements.txt</pre>
+    <h3>Run mapper</h3>
+<pre>python3 vc_mapper.py \
+  --input vc_template_pack_v1_0.xlsx \
+  --output vc_template_pack_v1_0_mapped.xlsx \
+  --operator-name "Your Name"</pre>
+    <p class="mute" style="margin:8px 0 0">Optional: <code>--skip-geocode</code> when lat/lon already present. Rebuild template with <code>python3 build_template.py</code>.</p>
+    <h3>Bridge to Sites / JSON</h3>
+<pre>python3 cost_model_bridge.py \
+  --input vc_template_pack_v1_0_mapped.xlsx \
+  --sites-out engine_sites.xlsx \
+  --json-out bridge.json</pre>
+  </div>
+
+  <h2>Catchment rules (v1)</h2>
+  <div class="card">
+    <ul style="margin:0 0 0 18px">
+      <li>Local range: ≤ <b>25 mi</b> OR ≤ <b>60 min</b> drive proxy @ 40 mph</li>
+      <li>Near a Staffed campus → always <b>Local</b></li>
+      <li><b>Remote</b> only if far <b>and</b> tickets/day &lt; <b>1.2</b></li>
+      <li>Far <b>and</b> ≥ 1.2 tpd → <b>Staffed</b> campus</li>
+      <li>Hub selection priority: tickets → users → seats; hub threshold <b>3.0</b> tpd</li>
+    </ul>
+  </div>
+
+  <h2>Embedded · default_rules.yaml</h2>
+  <pre id="rules-yaml">working_days_per_year: 252
+months_per_year: 12
+
+hub_threshold_tickets_per_day: 3.0
+remote_threshold_tickets_per_day: 1.2
+
+cluster_radius_miles: 25.0
+max_drive_minutes: 60.0
+avg_drive_speed_mph: 40.0
+
+# When false, drive-time uses haversine proxy only (no live routing API).
+# Local range is still inclusive OR: miles ≤ cluster_radius_miles OR est minutes ≤ max_drive_minutes.
+enable_drive_time_logic: false
+enable_dispatch_override: true
+
+hub_selection_priority:
+  - tickets_per_day
+  - users
+  - seat_count
+
+economics:
+  dispatch_cost_per_event: 175.0
+  minimum_staffed_campus_cost_floor: 95000.0
+  cluster_overhead_cost: 12000.0
+  local_service_benefit_factor: 0.0
+
+rules_version: "1.0.0"</pre>
+
+  <h2>Embedded · README (package)</h2>
+  <details open>
+    <summary>Show package README</summary>
+    <pre># Site Services VC Mapper (Mac)
+
+Local Python package that maps site intake into Hub / Local / Remote roles and a cost-model load sheet.
+
+## Folder
+
+~/Desktop/site_services_vc_mapper/
+  requirements.txt
+  default_rules.yaml
+  column_aliases.yaml
+  vc_mapper.py
+  build_template.py
+  README.md
+  vc_template_pack_v1_0.xlsx
+
+Governed storage lives under ~/Desktop/Site Services Solutioning/.
+
+## Customer pilots
+
+Keep real customer workbooks on Desktop under 03_Customer_Inputs/ — do not commit customer PII or account names to git.
+
+## Output tabs
+
+Instructions, VC_Site_Input_Template, VC_Mapped_Sites, VC_Summary, Cost_Model_Load, Exceptions, Run_Metadata, Alias_Map</pre>
+  </details>
+
+  <h2>File inventory (local / online)</h2>
+  <p class="mute">Download these from the live suite under <code>/assets/vc-kit/</code>, or keep them beside this hub after unzipping the mapper package / offline zip.</p>
+  <table>
+    <thead><tr><th>File</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>vc_template_pack_v1_0.xlsx</code></td><td>Blank intake + output shell</td></tr>
+      <tr><td><code>vc_template_pack_v1_0_mapped_sample.xlsx</code></td><td>Generic mapped starter + Cost_Model_Load</td></tr>
+      <tr><td><code>engine_sites_from_vc_sample.xlsx</code></td><td>Bridged Sites intake from mapped sample</td></tr>
+      <tr><td><code>vc_bridge_summary_sample.json</code></td><td>Rough sandbox JSON from bridge helper</td></tr>
+      <tr><td><code>vc_mapper_package.zip</code></td><td>Runnable mapper + rules + README</td></tr>
+      <tr><td><code>vc_mapper.py</code> / <code>cost_model_bridge.py</code> / <code>build_template.py</code></td><td>Python tools</td></tr>
+      <tr><td><code>default_rules.yaml</code> / <code>column_aliases.yaml</code></td><td>Catchment rules + header aliases</td></tr>
+      <tr><td><code>requirements.txt</code></td><td>pip deps</td></tr>
+      <tr><td><code>saleschat_agent_pack.zip</code></td><td>SalesChat prompts + skills</td></tr>
+      <tr><td><code>offline/index.html</code> (this file)</td><td>Offline hub</td></tr>
+      <tr><td><code>site-services-offline.zip</code></td><td>This hub + key text docs zip</td></tr>
+      <tr><td><a href="/assets/vc-kit/AI_REBUILD_PROMPT.txt" download><code>AI_REBUILD_PROMPT.txt</code></a></td><td>Copilot / Claude / ChatGPT rebuild brief</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Cost model offline reports</h2>
+  <div class="callout soft">
+    On the live suite (<code>/cost-model</code>, Deal A, Deal B), use <b>Export HTML report</b> to snapshot current inputs and calculated summary into a standalone <code>.html</code> file (inline CSS, no external deps). The export stamps a timestamp and notes that rates/scenarios are as-exported.
+  </div>
+
+  <div class="band">Field Services Solution Design · VC kit offline hub · Generic starter only</div>
+  <p class="foot">Open this file in any browser. Prefer keeping the sibling kit downloads in the parent folder for relative links.</p>
+</div>
+<script>
+(function () {
+  document.getElementById("btn-save-page").addEventListener("click", function () {
+    var html = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+    var blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "vc-kit-offline-hub.html";
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1500);
+  });
+})();
+</script>
+</body>
+</html>
