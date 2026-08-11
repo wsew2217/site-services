@@ -141,7 +141,7 @@ details summary { cursor: pointer; font-weight: 700; color: var(--navy); }
 
   <h2>Pipeline how-to</h2>
   <div class="flow">
-    <div class="step"><b class="n">0</b><div><b>One-click sandbox (browser)</b> — On the live site open <code>/sandbox</code>, upload Excel (or run the generic sample). Catchment runs in-browser → sessionStorage → <code>/cost-model?from=sandbox</code>. Map at <code>/sandbox/map</code>; proposal pack export available. <b>Gap:</b> not a full <code>python -m engine run</code> (no full cash/OEM workbook).</div></div>
+    <div class="step"><b class="n">0</b><div><b>One-click sandbox (browser)</b> — On the live site open <code>/sandbox</code> and click <b>Try sample deal</b> (or upload Excel). Catchment runs in-browser → sessionStorage → map / <code>/cost-model?from=sandbox</code> / proposal pack. <b>Gap:</b> not a full <code>python -m engine run</code> (no full cash/OEM workbook).</div></div>
     <div class="step"><b class="n">1</b><div><b>Template</b> — Fill <code>VC_Site_Input_Template</code> in <code>vc_template_pack_v1_0.xlsx</code> (one row per site; country + a demand signal required).</div></div>
     <div class="step"><b class="n">2</b><div><b>Mapper</b> — Run <code>python vc_mapper.py</code> with <code>default_rules.yaml</code> → Hub / Local / Remote on <code>VC_Mapped_Sites</code> plus Summary, Cost_Model_Load, Exceptions.</div></div>
     <div class="step"><b class="n">3</b><div><b>Cost_Model_Load</b> — Engine-aligned bridge sheet. Review Exceptions first. Not a priced proposal by itself.</div></div>

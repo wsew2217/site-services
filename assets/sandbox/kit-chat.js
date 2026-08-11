@@ -13,7 +13,7 @@
     },
     {
       q: /sandbox|upload|excel|one.?click/i,
-      a: `One-click deal sandbox (/sandbox):\n• Upload VC template or address-request-like sheets (SheetJS in browser).\n• Runs catchment + builds engine-summary-shaped JSON.\n• Saves to sessionStorage and can open /cost-model with data applied.\n• Map at /sandbox/map (Leaflet + OSM).\n• Gap: not a full python -m engine run (no full cash/OEM workbook).`,
+      a: `One-click deal sandbox (/sandbox):\n• Primary CTA: Try sample deal — fetches the VC kit mapped sample (fallback: embedded mini sites), runs catchment, writes sessionStorage.\n• Success summary shows Staffed / Local / Remote + campuses + day1 techs, then links to map, cost model, and proposal pack export.\n• Secondary: upload your own Excel for real deals (no customer PII in live defaults).\n• Gap: not a full python -m engine run (no full cash/OEM workbook).`,
     },
     {
       q: /export|proposal|zip|ppt|download/i,
