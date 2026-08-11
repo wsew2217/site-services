@@ -17,7 +17,7 @@ Usefulness ranking for **solution design / commercial conversation**, not for a 
 | 2 | **Avoidable dispatch / remote-resolve potential** | Prices tech-bar, virtual tech, and remote-first overlays; every avoided truck roll frees capacity | Avoidable dispatch median **~14%** (top **~3%**, bottom **~24%**). ~**1 in 5** cases remotely resolvable (Aquant 2026); ~**33%** of queries solvable without a field pro (Aquant 2025) | Cost-model deflection + remote queue; Deal B virtual tech pattern |
 | 3 | **SLA / SLO attainment** | Contractual trust + penalty risk; separate internal SLO from customer SLA | Industry ops targets often **≥90%**; this suite uses **SLO 95%** tighter than contractual SLA matrices | `slo_target` 0.95; `slo_*` / `sla_*` hour matrices by priority |
 | 4 | **Technician utilization (booked / productive)** | Converts headcount into daily close capacity; over-max kills response slack | Billable util typical **75–85%**; pacesetters ~**90%** (TSIA). Dynamics: booked ÷ working hours | Methodology / cost-model **85%**; keep band, do not chase 95%+ |
-| 5 | **Travel time vs wrench / productive time** | Hub-and-spoke and catchment radius story; Local vs Remote economics | Travel often targeted **&lt;20%** of work hours; wrench time (hands-on only) commonly **25–35%**, best-in-class **45–55%** (maintenance literature) | `travel_utilization` penalty on Local-drive seats; hub ~60 km |
+| 5 | **Travel time vs wrench / productive time** | Hub-and-spoke and catchment radius story; Local vs Remote economics | Travel often targeted **&lt;20%** of work hours; wrench time (hands-on only) commonly **25–35%**, best-in-class **45–55%** (maintenance literature) | `travel_utilization` penalty on Local-drive seats; local range ≈25 mi or ~60 drive-min @ 40 mph |
 | 6 | **Cost per resolution / cost-to-serve** | Makes labor→logistics shift visible; failed first visit raises total resolution cost | Resolution cost ~**34–44%** higher than single work-order cost when first visit fails. Top performers’ cost/WO ~**23%** below median | Generic cost model; parts ship, dispatch, OEM attach |
 | 7 | **Parts fill / logistics readiness** | Leading cause of FTFR failure; depot & stock knobs | Mature targets often discussed **92–96%** fill when segmented by criticality (no universal blended benchmark) | Depot count, stock value, ship share in cost model |
 | 8 | **Schedule adherence / on-time arrival** | Dispatch quality + CSAT driver | Strong ops often cite **~85–90%+** on-time within window | Contact/schedule FMO stage; ERT / CETA status codes |
@@ -58,7 +58,7 @@ Track as a **system** of metrics, not one score:
 - Appointment handoffs / reassignments (schedule instability)  
 - Capacity allocated vs demand by territory / campus (ServiceNow Capacity Console pattern)
 
-Hub-and-spoke (virtual campus): hub maximizes catchment volume; Local stays inside drive radius; Remote + Smart Hands / OEM covers the tail. Routing KPIs should be **split by Campus / Local / Remote** — blended averages hide the remote cost problem.
+Hub-and-spoke (virtual campus): hub maximizes catchment volume; Local stays inside local range (25 mi OR ~60 drive-min); Remote + Smart Hands / OEM only for far sites below `remote_max_tpd`; far high-volume sites promote to Staffed. Routing KPIs should be **split by Campus / Local / Remote** — blended averages hide the remote cost problem.
 
 ### 3. Remote resolve / virtual tech / tech bar deflection
 

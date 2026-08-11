@@ -22,12 +22,25 @@ def default_ops_kpis() -> Dict[str, Any]:
     return load_json(OPS_KPI_PATH)
 
 
+def _coerce_setting_value(v: Any) -> Any:
+    """Parse JSON list/dict strings written into the Settings sheet."""
+    if not isinstance(v, str):
+        return v
+    s = v.strip()
+    if s.startswith(("{", "[")):
+        try:
+            return json.loads(s)
+        except json.JSONDecodeError:
+            return v
+    return v
+
+
 def merge_settings(overrides: Dict[str, Any] | None = None) -> Dict[str, Any]:
     base = default_settings()
     if overrides:
         for k, v in overrides.items():
             if v is not None and str(v).strip() != "":
-                base[k] = v
+                base[k] = _coerce_setting_value(v)
     return base
 
 

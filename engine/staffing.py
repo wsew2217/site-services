@@ -57,11 +57,41 @@ def allocate_role_lanes(field_techs: int, settings: Dict[str, Any]) -> Dict[str,
     }
 
 
+MILES_PER_KM = 0.621371192
+
+
 def haversine_km(lat1, lon1, lat2, lon2) -> float:
     if any(pd.isna(x) for x in [lat1, lon1, lat2, lon2]):
         return 9e9
     a, b, c, e = map(radians, [float(lat1), float(lon1), float(lat2), float(lon2)])
     return 2 * 6371 * asin(sqrt(sin((c - a) / 2) ** 2 + cos(a) * cos(c) * sin((e - b) / 2) ** 2))
+
+
+def haversine_miles(lat1, lon1, lat2, lon2) -> float:
+    km = haversine_km(lat1, lon1, lat2, lon2)
+    if km >= 9e9:
+        return 9e9
+    return km * MILES_PER_KM
+
+
+def local_range_miles(settings: Dict[str, Any]) -> float:
+    """Inclusive local radius: staging_radius_miles OR drive_minutes at avg speed."""
+    staging = num(settings, "staging_radius_miles", 25)
+    drive_min = num(settings, "drive_minutes", 60)
+    speed = num(settings, "avg_drive_speed_mph", 40)
+    drive_proxy = (drive_min / 60.0) * speed if speed > 0 else staging
+    return max(staging, drive_proxy)
+
+
+def within_local_range(miles: float, settings: Dict[str, Any]) -> bool:
+    """True if haversine miles ≤ staging radius OR estimated drive minutes ≤ drive_minutes."""
+    if miles >= 9e9:
+        return False
+    staging = num(settings, "staging_radius_miles", 25)
+    drive_min = num(settings, "drive_minutes", 60)
+    speed = num(settings, "avg_drive_speed_mph", 40)
+    est_minutes = (miles / speed) * 60.0 if speed > 0 else 9e9
+    return miles <= staging or est_minutes <= drive_min
 
 
 def _coverage_class(row: pd.Series, role: str) -> str:
@@ -77,10 +107,105 @@ def _coverage_class(row: pd.Series, role: str) -> str:
     return "Dispatch / remote"
 
 
+def _assign_roles_for_vc(
+    sub: pd.DataFrame,
+    pool: pd.DataFrame,
+    settings: Dict[str, Any],
+) -> Tuple[Dict[Any, str], Dict[Any, float], Any, str]:
+    """
+    Hub / Local / Remote assignment for one virtual campus.
+
+    Rules:
+    1. Primary hub = highest catchment demand within local range.
+    2. Within local range of any Staffed campus → always Local (never Remote).
+    3. Remote only when tpd < remote_max_tpd AND outside local range of every campus.
+    4. Outside local range AND tpd ≥ remote_max_tpd → promote to Staffed campus.
+    """
+    remote_max = num(settings, "remote_max_tpd", 1.2)
+    roles: Dict[Any, str] = {i: "Remote" for i in sub.index}
+    dist_mi: Dict[Any, float] = {i: 9e9 for i in sub.index}
+    hub_idx = None
+    hub_city = "(remote)"
+
+    if len(pool) == 0:
+        return roles, dist_mi, hub_idx, hub_city
+
+    coords = pool[["Latitude", "Longitude", "tpd"]].to_numpy()
+    best, best_catch, best_tpd = None, -1.0, -1.0
+    for idx, row in pool.iterrows():
+        catch = 0.0
+        for la, lo, tp in coords:
+            mi = haversine_miles(row["Latitude"], row["Longitude"], la, lo)
+            if within_local_range(mi, settings):
+                catch += float(tp)
+        if catch > best_catch or (catch == best_catch and float(row["tpd"]) > best_tpd):
+            best, best_catch, best_tpd = idx, catch, float(row["tpd"])
+    hub_idx = best
+    hub_city = str(pool.loc[best, "City"] or "").strip() or str(pool.loc[best, "Site"])
+    staffed: set = {hub_idx}
+
+    # Promote far high-volume sites to additional Staffed campuses (highest tpd first).
+    # Re-check locality after each promotion so near-cluster peers stay Local.
+    candidates = sorted(
+        [i for i in pool.index if i != hub_idx],
+        key=lambda i: float(pool.loc[i, "tpd"]),
+        reverse=True,
+    )
+    changed = True
+    while changed:
+        changed = False
+        for i in candidates:
+            if i in staffed:
+                continue
+            lat, lon = pool.loc[i, "Latitude"], pool.loc[i, "Longitude"]
+            near = False
+            for s in staffed:
+                mi = haversine_miles(lat, lon, pool.loc[s, "Latitude"], pool.loc[s, "Longitude"])
+                if within_local_range(mi, settings):
+                    near = True
+                    break
+            if near:
+                continue
+            if float(pool.loc[i, "tpd"]) >= remote_max:
+                staffed.add(i)
+                changed = True
+
+    staffed_coords = [
+        (pool.loc[s, "Latitude"], pool.loc[s, "Longitude"]) for s in staffed
+    ]
+    for i, row in sub.iterrows():
+        if i in staffed:
+            roles[i] = "Staffed"
+            dist_mi[i] = 0.0
+            continue
+        lat, lon = row.get("Latitude"), row.get("Longitude")
+        if pd.isna(lat) or pd.isna(lon):
+            roles[i] = "Remote"
+            dist_mi[i] = 9e9
+            continue
+        best_d = min(haversine_miles(lat, lon, sla, slo) for sla, slo in staffed_coords)
+        dist_mi[i] = best_d
+        if within_local_range(best_d, settings):
+            roles[i] = "Local"
+        elif float(row.get("tpd") or 0) >= remote_max:
+            # Should already be promoted if in pool; treat as Staffed for safety.
+            roles[i] = "Staffed"
+            dist_mi[i] = 0.0
+            staffed.add(i)
+        else:
+            roles[i] = "Remote"
+
+    return roles, dist_mi, hub_idx, hub_city
+
+
 def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataFrame, pd.DataFrame, Dict[str, Any]]:
     """Assign hubs, classify Staffed/Local/Remote, size teams and overlays."""
     workdays = num(settings, "working_days", 252)
-    drive = num(settings, "drive_radius_km", 60)
+    local_mi = local_range_miles(settings)
+    remote_max = num(settings, "remote_max_tpd", 1.2)
+    avg_speed = num(settings, "avg_drive_speed_mph", 40)
+    staging_mi = num(settings, "staging_radius_miles", 25)
+    drive_min = num(settings, "drive_minutes", 60)
     inc_share = num(settings, "incident_share", 0.5)
     inc_rate = num(settings, "onsite_incident_rate", 6)
     req_rate = num(settings, "onsite_request_rate", 4)
@@ -115,34 +240,11 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
         pool = sub[(sub["Country"] == base) & sub["Latitude"].notna() & sub["Longitude"].notna()]
         if len(pool) == 0:
             pool = sub[sub["Latitude"].notna() & sub["Longitude"].notna()]
-        hub_idx = None
-        hub_city = "(remote)"
-        if len(pool) > 0:
-            coords = pool[["Latitude", "Longitude", "tpd"]].to_numpy()
-            best, best_catch, best_tpd = None, -1.0, -1.0
-            for idx, row in pool.iterrows():
-                catch = sum(
-                    tp for (la, lo, tp) in coords
-                    if haversine_km(row["Latitude"], row["Longitude"], la, lo) <= drive
-                )
-                if catch > best_catch or (catch == best_catch and row["tpd"] > best_tpd):
-                    best, best_catch, best_tpd = idx, catch, float(row["tpd"])
-            hub_idx = best
-            hub_city = str(pool.loc[best, "City"] or "").strip() or str(pool.loc[best, "Site"])
-            hlat, hlng = pool.loc[best, "Latitude"], pool.loc[best, "Longitude"]
-            dists = [
-                haversine_km(hlat, hlng, r.Latitude, r.Longitude)
-                for r in sub.itertuples()
-            ]
-            df.loc[sub.index, "dkm"] = dists
-            # Staffed = hub; Local = within drive (non-hub); Remote = rest / no coords
-            for i, d in zip(sub.index, dists):
-                if i == hub_idx:
-                    df.at[i, "Role"] = "Staffed"
-                elif d <= drive:
-                    df.at[i, "Role"] = "Local"
-                else:
-                    df.at[i, "Role"] = "Remote"
+        roles, dist_mi, hub_idx, hub_city = _assign_roles_for_vc(sub, pool, settings)
+        for i, role in roles.items():
+            df.at[i, "Role"] = role
+            mi = dist_mi.get(i, 9e9)
+            df.at[i, "dkm"] = mi / MILES_PER_KM if mi < 9e9 else 9e9
         hubs[key] = hub_idx
 
         on = df.loc[sub.index][df.loc[sub.index, "Role"].isin(["Staffed", "Local"])]
@@ -300,7 +402,11 @@ def size_estate(sites: pd.DataFrame, settings: Dict[str, Any]) -> Tuple[pd.DataF
         "by_region": by,
         "settings_echo": {
             "working_days": workdays,
-            "drive_radius_km": drive,
+            "staging_radius_miles": staging_mi,
+            "drive_minutes": drive_min,
+            "avg_drive_speed_mph": avg_speed,
+            "local_range_miles": round(local_mi, 2),
+            "remote_max_tpd": remote_max,
             "incident_share": inc_share,
             "onsite_incident_rate": inc_rate,
             "onsite_request_rate": req_rate,
