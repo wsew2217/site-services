@@ -146,4 +146,53 @@
   document.querySelectorAll(".suite-nav a").forEach((a) => {
     a.addEventListener("click", () => document.body.classList.remove("nav-open"));
   });
+
+  /** Blob-download a printable article snapshot of the current doc page. */
+  window.suiteDownloadPageHtml = function suiteDownloadPageHtml(opts) {
+    const options = opts || {};
+    const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, (c) => (c === "T" ? "_" : "-"));
+    const filename = options.filename || `site-services-page_${stamp}.html`;
+    const title = options.title || document.title || "Site Services";
+    const root =
+      document.querySelector("[data-suite-content] .page") ||
+      document.querySelector("[data-suite-content]") ||
+      document.querySelector(".page") ||
+      document.body;
+    const clone = root.cloneNode(true);
+    clone.querySelectorAll("script,.help-tip,.suite-menu-btn,[data-no-export]").forEach((el) => el.remove());
+    const bodyHtml = clone.innerHTML;
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title.replace(/</g, "&lt;")} · Offline export</title>
+<style>
+:root{--navy:#13294B;--slate:#54607A;--acc:#D86A44;--tint:#F4F6FB;--line:#E4E8F0;--ink:#232A35;--mute:#8A93A6}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,'Segoe UI',system-ui,sans-serif;color:var(--ink);background:#fff;font-size:14.5px;line-height:1.5}
+.wrap{max-width:900px;margin:0 auto;padding:24px 18px 48px}
+.banner{background:#fff6f1;border-left:4px solid var(--acc);padding:10px 12px;border-radius:0 10px 10px 0;margin-bottom:18px;font-size:13px;color:var(--slate)}
+h1,h2,h3{font-family:Cambria,Georgia,serif;color:var(--navy)}
+a{color:var(--navy)}table{border-collapse:collapse;width:100%;font-size:13px;margin:10px 0}
+th{background:var(--navy);color:#fff;text-align:left;padding:7px 9px}td{border:1px solid var(--line);padding:6px 9px}
+.card,.flow-step,.kit-callout{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;background:var(--tint)}
+.mute{color:var(--mute);font-size:12.5px}code{font-size:12.5px}
+.kit-dl{display:none}.help-tip{display:none}
+@media print{body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="banner"><b>Offline export</b> · ${stamp} · Snapshot of “${title.replace(/</g, "&lt;")}”. Live suite links may not work offline. No customer deal data on the live site.</div>
+${bodyHtml}
+</div>
+</body>
+</html>`;
+    const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+  };
 })();

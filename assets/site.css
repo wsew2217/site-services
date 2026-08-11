@@ -794,6 +794,22 @@ body.theme-deal-a .suite-doc-frame h3 {
   border-color: #2fd6c2;
   color: #fff;
 }
+.suite-doc-frame .kit-dl button.kit-dl-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--doc-line);
+  background: #fff;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #13294B;
+  cursor: pointer;
+}
+.suite-doc-frame .kit-dl button.kit-dl-btn:hover { border-color: #2fd6c2; }
 
 .suite-doc-frame .kit-callout {
   border-left: 4px solid #d86a44;

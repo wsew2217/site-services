@@ -85,6 +85,7 @@ details ul{margin:8px 0 4px 20px}
 <button class="tab" data-p="logic">6 . Model Logic</button>
 <span class="sp"></span>
 <button class="btn ghost" onclick="resetAll()">Reset defaults</button>
+<button class="btn ghost" onclick="exportHtmlReport()">Export HTML report</button>
 <button class="btn" onclick="window.print()">Print / PDF</button>
 </div></div>
 <div class="wrap">
@@ -118,7 +119,7 @@ details ul{margin:8px 0 4px 20px}
 <li>Page auto-loads the Deal A summary; use <b>Reload Deal A summary</b> after publishing a fresh engine JSON, or upload another summary file.</li>
 <li>Keep campus count and day-one techs locked to the estate model; tweak rates and current-state heads for commercial conversation.</li>
 <li>On <b>Scenarios</b>, walk the ratio / deflection / zero-touch ladder; GOAL rung drives Sensitivity.</li>
-<li>Use <b>Results</b> and <b>Cash</b> for the cost-shift story and multi-year payback vs as-is; <b>Print / PDF</b> for a snapshot.</li>
+<li>Use <b>Results</b> and <b>Cash</b> for the cost-shift story and multi-year payback vs as-is; <b>Export HTML report</b> for a standalone offline snapshot; <b>Print / PDF</b> for a printable view.</li>
 <li>Rebuild staffing/cost upstream per <code>engine/README.md</code> (<code>python -m engine run …</code>), copy JSON to <code>assets/engine-summary-deal-a.json</code>, then reload.</li>
 </ol></div>
 
@@ -587,6 +588,83 @@ function recalc(rebuildScen=true){
  rLadder(R);rCostTable(R);rStack(R);rKpis(R);rCash(R);rTornado(R);
 }
 function openGuide(e){if(e)e.preventDefault();const t=document.querySelector('.tab[data-p="guide"]');if(t)t.click();}
+function exportHtmlReport(){
+ const R=compute();
+ const I=R[0].I;
+ const stamp=new Date().toISOString();
+ const stampFile=stamp.slice(0,19).replace(/[:T]/g,c=>c==='T'?'_':'-');
+ const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+ const title=document.querySelector('.hero h1')?.textContent?.trim()||'Cost Model';
+ const pageLabel=document.body.dataset.page||'cost-model';
+ const engNote=ENGINE
+  ? `Engine summary loaded: ${ENGINE.campuses??'—'} campuses, ${ENGINE.day1_techs??'—'} day-one techs, ${ENGINE.sites??'—'} sites.`
+  : 'No engine summary loaded — campuses/users may be manual inputs.';
+ const inputRows=[
+  ['Sites',I.sites],['Users',I.users],['Tickets / user / yr',I.tpu],['Virtual campuses',I.camp],
+  ['Physical-touch share',(I.touch*100).toFixed(0)+'%'],['On-site reach day one',(I.cov*100).toFixed(0)+'%'],
+  ['On-site tpd / tech',I.onrate],['Remote tpd / tech',I.remrate],['Utilization',(I.util*100).toFixed(0)+'%'],
+  ['Working days / yr',I.days],['Team floor / campus',I.floor],['Blended base salary',fm(I.blended)],
+  ['Burden uplift',((I.burden-1)*100).toFixed(0)+'%'],['Dispatch cost / event',fm(I.dispatch)],
+  ['OEM attach',(I.oem*100).toFixed(0)+'%'],['Ship cost / shipment',fm(I.ship)],
+  ['Current field techs',I.curtech],['Current logistics / yr',fm(I.curlog)]
+ ];
+ let scenRows=R.map(r=>{
+  const c=r.c,s=r.sc;
+  return `<tr${s.goal?' class="hl"':''}><td>${esc(s.name)}</td><td>${s.ratio||'derived'}</td><td>${s.key==='cur'?'-':s.defl+'%'}</td><td>${s.zt}%</td><td>${s.year===null?'today':s.year}</td><td>${fi(c.techs)}</td><td>${c.ratioImplied}:1</td><td>${fm(c.techCost)}</td><td>${fm(c.mgmtCost)}</td><td>${fm(c.logistics)}</td><td><b>${fm(c.total)}</b></td></tr>`;
+ }).join('');
+ const cur=R[0].c,d1=R[1].c,goal=(R.find(r=>r.sc.goal)||R[2]).c;
+ const gl=(R.find(r=>r.sc.goal)||R[2]).sc.name;
+ const html=`<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(title)} · HTML report</title>
+<style>
+:root{--navy:#13294B;--slate:#54607A;--acc:#D86A44;--tint:#F4F6FB;--line:#E4E8F0;--ink:#232A35;--mute:#8A93A6;--green:#2E7D32}
+*{box-sizing:border-box}body{margin:0;font-family:Calibri,'Segoe UI',system-ui,sans-serif;color:var(--ink);background:#fff;font-size:14px;line-height:1.45}
+.wrap{max-width:960px;margin:0 auto;padding:24px 18px 48px}
+.hero{background:var(--navy);color:#fff;border-radius:14px;padding:22px 20px;margin-bottom:16px}
+.hero .k{color:var(--acc);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:11px}
+.hero h1{font-family:Cambria,Georgia,serif;font-size:26px;margin:6px 0}
+.note{background:#fff6f1;border-left:4px solid var(--acc);padding:10px 12px;border-radius:0 10px 10px 0;margin:12px 0;font-size:13px;color:var(--slate)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.kpi{border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--tint)}
+.kpi b{display:block;font-family:Cambria,Georgia,serif;font-size:20px;color:var(--navy)}
+.kpi span{font-size:11px;color:var(--mute);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+h2{font-family:Cambria,Georgia,serif;color:var(--navy);font-size:20px;margin:22px 0 8px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+th{background:var(--navy);color:#fff;padding:7px 8px;text-align:right}th:first-child{text-align:left}
+td{border:1px solid var(--line);padding:6px 8px;text-align:right}td:first-child{text-align:left;font-weight:700;color:var(--navy)}
+tr.hl td{background:#FBEFE9}tr:nth-child(even) td{background:var(--tint)}tr.hl:nth-child(even) td{background:#FBEFE9}
+.mute{color:var(--mute);font-size:12px}
+</style></head><body><div class="wrap">
+<div class="hero"><div class="k">Site Services · Offline cost report</div><h1>${esc(title)}</h1>
+<div style="color:#C9D2E4;font-size:13px">Exported ${esc(stamp)} · page <code>${esc(pageLabel)}</code></div></div>
+<div class="note"><b>As-exported snapshot.</b> Rates, scenarios, and calculated totals below reflect inputs at export time — not live market rates. No customer account names. ${esc(engNote)}</div>
+<div class="kpis">
+ <div class="kpi"><b>${fm(cur.total)}</b><span>Current annual</span></div>
+ <div class="kpi"><b>${fm(d1.total)}</b><span>Day one annual</span></div>
+ <div class="kpi"><b>${fm(cur.total-d1.total)}</b><span>Day-one saving</span></div>
+ <div class="kpi"><b>${fm(goal.total)}</b><span>${esc(gl)} annual</span></div>
+ <div class="kpi"><b>${fm(cur.total-goal.total)}</b><span>Saving at goal</span></div>
+ <div class="kpi"><b>${d1.ratioImplied}:1 → ${goal.ratioImplied}:1</b><span>Ratio path</span></div>
+</div>
+<h2>Key inputs</h2>
+<table><tr><th>Input</th><th>Value</th></tr>
+${inputRows.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}
+</table>
+<h2>Scenario summary</h2>
+<table>
+<tr><th>Scenario</th><th>Ratio</th><th>Defl %</th><th>ZT %</th><th>Year</th><th>Techs</th><th>Implied</th><th>Tech $</th><th>Mgmt $</th><th>Logistics $</th><th>Total / yr</th></tr>
+${scenRows}
+</table>
+<p class="mute">Standalone HTML · inline CSS · no external dependencies · Field Services Solution Design</p>
+</div></body></html>`;
+ const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);
+ a.download=`${pageLabel}_report_${stampFile}.html`;
+ a.click();
+ setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+}
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
  document.querySelectorAll('.pane').forEach(x=>x.classList.remove('on'));
