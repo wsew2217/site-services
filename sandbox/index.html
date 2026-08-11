@@ -152,8 +152,12 @@
     <div class="stat acc"><b>v1</b><span>bridge, not full engine</span></div>
   </div>
   <div class="sb-hero-cta">
-    <button type="button" class="btn-try" id="btn_try_sample">Try sample deal</button>
-    <span class="mute">Loads the VC kit sample workbook, runs catchment, and saves the deal for map / cost model / export.</span>
+    <button type="button" class="btn-try" id="btn_try_sample" title="Load generic sample workbook and run catchment">Try sample deal</button>
+    <span class="help-tip">
+      <button type="button" class="help-tip-btn" aria-describedby="tip-try" title="What Try sample deal does">?</button>
+      <span role="tooltip" id="tip-try" class="help-tip-panel">Loads vc_template_pack_v1_0_mapped_sample.xlsx from /assets/vc-kit/, runs browser catchment, saves to sessionStorage for map / cost model / proposal export. No customer data.</span>
+    </span>
+    <span class="mute">Loads the VC kit sample workbook, runs catchment, and saves the deal for map / cost model / export. <a href="/how-to">How to use →</a></span>
   </div>
 </div>
 

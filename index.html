@@ -11,6 +11,12 @@
 <body class="suite-app" data-page="home" data-mode="shell">
 <div data-suite-content>
   <main class="home">
+    <aside class="home-newhere" role="note" aria-label="New here">
+      <span class="home-newhere-label">New here?</span>
+      <span class="home-newhere-text">Start with the first-run guide — suite layout, recommended path, downloads, and mapper vs engine.</span>
+      <a class="home-newhere-link" href="/how-to">How to use this site →</a>
+    </aside>
+
     <section class="home-hero" aria-label="Hero">
       <div class="home-brand">Site <em>Services</em></div>
       <h1 class="home-headline">Virtual campuses, staffing, and cost — for any estate.</h1>
@@ -19,9 +25,17 @@
         Reference Deals A and B are labeled examples — not Site Services itself.
       </p>
       <div class="home-cta">
-        <a class="btn btn-primary" href="/how-to">How to use this site</a>
-        <a class="btn btn-ghost" href="/sandbox">Try sample deal</a>
-        <a class="btn btn-ghost" href="/vc-kit">Start with VC kit</a>
+        <a class="btn btn-primary" href="/sandbox" title="One-click sample: browser catchment → map &amp; cost model">Try sample deal</a>
+        <span class="help-tip home-tip">
+          <button type="button" class="help-tip-btn" aria-describedby="tip-home-sandbox" title="What Try sample deal does">?</button>
+          <span role="tooltip" id="tip-home-sandbox" class="help-tip-panel">Loads the generic VC sample workbook in /sandbox, runs catchment in-browser, and saves the deal for map / cost model / proposal export. Not a full python -m engine run.</span>
+        </span>
+        <a class="btn btn-ghost" href="/vc-kit" title="Template, mapper, downloads, and kit pipeline">Start with VC kit</a>
+        <span class="help-tip home-tip">
+          <button type="button" class="help-tip-btn" aria-describedby="tip-home-vckit" title="What the VC kit is">?</button>
+          <span role="tooltip" id="tip-home-vckit" class="help-tip-panel">Excel intake → python vc_mapper.py → Cost_Model_Load → /cost-model. Downloads live under /assets/vc-kit/…. Prefer mapper; engine run is optional full staffing.</span>
+        </span>
+        <a class="btn btn-ghost" href="/how-to" title="First-run guide for this documentation suite">How to use</a>
         <a class="btn btn-ghost" href="/assets/site-services-full-offline.zip" download title="Full documentation suite for local use">Download full site offline (.zip)</a>
         <a class="btn btn-ghost" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>Download sample Excel</a>
         <a class="btn btn-ghost" href="/vc-kit/chat">Kit chat</a>
@@ -30,22 +44,27 @@
     </section>
 
     <section class="home-section" aria-label="Generic">
-      <h2>Site Services (generic)</h2>
+      <h2>Site Services (generic)
+        <span class="help-tip home-tip">
+          <button type="button" class="help-tip-btn" aria-describedby="tip-home-generic" title="Generic vs reference deals">?</button>
+          <span role="tooltip" id="tip-home-generic" class="help-tip-panel">Reusable model language and tools for any estate. Deal A / B below are labeled examples — their campus counts and ratios are not Site Services defaults.</span>
+        </span>
+      </h2>
       <p>Build the next deal without inheriting one account’s campus count.</p>
       <div class="dest-grid">
-        <a class="dest" href="/structure">
+        <a class="dest" href="/structure" title="FMO flows, P/S/T lanes, tech bar overlays, ratio guidance">
           <div class="kicker">Model</div>
           <h3>Structure & Methodology</h3>
           <p>FMO in-environment flows, P/S/T role lanes, tech bar / remote overlays, ratio guidance.</p>
           <div class="go">Open <span>→</span></div>
         </a>
-        <a class="dest" href="/coverage">
+        <a class="dest" href="/coverage" title="Click a country row for Staffed vs Capability detail">
           <div class="kicker">Atlas</div>
           <h3>Coverage</h3>
           <p>Interactive country Staffed vs Capability matrix — click a row for detail. Not a single-customer campus map.</p>
           <div class="go">Open <span>→</span></div>
         </a>
-        <a class="dest" href="/cost-model">
+        <a class="dest" href="/cost-model" title="Primary economics sandbox — load engine JSON; Guide tab for how-to">
           <div class="kicker">Engine</div>
           <h3>Cost Model (Generic)</h3>
           <p>Primary sandbox for any estate — load engine JSON; Guide tab covers how it was built.</p>
@@ -55,10 +74,21 @@
     </section>
 
     <section class="home-section" aria-label="VC Kit">
-      <h2>VC Mapper / Solutioning Kit</h2>
+      <h2>VC Kit
+        <span class="help-tip home-tip">
+          <button type="button" class="help-tip-btn" aria-describedby="tip-home-kit-sec" title="Preferred solutioning path">?</button>
+          <span role="tooltip" id="tip-home-kit-sec" class="help-tip-panel">Recommended path: VC Kit → Sandbox (Try sample deal) → Map → Cost model → Proposal export. Full nav group lists every kit page.</span>
+        </span>
+      </h2>
       <p>Excel template → <code>python vc_mapper.py</code> → Cost_Model_Load → <a href="/cost-model" style="color:var(--accent)">/cost-model</a>. Live site ships generic samples only — no customer deal data. Prefer the mapper path; <code>python -m engine run</code> is the older/parallel full staffing path.</p>
       <div class="home-cta" style="margin:0 0 18px">
-        <a class="btn btn-primary" href="/sandbox">Deal sandbox</a>
+        <a class="btn btn-primary" href="/sandbox" title="Browser catchment bridge — try sample or upload Excel">Deal sandbox</a>
+        <span class="help-tip home-tip">
+          <button type="button" class="help-tip-btn" aria-describedby="tip-home-deal-sb" title="Sandbox vs engine">?</button>
+          <span role="tooltip" id="tip-home-deal-sb" class="help-tip-panel">In-browser SheetJS catchment → sessionStorage → map &amp; cost model. Mapper-style roles; not a full engine cash/OEM workbook.</span>
+        </span>
+        <a class="btn btn-ghost" href="/vc-kit" title="Kit overview, pipeline, and downloads">Kit overview</a>
+        <a class="btn btn-ghost" href="/how-to" title="First-run guide">How to use</a>
         <a class="btn btn-ghost" href="/assets/site-services-full-offline.zip" download title="Full documentation suite for local use">Download full site offline (.zip)</a>
         <a class="btn btn-ghost" href="/assets/vc-kit/site-services-offline.zip" download title="VC kit docs only">VC kit only (.zip)</a>
         <a class="btn btn-ghost" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>vc_template_pack_v1_0.xlsx</a>
@@ -68,49 +98,49 @@
         <a class="btn btn-ghost" href="/assets/vc-kit/AI_REBUILD_PROMPT.txt" download>AI rebuild prompt (.txt)</a>
       </div>
       <div class="dest-grid">
-        <a class="dest" href="/sandbox">
+        <a class="dest" href="/sandbox" title="Upload Excel → browser catchment → cost-model JSON, map, proposal export">
           <div class="kicker">One-click</div>
           <h3>Deal Sandbox</h3>
           <p>Upload Excel → browser catchment → cost-model JSON, map, scenario strip, proposal export.</p>
           <div class="go">Open <span>→</span></div>
         </a>
-        <a class="dest" href="/vc-kit">
+        <a class="dest" href="/vc-kit" title="Pipeline, tooltips, file inventory, and kit downloads">
           <div class="kicker">Overview</div>
           <h3>Kit Overview</h3>
           <p>Pipeline, tooltips, file inventory, and downloads for the assembled solutioning kit.</p>
           <div class="go">Open <span>→</span></div>
         </a>
-        <a class="dest" href="/sandbox/map">
+        <a class="dest" href="/sandbox/map" title="Leaflet map of Staffed / Local / Remote from the current sandbox deal">
           <div class="kicker">Map</div>
           <h3>Deal Map</h3>
           <p>Staffed / Local / Remote pins (Leaflet + OSM) from the current sandbox deal.</p>
           <div class="go">Open <span>→</span></div>
         </a>
-        <a class="dest" href="/vc-kit/chat">
+        <a class="dest" href="/vc-kit/chat" title="Offline FAQ or live AI Gateway for catchment and pipeline questions">
           <div class="kicker">Assist</div>
           <h3>Kit Chat</h3>
           <p>Offline FAQ or live AI Gateway — catchment, pipeline, exports, KPIs.</p>
           <div class="go">Open <span>→</span></div>
         </a>
-        <a class="dest" href="/vc-kit/template">
+        <a class="dest" href="/vc-kit/template" title="Tabs, headers, and download for vc_template_pack_v1_0.xlsx">
           <div class="kicker">Workbook</div>
           <h3>Template Pack</h3>
           <p>Tabs, headers, and download for <code>vc_template_pack_v1_0.xlsx</code>.</p>
           <div class="go">Open <span>→</span></div>
         </a>
-        <a class="dest" href="/vc-kit/mapper">
+        <a class="dest" href="/vc-kit/mapper" title="Mac commands, 25 mi / 1.2 tpd catchment, role legend, Cost_Model_Load bridge">
           <div class="kicker">Rules</div>
           <h3>Mapper &amp; Rules</h3>
           <p>Mac commands, 25 mi / 1.2 tpd catchment, role legend, Cost_Model_Load bridge.</p>
           <div class="go">Open <span>→</span></div>
         </a>
-        <a class="dest" href="/vc-kit/agent">
+        <a class="dest" href="/vc-kit/agent" title="Copyable prompts and skills — UI publish remains manual">
           <div class="kicker">SalesChat</div>
           <h3>Agent Text Pack</h3>
           <p>Copyable prompts and skills — UI publish remains manual.</p>
           <div class="go">Open <span>→</span></div>
         </a>
-        <a class="dest" href="/vc-kit/runbook">
+        <a class="dest" href="/vc-kit/runbook" title="First-pilot checklist and acceptance criteria">
           <div class="kicker">Pilot</div>
           <h3>Runbook</h3>
           <p>First-pilot checklist and acceptance criteria for the assembled kit.</p>
