@@ -131,11 +131,13 @@ details summary { cursor: pointer; font-weight: 700; color: var(--navy); }
 
   <div class="dl">
     <button type="button" class="primary" id="btn-save-page">Save this hub as HTML</button>
-    <a href="../vc_mapper_package.zip">Mapper package (.zip)</a>
-    <a href="../vc_template_pack_v1_0.xlsx">Blank template (.xlsx)</a>
-    <a href="../vc_template_pack_v1_0_mapped_sample.xlsx">Mapped sample (.xlsx)</a>
+    <a class="primary" href="/assets/vc-kit/vc_mapper_package.zip" download>Mapper package (.zip)</a>
+    <a class="primary" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>Blank template (.xlsx)</a>
+    <a class="primary" href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>Mapped sample (.xlsx)</a>
+    <a class="primary" href="/assets/vc-kit/AI_REBUILD_PROMPT.txt" download>Download AI rebuild prompt (.txt)</a>
+    <a href="/assets/vc-kit/site-services-offline.zip" download>Offline pack (.zip)</a>
   </div>
-  <p class="mute">Relative links above work when this file stays under <code>assets/vc-kit/offline/</code> next to the kit downloads. If you only saved this single HTML, use the absolute paths listed in File inventory.</p>
+  <p class="mute">All kit downloads use absolute <code>/assets/vc-kit/…</code> paths so they work on the live Vercel site (including when this hub is opened as <code>/assets/vc-kit/offline</code> without a trailing slash). When you save this HTML for local reading, open the same URLs from the deployed site or keep sibling files beside a local copy.</p>
 
   <h2>Pipeline how-to</h2>
   <div class="flow">
@@ -265,6 +267,7 @@ Instructions, VC_Site_Input_Template, VC_Mapped_Sites, VC_Summary, Cost_Model_Lo
       <tr><td><code>saleschat_agent_pack.zip</code></td><td>SalesChat prompts + skills</td></tr>
       <tr><td><code>offline/index.html</code> (this file)</td><td>Offline hub</td></tr>
       <tr><td><code>site-services-offline.zip</code></td><td>This hub + key text docs zip</td></tr>
+      <tr><td><a href="/assets/vc-kit/AI_REBUILD_PROMPT.txt" download><code>AI_REBUILD_PROMPT.txt</code></a></td><td>Copilot / Claude / ChatGPT rebuild brief</td></tr>
     </tbody>
   </table>
 
