@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · VC Mapper</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.kit-dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+.kit-dl a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--doc-line);
+  background: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #13294B;
+}
+.kit-dl a:hover { border-color: #2fd6c2; }
+.role-legend {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 14px 0 8px;
+}
+@media (max-width: 720px) { .role-legend { grid-template-columns: 1fr; } }
+.role-btn {
+  appearance: none;
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  background: #fff;
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.role-btn:hover, .role-btn.is-on {
+  border-color: #2fd6c2;
+  box-shadow: 0 0 0 3px rgba(47,214,194,0.15);
+}
+.role-btn .tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #149887;
+  margin-bottom: 6px;
+}
+.role-btn strong {
+  display: block;
+  font-family: var(--font-display, Sora, system-ui);
+  color: #13294B;
+  font-size: 17px;
+  margin-bottom: 4px;
+}
+.role-btn span {
+  font-size: 13px;
+  color: #54607A;
+  line-height: 1.4;
+}
+.role-detail {
+  margin-top: 12px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--doc-line);
+  background: #eef3fa;
+  min-height: 4.5em;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #152033;
+}
+.rule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin: 14px 0 18px;
+}
+.rule-tile {
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fff;
+}
+.rule-tile b {
+  display: block;
+  font-family: var(--font-display, Sora, system-ui);
+  font-size: 22px;
+  color: #13294B;
+  margin-bottom: 4px;
+}
+.rule-tile span {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8A93A6;
+}
+.rule-tile p { margin: 8px 0 0; font-size: 13px; color: #54607A; }
+pre.cmd {
+  background: #13294B;
+  color: #eaf0f8;
+  padding: 14px 16px;
+  border-radius: 12px;
+  overflow: auto;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="vc-kit-mapper" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">VC kit · Mapper</div>
+  <h1>Run the Python mapper</h1>
+  <div class="sub">Normalize intake, assign Hub / Local / Remote, emit Cost_Model_Load. Rules from <code>default_rules.yaml</code> v1.</div>
+</div>
+
+<div class="kit-dl">
+  <a href="/assets/vc-kit/vc_mapper.py" download>vc_mapper.py</a>
+  <a href="/assets/vc-kit/default_rules.yaml" download>default_rules.yaml</a>
+  <a href="/assets/vc-kit/column_aliases.yaml" download>column_aliases.yaml</a>
+  <a href="/assets/vc-kit/requirements.txt" download>requirements.txt</a>
+  <a href="/assets/vc-kit/vc_mapper_package.zip" download>Full package (.zip)</a>
+  <a href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>Sample mapped output</a>
+</div>
+
+<h2>Catchment rules (v1)</h2>
+<div class="rule-grid">
+  <div class="rule-tile"><b>25 mi</b><span>Local miles</span><p>OR ≤ 60 min drive proxy @ 40 mph</p></div>
+  <div class="rule-tile"><b>1.2</b><span>Remote tpd</span><p>Remote only if far <em>and</em> below this floor</p></div>
+  <div class="rule-tile"><b>3.0</b><span>Hub threshold</span><p>Hub priority: tickets → users → seats</p></div>
+  <div class="rule-tile"><b>Near</b><span>Always Local</span><p>Inside range of a Staffed campus → never Remote</p></div>
+</div>
+
+<ul>
+<li>Far <b>and</b> ≥ 1.2 tickets/day → <b class="t">Staffed</b> campus</li>
+<li>Far <b>and</b> &lt; 1.2 tickets/day → <b class="t">Remote</b> (dispatch-eligible when enabled)</li>
+<li>No coordinates: never auto-Local by distance; may promote Staffed if demand clears remote threshold</li>
+</ul>
+
+<h2>Interactive role legend</h2>
+<p class="mute">Click a role to see when the mapper assigns it.</p>
+<div class="role-legend" role="tablist" aria-label="Mapped roles">
+  <button type="button" class="role-btn is-on" data-role="staffed" aria-selected="true">
+    <span class="tag">Campus</span>
+    <strong>Staffed</strong>
+    <span>Hub / on-site presence</span>
+  </button>
+  <button type="button" class="role-btn" data-role="local" aria-selected="false">
+    <span class="tag">Reach</span>
+    <strong>Local</strong>
+    <span>Inside catchment of Staffed</span>
+  </button>
+  <button type="button" class="role-btn" data-role="remote" aria-selected="false">
+    <span class="tag">Dispatch</span>
+    <strong>Remote</strong>
+    <span>Outside range + low volume</span>
+  </button>
+</div>
+<div class="role-detail" id="role-detail" aria-live="polite">
+  <b class="t">Staffed</b> — Selected as a campus/hub (catchment maximize + ticket priority) or promoted when far from existing Staffed and tickets/day ≥ 1.2. Sets DepotHub for Local spokes.
+</div>
+
+<h2>Mac setup &amp; run</h2>
+<pre class="cmd">cd ~/Desktop/site_services_vc_mapper   # or: cd tools/vc_mapper in this repo
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip
+pip install -r requirements.txt
+
+python3 vc_mapper.py \
+  --input vc_template_pack_v1_0.xlsx \
+  --output vc_template_pack_v1_0_mapped.xlsx \
+  --operator-name "Your Name"
+
+# Optional when lat/lon already present:
+python3 vc_mapper.py --input … --output … --operator-name "…" --skip-geocode</pre>
+
+<h2>Cost_Model_Load → engine / cost page</h2>
+<ol>
+<li>Review Exceptions, then roles on VC_Mapped_Sites / VC_Summary</li>
+<li>Export Sites intake: <code>python3 cost_model_bridge.py --input mapped.xlsx --sites-out engine_sites.xlsx --json-out bridge.json</code></li>
+<li>Prefer full engine: <code>python -m engine run engine_sites.xlsx -o Deal_Output.xlsx</code></li>
+<li>Load <code>Deal_Output.json</code> (or bridge JSON for a rough sandbox) on <a href="/cost-model">/cost-model</a></li>
+</ol>
+<p class="mute">Bridge JSON is approximate — day1_techs_hint is not final staffing.</p>
+
+<div class="band">Kit: <a href="/vc-kit" style="color:#fff">Overview</a> · <a href="/vc-kit/template" style="color:#fff">Template</a> · <a href="/vc-kit/agent" style="color:#fff">Agent</a> · <a href="/vc-kit/runbook" style="color:#fff">Runbook</a></div>
+<div class="foot">Rules version 1.0.0 · no live routing API in v1 (haversine proxy)</div>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+<script>
+(() => {
+  const copy = {
+    staffed: "<b class=\"t\">Staffed</b> — Selected as a campus/hub (catchment maximize + ticket priority) or promoted when far from existing Staffed and tickets/day ≥ 1.2. Sets DepotHub for Local spokes.",
+    local: "<b class=\"t\">Local</b> — Within 25 mi <em>or</em> ≤60 min drive proxy of a Staffed campus. Near a Staffed campus is <b>always</b> Local — even if tickets/day are low.",
+    remote: "<b class=\"t\">Remote</b> — Outside local range <em>and</em> tickets/day &lt; 1.2. Dispatch-eligible when <code>enable_dispatch_override</code> is true. Not used for near-campus low-volume sites."
+  };
+  const detail = document.getElementById("role-detail");
+  document.querySelectorAll(".role-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".role-btn").forEach((b) => {
+        b.classList.toggle("is-on", b === btn);
+        b.setAttribute("aria-selected", b === btn ? "true" : "false");
+      });
+      detail.innerHTML = copy[btn.dataset.role] || "";
+    });
+  });
+})();
+</script>
+</body>
+</html>

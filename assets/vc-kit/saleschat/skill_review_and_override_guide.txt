@@ -1,0 +1,19 @@
+Skill: Review and Override Guide
+
+Preferred path:
+1. Fix source intake
+2. Rerun vc_mapper.py
+3. Re-check Exceptions + VC_Summary
+
+Override path (when time-boxed):
+1. Record the change in 06_Overrides with who/when/why
+2. Note the site_id and previous mapped_role
+3. Update Notes / exception_flags so the next reviewer sees it
+4. Do not pretend the mapper produced the override
+
+Common override cases:
+- Known bad geocode but known city centroid is acceptable for ROM
+- Temporary Staffed designation pending address cleanup
+- Dispatch partner exception for embargoed / customs-locked countries
+
+Never override to hide missing demand — escalate instead.

@@ -14,3 +14,11 @@ engine/research/**
 engine/sample/output/
 research/private/
 samples/out/
+
+# VC mapper local pilot / customer artifacts (never commit)
+**/vc_pilot*
+**/address_request*
+**/BV_*
+samples/vc_site_input_pilot*
+tools/vc_mapper/.venv/
+tools/vc_mapper/*_mapped.xlsx

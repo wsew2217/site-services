@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · VC Kit Runbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.check-list { list-style: none; margin: 0 0 18px; padding: 0; }
+.check-list li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--doc-line);
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+.check-list input { margin-top: 3px; }
+.wave {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  background: #fff;
+  margin-bottom: 8px;
+}
+.wave b.n {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #13294B;
+  color: #fff;
+  font-size: 13px;
+}
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="vc-kit-runbook" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">VC kit · Runbook</div>
+  <h1>First pilot checklist</h1>
+  <div class="sub">Condensed build order and acceptance criteria for the assembled solutioning kit. Customer pilots stay on Desktop — off git.</div>
+</div>
+
+<h2>Build waves</h2>
+<div class="wave"><b class="n">W1</b><div><b class="t">Workbook</b><p style="margin:4px 0 0">Create / refresh <code>vc_template_pack_v1_0.xlsx</code></p></div></div>
+<div class="wave"><b class="n">W2</b><div><b class="t">Python package</b><p style="margin:4px 0 0"><code>requirements.txt</code>, rules YAML, <code>vc_mapper.py</code>, README</p></div></div>
+<div class="wave"><b class="n">W3</b><div><b class="t">Sample run</b><p style="margin:4px 0 0">Map starter rows; review Exceptions → Summary → roles → Cost_Model_Load</p></div></div>
+<div class="wave"><b class="n">W4</b><div><b class="t">SalesChat pack</b><p style="margin:4px 0 0">Paste agent texts (UI publish is manual)</p></div></div>
+<div class="wave"><b class="n">W5</b><div><b class="t">Governed folders</b><p style="margin:4px 0 0">Templates / rules / customer inputs / outputs / exceptions / overrides</p></div></div>
+<div class="wave"><b class="n">W6</b><div><b class="t">Pilot</b><p style="margin:4px 0 0">Desktop customer run, issue log, override tracking</p></div></div>
+
+<h2>Before / during / after first run</h2>
+<ul class="check-list" id="run-checks">
+  <li><input type="checkbox"> Template workbook exists</li>
+  <li><input type="checkbox"> Python files + venv deps installed</li>
+  <li><input type="checkbox"> Input populated (generic starter or Desktop pilot)</li>
+  <li><input type="checkbox"> Mapper executes without crash</li>
+  <li><input type="checkbox"> Exceptions inspected first</li>
+  <li><input type="checkbox"> VC_Mapped_Sites roles look coherent</li>
+  <li><input type="checkbox"> VC_Summary role split recorded</li>
+  <li><input type="checkbox"> Cost_Model_Load ready for bridge / engine</li>
+  <li><input type="checkbox"> Issues documented; rerun after source fixes</li>
+  <li><input type="checkbox"> Approved outputs archived under governed folders</li>
+</ul>
+
+<h2>Acceptance — first assembled version</h2>
+<p>Version one exists when all of the following are true:</p>
+<ul>
+<li>Workbook template physically created</li>
+<li>Python package physically created and runnable</li>
+<li>Mapper produces an output workbook</li>
+<li>SalesChat agent texts configured in the UI (manual)</li>
+<li>Governed folder structure exists on Desktop</li>
+<li>At least one governed pilot run completed (customer data off git)</li>
+</ul>
+
+<div class="card soft">
+  <h3>Generic starter acceptance (this site)</h3>
+  <p style="margin:0">Sample mapped output on the site shows Staffed / Local / Remote from Reference Deal A starter geography only (5 sites). Live customer pilots must not be published here.</p>
+</div>
+
+<h2>Immediate priority</h2>
+<ol>
+<li>Template workbook</li>
+<li>Python package</li>
+<li>Map starter → review quality</li>
+<li>SalesChat agent paste</li>
+<li>Desktop pilot cases</li>
+</ol>
+
+<div class="band">Kit: <a href="/vc-kit" style="color:#fff">Overview</a> · <a href="/vc-kit/template" style="color:#fff">Template</a> · <a href="/vc-kit/mapper" style="color:#fff">Mapper</a> · <a href="/vc-kit/agent" style="color:#fff">Agent</a></div>
+<div class="foot">Finish line = working kit, not design docs alone</div>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+<script>
+(() => {
+  const key = "ss-vc-kit-runbook-checks";
+  const boxes = [...document.querySelectorAll("#run-checks input")];
+  try {
+    const saved = JSON.parse(localStorage.getItem(key) || "[]");
+    boxes.forEach((b, i) => { b.checked = !!saved[i]; });
+  } catch (_) {}
+  boxes.forEach((b) => b.addEventListener("change", () => {
+    localStorage.setItem(key, JSON.stringify(boxes.map((x) => x.checked)));
+  }));
+})();
+</script>
+</body>
+</html>

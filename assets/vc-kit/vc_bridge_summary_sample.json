@@ -1,0 +1,25 @@
+{
+  "source": "vc-mapper-cost-model-bridge",
+  "version": "1.0.0",
+  "note": "Rough bridge from Cost_Model_Load \u2014 not a full engine run. Prefer python -m engine run on the Sites intake for production summaries.",
+  "sites": 5,
+  "users": 883.0,
+  "tickets_yr": 2651.0,
+  "campuses": 3,
+  "day1_techs": 3.1,
+  "tpu": 3.002,
+  "role_split": {
+    "Staffed": 3,
+    "Local": 1,
+    "Remote": 1
+  },
+  "overlays": {
+    "field_techs": 3.1,
+    "leads": 0,
+    "managers": 0,
+    "tech_bars": 0,
+    "depot_techs": 0,
+    "virtual_techs": 0,
+    "total_people": 3.1
+  }
+}

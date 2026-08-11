@@ -1,0 +1,77 @@
+site_id:
+  - site id
+  - location id
+  - customer site id
+
+site_name:
+  - site name
+  - location name
+  - location
+
+address_full:
+  - address
+  - full address
+  - street address
+
+city:
+  - city
+
+state_province:
+  - state
+  - province
+  - state_province
+
+postal_code:
+  - zip
+  - zipcode
+  - postal code
+
+country:
+  - country
+
+users:
+  - users
+  - user count
+  - end users
+
+seat_count:
+  - seats
+  - seat count
+
+tickets_per_day:
+  - calls/day
+  - tickets/day
+  - tickets per day
+
+tickets_per_month:
+  - calls/month
+  - tickets/month
+  - tickets per month
+
+tickets_per_year:
+  - calls/year
+  - tickets/year
+  - tickets per year
+
+region:
+  - region
+
+district:
+  - district
+
+customer_site_type:
+  - site type
+  - customer_site_type
+
+notes:
+  - notes
+  - comments
+
+latitude:
+  - lat
+  - latitude
+
+longitude:
+  - lon
+  - lng
+  - longitude

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · VC Template Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.kit-dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+.kit-dl a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--doc-line);
+  background: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #13294B;
+}
+.kit-dl a:hover { border-color: #2fd6c2; }
+code.inline { font-size: 12.5px; }
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="vc-kit-template" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">VC kit · Template</div>
+  <h1>Workbook template pack</h1>
+  <div class="sub"><code>vc_template_pack_v1_0.xlsx</code> — canonical intake and output shell. Starter rows use Reference Deal A labels only.</div>
+</div>
+
+<div class="kit-dl">
+  <a href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>Download template (.xlsx)</a>
+  <a href="/samples/vc_template_pack_v1_0.xlsx" download>Mirror under /samples</a>
+  <a href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>Sample mapped output</a>
+</div>
+
+<h2>Tab order (exact)</h2>
+<table>
+  <thead><tr><th>#</th><th>Tab</th><th>Purpose</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Instructions</td><td>How to fill and run</td></tr>
+    <tr><td>2</td><td>VC_Site_Input_Template</td><td>One row per site (intake)</td></tr>
+    <tr><td>3</td><td>VC_Mapped_Sites</td><td>Roles + catchment fields (mapper output)</td></tr>
+    <tr><td>4</td><td>VC_Summary</td><td>Counts and run metrics</td></tr>
+    <tr><td>5</td><td>Cost_Model_Load</td><td>Engine-aligned bridge columns</td></tr>
+    <tr><td>6</td><td>Exceptions</td><td>Issues to review first</td></tr>
+    <tr><td>7</td><td>Run_Metadata</td><td>Operator, versions, timestamps</td></tr>
+    <tr><td>8</td><td>Alias_Map</td><td>Canonical ↔ alias headers</td></tr>
+  </tbody>
+</table>
+
+<h2>Input headers</h2>
+<p>Required mindset: <b class="t">site_id</b> (or site_name), <b class="t">country</b>, and at least one demand signal. Address fields improve geocoding. Optional <code>latitude</code> / <code>longitude</code> let you <code>--skip-geocode</code>.</p>
+<table>
+  <thead><tr><th>Field</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>site_id</td><td>Stable key</td></tr>
+    <tr><td>site_name</td><td>Display name</td></tr>
+    <tr><td>address_full · city · state_province · postal_code · country</td><td>Geocode inputs</td></tr>
+    <tr><td>users · seat_count</td><td>Sizing helpers</td></tr>
+    <tr><td>tickets_per_day · tickets_per_month · tickets_per_year</td><td>Priority: day → month → year (252 WD / 12 mo)</td></tr>
+    <tr><td>region · district · customer_site_type · notes</td><td>Optional context</td></tr>
+    <tr><td>latitude · longitude</td><td>Optional; starter pack includes them</td></tr>
+  </tbody>
+</table>
+
+<h2>Cost_Model_Load headers</h2>
+<p>Mirrors engine Sites intake plus mapper helpers: <code>mapped_role</code>, <code>campus_id</code>, <code>tickets_per_day</code>, <code>day1_techs_hint</code>.</p>
+<p class="mute">Bridge only — not a commercial quote. See <a href="/vc-kit/mapper">mapper</a> and <a href="/cost-model#pane-guide">cost-model Guide</a>.</p>
+
+<h2>Refresh the template</h2>
+<pre style="background:#13294B;color:#eaf0f8;padding:14px 16px;border-radius:12px;overflow:auto;font-size:12.5px;line-height:1.45">cd tools/vc_mapper
+source .venv/bin/activate   # or Desktop package venv
+python3 build_template.py</pre>
+
+<div class="band">Kit: <a href="/vc-kit" style="color:#fff">Overview</a> · <a href="/vc-kit/mapper" style="color:#fff">Mapper</a> · <a href="/vc-kit/agent" style="color:#fff">Agent</a> · <a href="/vc-kit/runbook" style="color:#fff">Runbook</a></div>
+<div class="foot">Generic starter · Reference Deal A sample geography only</div>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+</body>
+</html>

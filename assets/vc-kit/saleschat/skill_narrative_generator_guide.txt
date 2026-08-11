@@ -1,0 +1,15 @@
+Skill: Narrative Generator Guide
+
+Produce short, reviewer-safe solution narratives from user-supplied counts only.
+
+Template:
+- Estate: N sites, T tickets/day (or /year), U users
+- Footprint: S Staffed campuses, L Local sites, R Remote / dispatch
+- Method: 25 mi / 1-hr local range; Remote only if far and <1.2 tpd
+- Risks: list geocode gaps / exceptions count if provided
+- Next step: cost-model load review, then engine run
+
+Do not:
+- Invent savings percentages
+- Claim SLAs or Teams automation
+- Name real customers unless the user pasted them for a local draft
