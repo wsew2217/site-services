@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · Deal Sandbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.sb-drop {
+  border: 2px dashed var(--doc-line);
+  border-radius: 14px;
+  padding: 28px 20px;
+  text-align: center;
+  background: linear-gradient(165deg, #fff 0%, #f4f6fb 70%, #e8faf7 100%);
+  transition: border-color .2s, box-shadow .2s;
+}
+.sb-drop.is-drag {
+  border-color: #2fd6c2;
+  box-shadow: 0 0 0 3px rgba(47,214,194,.2);
+}
+.sb-drop input[type=file] { max-width: 100%; margin-top: 12px; }
+.sb-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+.sb-actions .btn, .sb-actions button {
+  border: 1px solid var(--acc);
+  background: var(--acc);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.sb-actions button.ghost, .sb-actions a.ghost {
+  background: #fff;
+  color: var(--acc);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+.sb-status {
+  font-size: 13px;
+  color: var(--doc-mute);
+  margin: 8px 0 0;
+}
+.sb-status.ok { color: #149887; font-weight: 600; }
+.sb-status.err { color: #c00000; font-weight: 600; }
+.role-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.role-Staffed { background: #e8faf7; color: #149887; }
+.role-Local { background: #eef3ff; color: #3b6ea5; }
+.role-Remote { background: #fff1ec; color: #c45c38; }
+.gap-box {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff6f1;
+  border-left: 4px solid var(--acc);
+  font-size: 13px;
+}
+.suite-doc-frame table.sb-table { font-size: 12.5px; }
+.suite-doc-frame table.sb-table th { background: var(--navy); color: #fff; }
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="sandbox" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">Site Services · One-click sandbox</div>
+  <h1>Deal sandbox</h1>
+  <div class="sub">Upload a site Excel → browser catchment → engine-summary JSON → <a href="/cost-model">/cost-model</a>. Generic samples only — no customer PII in defaults.</div>
+  <div class="statrow">
+    <div class="stat"><b>JS</b><span>in-browser</span></div>
+    <div class="stat"><b>25 mi</b><span>local range</span></div>
+    <div class="stat"><b>1.2</b><span>remote tpd</span></div>
+    <div class="stat acc"><b>v1</b><span>bridge, not full engine</span></div>
+  </div>
+</div>
+
+<div class="kit-callout" role="note">
+  <b class="t">Browser catchment bridge.</b>
+  Ports VC mapper rules (SheetJS). Does <b>not</b> replace <code>python -m engine run</code> for full staffing / cash ladder.
+  <span class="help-tip">
+    <button type="button" class="help-tip-btn" aria-describedby="tip-gap" title="Gap vs engine">?</button>
+    <span role="tooltip" id="tip-gap" class="help-tip-panel">Sandbox produces mapper-style day1_techs hints and role split. Full engine adds demand, dispatch, OEM/shipment unit economics, and Deal_Output workbook sheets.</span>
+  </span>
+</div>
+
+<div class="card soft">
+  <h3>Deal label (optional)
+    <span class="help-tip">
+      <button type="button" class="help-tip-btn" aria-describedby="tip-label" title="Used in export filenames">?</button>
+      <span role="tooltip" id="tip-label" class="help-tip-panel">Only appears in exports if you type it. Sanitized. Leave blank for “Sample”.</span>
+    </span>
+  </h3>
+  <div class="frow" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <input type="text" id="deal_label" placeholder="Sample" maxlength="48" style="flex:1;min-width:180px;padding:8px 10px;border:1px solid var(--doc-line);border-radius:10px;font:inherit">
+  </div>
+</div>
+
+<div class="card">
+  <h3>Upload site workbook
+    <span class="help-tip">
+      <button type="button" class="help-tip-btn" aria-describedby="tip-upload" title="Accepted sheets">?</button>
+      <span role="tooltip" id="tip-upload" class="help-tip-panel">Prefers VC_Mapped_Sites, Cost_Model_Load, or VC_Site_Input_Template. Also accepts engine Sites sheets. Column aliases match column_aliases.yaml.</span>
+    </span>
+  </h3>
+  <div class="sb-drop" id="dropzone">
+    <p style="margin:0;font-weight:700;color:var(--navy)">Drop Excel here or choose a file</p>
+    <p class="mute" style="margin:6px 0 0">.xlsx / .xls · VC template or address-request-like sheets</p>
+    <input type="file" id="file_input" accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel">
+  </div>
+  <div class="sb-actions">
+    <button type="button" id="btn_sample">Run generic sample</button>
+    <button type="button" class="ghost" id="btn_mapped_fetch">Load mapped sample from kit</button>
+    <a class="ghost" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>Download blank template</a>
+  </div>
+  <p class="sb-status" id="status">Ready — no deal loaded.</p>
+</div>
+
+<div id="scenario_host" hidden></div>
+
+<div class="card" id="results" hidden>
+  <h3>Results</h3>
+  <div class="statrow" id="result_stats"></div>
+  <div class="sb-actions">
+    <a class="btn" id="btn_cost" href="/cost-model?from=sandbox">Open in cost model</a>
+    <a class="ghost" href="/sandbox/map/">View map</a>
+    <button type="button" class="ghost" id="btn_json">Download engine JSON</button>
+    <button type="button" class="ghost" id="btn_export">Export proposal pack</button>
+    <button type="button" class="ghost" id="btn_clear">Clear sandbox</button>
+  </div>
+  <div class="gap-box" id="gap_note"></div>
+  <table class="sb-table file-inventory" style="width:100%;border-collapse:collapse;margin-top:14px">
+    <thead>
+      <tr><th>Site</th><th>City</th><th>Role</th><th>TPD</th><th>Users</th><th>Campus</th><th>Mi to hub</th></tr>
+    </thead>
+    <tbody id="site_rows"></tbody>
+  </table>
+</div>
+
+<div class="two" style="margin-top:18px">
+  <div class="card"><h3><a href="/sandbox/map/">Deal map</a></h3><p>Staffed / Local / Remote pins (Leaflet + OSM). Table fallback if no coords.</p></div>
+  <div class="card"><h3><a href="/vc-kit/chat/">Kit chat</a></h3><p>Offline FAQ or live AI Gateway when configured.</p></div>
+</div>
+
+<div class="band">Also: <a href="/vc-kit" style="color:#fff">VC kit</a> · <a href="/cost-model" style="color:#fff">Cost model</a> · <a href="/vc-kit/mapper" style="color:#fff">Mapper rules</a></div>
+<div class="foot">Field Services Solution Design · Browser sandbox v1 · Generic starter only</div>
+</div>
+  </div>
+</div>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="/assets/sandbox/sandbox-engine.js"></script>
+<script src="/assets/sandbox/scenario-strip.js"></script>
+<script src="/assets/sandbox/proposal-export.js"></script>
+<script src="/assets/site.js"></script>
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const status = $("status");
+  const results = $("results");
+  const dropzone = $("dropzone");
+  let current = null;
+
+  function dealLabel() {
+    return SSSandbox.sanitizeDealLabel($("deal_label").value || "Sample");
+  }
+
+  function setStatus(msg, cls) {
+    status.className = "sb-status" + (cls ? " " + cls : "");
+    status.textContent = msg;
+  }
+
+  function render(pack) {
+    current = pack;
+    if (!pack) {
+      results.hidden = true;
+      $("scenario_host").hidden = true;
+      return;
+    }
+    SSSandbox.saveDeal(pack);
+    $("deal_label").value = pack.dealLabel || "Sample";
+    const s = pack.summary;
+    const role = s.role_split || {};
+    results.hidden = false;
+    $("scenario_host").hidden = false;
+    SSScenarioStrip.injectStyles();
+    SSScenarioStrip.renderStrip($("scenario_host"), s, { dealLabel: pack.dealLabel });
+    $("result_stats").innerHTML = `
+      <div class="stat"><b>${s.sites}</b><span>sites</span></div>
+      <div class="stat"><b>${s.campuses}</b><span>campuses</span></div>
+      <div class="stat"><b>${s.day1_techs}</b><span>day-one techs</span></div>
+      <div class="stat acc"><b>${role.Staffed||0}/${role.Local||0}/${role.Remote||0}</b><span>S / L / R</span></div>`;
+    $("gap_note").innerHTML = `<b>Gap vs python -m engine run</b><ul style="margin:6px 0 0 18px">${(s.gap_vs_engine||[]).map(g=>`<li>${g}</li>`).join("")}</ul>`;
+    $("site_rows").innerHTML = (pack.sites||[]).map(r => `
+      <tr>
+        <td>${esc(r.site_name||r.site_id)}</td>
+        <td>${esc(r.city||"")}</td>
+        <td><span class="role-pill role-${esc(r.mapped_role)}">${esc(r.mapped_role)}</span></td>
+        <td>${r.tickets_per_day ?? ""}</td>
+        <td>${r.users ?? ""}</td>
+        <td>${esc(r.campus_id||"")}</td>
+        <td>${r.distance_to_hub_miles ?? "—"}</td>
+      </tr>`).join("");
+    setStatus(`Loaded “${pack.dealLabel}” from ${pack.sheet_used || "sample"} · saved to sessionStorage.`, "ok");
+  }
+
+  function esc(s) {
+    return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  async function runBuffer(buf, name) {
+    try {
+      setStatus("Running catchment…");
+      const pack = await SSSandbox.parseWorkbookArrayBuffer(buf, { dealLabel: dealLabel() });
+      pack.source_file = name || "upload.xlsx";
+      render(pack);
+    } catch (e) {
+      setStatus("Failed: " + e.message, "err");
+    }
+  }
+
+  $("file_input").addEventListener("change", async (ev) => {
+    const f = ev.target.files && ev.target.files[0];
+    if (!f) return;
+    const buf = await f.arrayBuffer();
+    await runBuffer(buf, f.name);
+  });
+
+  ["dragenter","dragover"].forEach((ev) => {
+    dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.add("is-drag"); });
+  });
+  ["dragleave","drop"].forEach((ev) => {
+    dropzone.addEventListener(ev, (e) => { e.preventDefault(); dropzone.classList.remove("is-drag"); });
+  });
+  dropzone.addEventListener("drop", async (e) => {
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!f) return;
+    await runBuffer(await f.arrayBuffer(), f.name);
+  });
+
+  $("btn_sample").addEventListener("click", () => {
+    render(SSSandbox.runSample(dealLabel()));
+  });
+
+  $("btn_mapped_fetch").addEventListener("click", async () => {
+    try {
+      setStatus("Fetching mapped sample…");
+      const r = await fetch("/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx");
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      await runBuffer(await r.arrayBuffer(), "vc_template_pack_v1_0_mapped_sample.xlsx");
+    } catch (e) {
+      setStatus("Could not fetch mapped sample: " + e.message, "err");
+    }
+  });
+
+  $("btn_json").addEventListener("click", () => {
+    if (!current) return;
+    const blob = new Blob([JSON.stringify(current.summary, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `engine_summary_${dealLabel().replace(/\s+/g,"_")}.json`;
+    a.click();
+  });
+
+  $("btn_export").addEventListener("click", async () => {
+    if (!current) return;
+    try {
+      const res = await SSProposalExport.exportPack(current, { dealLabel: dealLabel() });
+      setStatus(`Exported ${res.filename} (${res.mode}).`, "ok");
+    } catch (e) {
+      setStatus("Export failed: " + e.message, "err");
+    }
+  });
+
+  $("btn_clear").addEventListener("click", () => {
+    SSSandbox.clearDeal();
+    current = null;
+    results.hidden = true;
+    $("scenario_host").hidden = true;
+    $("scenario_host").innerHTML = "";
+    setStatus("Sandbox cleared.");
+  });
+
+  $("btn_cost").addEventListener("click", () => {
+    if (current) SSSandbox.saveDeal(current);
+  });
+
+  const existing = SSSandbox.loadDeal();
+  if (existing) render(existing);
+})();
+</script>
+</body>
+</html>

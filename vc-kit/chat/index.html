@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · VC Kit Chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.chat-shell {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+  min-height: min(70vh, 640px);
+}
+.mode-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--doc-line);
+  background: #fff;
+  color: var(--doc-mute);
+}
+.mode-pill.live { color: #149887; border-color: #2fd6c2; background: #e8faf7; }
+.mode-pill.offline { color: #8a5a2b; border-color: #f0cdbB; background: #fff6f1; }
+.chat-log {
+  border: 1px solid var(--doc-line);
+  border-radius: 14px;
+  background: #fff;
+  padding: 14px;
+  overflow: auto;
+  max-height: min(55vh, 520px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bubble {
+  max-width: 92%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  white-space: pre-wrap;
+  line-height: 1.45;
+}
+.bubble.user {
+  align-self: flex-end;
+  background: var(--navy);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+.bubble.bot {
+  align-self: flex-start;
+  background: #f4f6fb;
+  color: var(--doc-ink);
+  border: 1px solid var(--doc-line);
+  border-bottom-left-radius: 4px;
+}
+.chat-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+.chat-form input {
+  padding: 10px 12px;
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  font: inherit;
+}
+.chat-form button {
+  border: 0;
+  background: var(--acc);
+  color: #fff;
+  font-weight: 800;
+  border-radius: 12px;
+  padding: 0 18px;
+  cursor: pointer;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0 0; }
+.chips button {
+  border: 1px solid var(--doc-line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--navy);
+  cursor: pointer;
+}
+.chips button:hover { border-color: #2fd6c2; }
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="vc-kit-chat" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">Site Services · VC Kit</div>
+  <h1>Kit chat</h1>
+  <div class="sub">Copilot-style help for catchment, pipeline, sandbox, and kit files. Honest about live vs offline mode.</div>
+</div>
+
+<div class="kit-callout" role="note">
+  <b class="t">Mode is detected at runtime.</b>
+  Live chat uses Vercel AI Gateway when <code>AI_GATEWAY_API_KEY</code> (or compatible) is set on the project.
+  Otherwise answers come from an embedded offline knowledge base — still useful, not an LLM.
+</div>
+
+<div class="chat-shell card">
+  <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center">
+    <span class="mode-pill offline" id="mode_pill">Checking…</span>
+    <a href="/vc-kit" style="font-size:13px;font-weight:700;color:var(--navy)">← Kit overview</a>
+  </div>
+  <div class="chat-log" id="log" aria-live="polite"></div>
+  <div>
+    <form class="chat-form" id="form">
+      <input id="input" type="text" placeholder="Ask about catchment, sandbox, export, KPIs…" autocomplete="off" required>
+      <button type="submit">Send</button>
+    </form>
+    <div class="chips">
+      <button type="button" data-q="What are the catchment rules?">Catchment rules</button>
+      <button type="button" data-q="How does the sandbox load into cost-model?">Sandbox → cost model</button>
+      <button type="button" data-q="What is in the proposal export pack?">Export pack</button>
+      <button type="button" data-q="What delivery KPIs should we design to?">Delivery KPIs</button>
+    </div>
+  </div>
+</div>
+
+<div class="foot">Context: AI_REBUILD_PROMPT + kit FAQ · No customer PII in defaults</div>
+</div>
+  </div>
+</div>
+<script src="/assets/sandbox/kit-chat.js"></script>
+<script src="/assets/site.js"></script>
+<script>
+(() => {
+  const log = document.getElementById("log");
+  const pill = document.getElementById("mode_pill");
+  const history = [];
+
+  function add(role, text) {
+    const div = document.createElement("div");
+    div.className = "bubble " + (role === "user" ? "user" : "bot");
+    div.textContent = text;
+    log.appendChild(div);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  async function refreshMode() {
+    const st = await SSKitChat.detectMode();
+    const live = st.mode === "live";
+    pill.className = "mode-pill " + (live ? "live" : "offline");
+    pill.textContent = live
+      ? "Live · AI Gateway"
+      : "Offline assistant · " + (st.reason || "no key");
+    return st;
+  }
+
+  async function send(msg) {
+    add("user", msg);
+    history.push({ role: "user", content: msg });
+    add("bot", "…");
+    const pending = log.lastChild;
+    const res = await SSKitChat.ask(msg, history);
+    pending.textContent = res.text;
+    history.push({ role: "assistant", content: res.text });
+    pill.className = "mode-pill " + (res.mode === "live" ? "live" : "offline");
+    pill.textContent = res.mode === "live" ? "Live · AI Gateway" : "Offline assistant";
+  }
+
+  document.getElementById("form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const input = document.getElementById("input");
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = "";
+    send(msg);
+  });
+
+  document.querySelectorAll(".chips button").forEach((btn) => {
+    btn.addEventListener("click", () => send(btn.dataset.q));
+  });
+
+  refreshMode().then(() => {
+    add("bot", "Hi — ask about catchment, the VC pipeline, /sandbox, proposal export, or delivery KPIs. I’ll say whether I’m live or offline.");
+  });
+})();
+</script>
+</body>
+</html>

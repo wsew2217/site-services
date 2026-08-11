@@ -85,10 +85,12 @@ details ul{margin:8px 0 4px 20px}
 <button class="tab" data-p="logic">6 . Model Logic</button>
 <span class="sp"></span>
 <button class="btn ghost" onclick="resetAll()">Reset defaults</button>
+<button class="btn ghost" id="btn_sandbox_export" type="button" title="Export proposal pack from sandbox session if present">Export proposal pack</button>
 <button class="btn ghost" onclick="exportHtmlReport()">Export HTML report</button>
 <button class="btn" onclick="window.print()">Print / PDF</button>
 </div></div>
 <div class="wrap">
+<div id="scenario_strip_host"></div>
 
 <!-- ================= PANE 0: GUIDE ================= -->
 <div class="pane" id="pane-guide">
@@ -103,7 +105,8 @@ details ul{margin:8px 0 4px 20px}
 <div class="card"><h3>Inputs</h3>
 <ul style="margin:8px 0 0 18px">
 <li><b>Engine JSON</b> — load <code>/assets/engine-summary.json</code> from <code>python -m engine run …</code> (see <code>engine/README.md</code>) when you need site-derived campuses and day-one techs. This is the deal-engine path.</li>
-<li><b>VC Mapper bridge</b> — preferred start for the <a href="/vc-kit">VC kit</a>: map → <a href="/vc-kit/mapper">Cost_Model_Load → bridge</a>; optionally run the engine on the bridged Sites file before uploading JSON here.</li>
+<li><b>One-click sandbox</b> — <a href="/sandbox/">/sandbox</a> runs catchment in-browser (SheetJS), saves engine-summary JSON to sessionStorage, and can land here with data applied. Gap vs full <code>python -m engine run</code> is documented on the sandbox page.</li>
+<li><b>VC Mapper bridge</b> — preferred desktop path for the <a href="/vc-kit">VC kit</a>: map → <a href="/vc-kit/mapper">Cost_Model_Load → bridge</a>; optionally run the engine on the bridged Sites file before uploading JSON here.</li>
 <li><b>Intake assumptions</b> — sites, users, tickets/user, physical-touch share, throughput, utilization, regional labor mix, logistics / dispatch / OEM / transition rates (editable placeholders).</li>
 <li><b>Ratio bands</b> — commercial guardrails on Scenarios (and <a href="/structure">Structure</a>), not day-one sizing truth. Day one follows demand + VC floors.</li>
 </ul></div>
@@ -148,9 +151,10 @@ details ul{margin:8px 0 4px 20px}
 <p class="note">Defaults describe a large, distributed global estate. Prefer loading an engine summary so campuses and day-one techs are site-derived, not invented.</p>
 <div class="card" style="margin-bottom:16px">
 <h3>Deal engine bridge</h3>
-<div class="sub">Load <code>/assets/engine-summary.json</code> produced by <code>python -m engine run …</code> (or upload a file). Campuses lock as derived; day-one techs come from the site model.</div>
+<div class="sub">Load <code>/assets/engine-summary.json</code> produced by <code>python -m engine run …</code>, upload a file, or arrive from <a href="/sandbox/">/sandbox</a> (sessionStorage auto-load). Campuses lock as derived; day-one techs come from the site model.</div>
 <div class="frow"><label>Engine JSON</label><span style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
 <button class="btn ghost" type="button" id="btn_load_engine">Load sample engine summary</button>
+<button class="btn ghost" type="button" id="btn_load_sandbox">Load sandbox session</button>
 <input type="file" id="i_engine_file" accept="application/json,.json" style="font-size:12px">
 </span></div>
 <div class="note" id="engine_status">No engine file loaded — campuses are manual until you load a summary.</div>
@@ -302,6 +306,10 @@ details ul{margin:8px 0 4px 20px}
 </div>
 
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="/assets/sandbox/sandbox-engine.js"></script>
+<script src="/assets/sandbox/scenario-strip.js"></script>
+<script src="/assets/sandbox/proposal-export.js"></script>
 <script src="/assets/site.js"></script>
 <script>
 
@@ -360,12 +368,27 @@ function techsFor(sc,I){
  }
  return Math.max(I.camp*Math.max(1,I.floor-1), CE(I.users/sc.ratio));
 }
+function refreshScenarioStrip(){
+ const host=$('scenario_strip_host');
+ if(!host || !window.SSScenarioStrip) return;
+ SSScenarioStrip.injectStyles();
+ if(!ENGINE){ host.innerHTML=''; return; }
+ const data=Object.assign({},ENGINE);
+ if(window._lastCompute){
+  data.scenarios=window._lastCompute.map(r=>({
+   key:r.sc.key,name:r.sc.name,ratio:r.sc.ratio,defl:r.sc.defl,zt:r.sc.zt,year:r.sc.year,
+   techs:r.c.techs,total:r.c.total,ratioImplied:r.c.ratioImplied,goal:!!r.sc.goal
+  }));
+ }
+ SSScenarioStrip.renderStrip(host,data,{dealLabel:ENGINE.deal_label||'Generic'});
+}
 function applyEngine(data){
  ENGINE=data||null;
  const st=$('engine_status');
  if(!ENGINE){
   st.textContent='No engine file loaded — campuses are manual until you load a summary.';
   $('i_camp').readOnly=false;
+  refreshScenarioStrip();
   return;
  }
  if(ENGINE.sites!=null) $('i_sites').value=ENGINE.sites;
@@ -380,7 +403,8 @@ function applyEngine(data){
  if(ENGINE.day1_techs!=null && Number($('i_curtech').value) < ENGINE.day1_techs){
   $('i_curtech').value=Math.round(ENGINE.day1_techs*1.25);
  }
- st.textContent='Loaded engine summary: '+ENGINE.campuses+' campuses, '+ENGINE.day1_techs+' day-one field techs, '+ENGINE.sites+' sites. Campuses are derived; ratios remain guardrails.';
+ const src=ENGINE.source?(' · '+ENGINE.source):'';
+ st.textContent='Loaded engine summary: '+ENGINE.campuses+' campuses, '+ENGINE.day1_techs+' day-one field techs, '+ENGINE.sites+' sites. Campuses are derived; ratios remain guardrails.'+src;
  snapshot(); recalc(true);
 }
 async function loadEngineUrl(url){
@@ -393,12 +417,34 @@ async function loadEngineUrl(url){
  }
 }
 $('btn_load_engine').addEventListener('click',()=>loadEngineUrl('/assets/engine-summary.json'));
+function loadSandboxSession(){
+ try{
+  const raw=sessionStorage.getItem('ss_sandbox_v1')||localStorage.getItem('ss_sandbox_v1');
+  if(!raw){$('engine_status').textContent='No sandbox session found — run /sandbox first.';return false;}
+  const pack=JSON.parse(raw);
+  const summary=pack.summary||pack;
+  if(pack.dealLabel && !summary.deal_label) summary.deal_label=pack.dealLabel;
+  applyEngine(summary);
+  return true;
+ }catch(e){
+  $('engine_status').textContent='Sandbox session invalid: '+e.message;
+  return false;
+ }
+}
+$('btn_load_sandbox').addEventListener('click',()=>loadSandboxSession());
 $('i_engine_file').addEventListener('change',ev=>{
  const f=ev.target.files&&ev.target.files[0]; if(!f) return;
  const reader=new FileReader();
  reader.onload=()=>{try{applyEngine(JSON.parse(reader.result));}catch(e){$('engine_status').textContent='Invalid JSON: '+e.message;}};
  reader.readAsText(f);
 });
+// Auto-load sandbox when arriving from /sandbox or ?from=sandbox
+(function autoSandbox(){
+ const q=new URLSearchParams(location.search);
+ if(q.get('from')==='sandbox' || q.get('sandbox')==='1'){
+  loadSandboxSession();
+ }
+})();
 // Generic page keeps round-number defaults until the user loads an engine summary.
 
 function costFor(sc,I){
@@ -611,8 +657,10 @@ function updateScenComputed(R){
 }
 function recalc(rebuildScen=true){
  const R=compute();
+ window._lastCompute=R;
  if(rebuildScen)rScenTable(R); else updateScenComputed(R);
  rLadder(R);rCostTable(R);rStack(R);rKpis(R);rCash(R);rTornado(R);
+ refreshScenarioStrip();
 }
 function openGuide(e){if(e)e.preventDefault();const t=document.querySelector('.tab[data-p="guide"]');if(t)t.click();}
 function exportHtmlReport(){
@@ -700,6 +748,33 @@ document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
 document.querySelectorAll('.pane input').forEach(e=>e.addEventListener('input',()=>recalc(true)));
 snapshot();recalc();
 if(location.hash==='#pane-guide')openGuide();
+
+(function wireProposalExport(){
+ const btn=$('btn_sandbox_export');
+ if(!btn) return;
+ btn.addEventListener('click', async ()=>{
+  try{
+   if(!window.SSProposalExport || !window.SSSandbox){
+    alert('Export scripts not loaded.');
+    return;
+   }
+   let pack=SSSandbox.loadDeal();
+   if(!pack && ENGINE){
+    pack={
+     dealLabel: ENGINE.deal_label||'Sample',
+     createdAt: new Date().toISOString(),
+     summary: ENGINE,
+     sites: []
+    };
+   }
+   if(!pack){ alert('No sandbox deal or engine summary to export. Run /sandbox or load engine JSON first.'); return; }
+   const res=await SSProposalExport.exportPack(pack,{dealLabel:pack.dealLabel||ENGINE?.deal_label||'Sample'});
+   $('engine_status').textContent='Exported proposal pack: '+res.filename+' ('+res.mode+').';
+  }catch(e){
+   alert('Export failed: '+e.message);
+  }
+ });
+})();
 
 </script>
 </body>

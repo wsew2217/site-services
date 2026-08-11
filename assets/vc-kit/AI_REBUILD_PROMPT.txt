@@ -32,19 +32,25 @@ Sanitize sample geography and numbers as “example estate” parameters. Dell B
 Recreate (or map into Excel sheets / PPT sections) these routes:
 
 ### Site Services (generic)
-- `/` — Suite home: Generic / **VC Mapper kit** / Deal A / Deal B destination cards. Primary CTA can point at `/vc-kit`. **Do not** feature a rebuild-prompt link on the homepage.
+- `/` — Suite home: Generic / **VC Mapper kit** / Deal A / Deal B destination cards. Primary CTA can point at `/sandbox` (one-click deal sandbox) or `/vc-kit`. **Do not** feature a rebuild-prompt link on the homepage.
 - `/structure` — Structure & methodology (FMO, roles, tech bar/remote, ratio bands, **delivery optimization metrics** cards).
 - `/coverage` — Country **capability atlas** (Staffed vs Capability matrix) — **not** a single-customer campus map.
 - `/cost-model` — Generic cost-model sandbox (primary economics tool for any estate). Guide tab documents engine JSON **and** VC Mapper `Cost_Model_Load` bridge.
 
 ### VC Mapper / Solutioning Kit
 - `/vc-kit` — Kit overview: Excel template → `vc_mapper.py` → `Cost_Model_Load` → `/cost-model`
+- `/sandbox` — **One-click deal sandbox**: upload Excel → browser catchment (SheetJS) → engine-summary JSON in sessionStorage → open `/cost-model?from=sandbox`
+- `/sandbox/map` — Leaflet + OSM Staffed/Local/Remote pins for the current sandbox deal (Nominatim optional, rate-limited; table fallback)
+- `/vc-kit/chat` — Kit assistant (live AI Gateway when `AI_GATEWAY_API_KEY` set; otherwise honest offline FAQ from embedded knowledge)
 - `/vc-kit/template` — Workbook tabs/headers + download `vc_template_pack_v1_0.xlsx`
 - `/vc-kit/mapper` — Mac run commands, catchment rules (25 mi / 1.2 tpd / near=always Local), role legend, bridge helper
 - `/vc-kit/agent` — SalesChat agent text pack (copy/download). **UI publish is manual** — no live SalesChat hosting
 - `/vc-kit/runbook` — First pilot checklist + acceptance criteria
 - Static downloads under `/assets/vc-kit/` (template, YAML, mapper zip, SalesChat `.txt` pack, **generic** mapped sample only)
+- Shared JS: `/assets/sandbox/sandbox-engine.js`, `scenario-strip.js`, `proposal-export.js`, `kit-chat.js`
+- Proposal export pack (from sandbox / cost-model): offline HTML + PPT outline `.md` + `Cost_Model_Load.csv` + engine JSON → zip named `Site_Services_Proposal_Pack_<timestamp>`
 - Python package: `tools/vc_mapper/` (+ `cost_model_bridge.py`, tests). Customer pilot workbooks stay **off git**
+- API (optional): `/api/chat`, `/api/chat-status` for live kit chat
 
 ### Reference Deal A
 - `/summary` — Executive summary
@@ -69,6 +75,8 @@ Recreate (or map into Excel sheets / PPT sections) these routes:
 
 ### Hard constraint on navigation
 - Persistent suite sidebar groups: **Site Services** · **VC Mapper / Solutioning Kit** · **Reference Deal A** · **Reference Deal B**.
+- VC Kit nav includes **Deal Sandbox**, **Deal Map**, and **Kit Chat** alongside template / mapper / agent / runbook.
+- Homepage primary CTA can point at `/sandbox` (one-click) as well as `/vc-kit`.
 - A hidden rebuild-prompt page (this document’s host) must **not** appear in nav or on the homepage.
 
 ---
