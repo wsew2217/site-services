@@ -4,22 +4,23 @@
       label: "Site Services",
       items: [
         { href: "/", id: "home", title: "Home" },
+        { href: "/how-to", id: "how-to", title: "How to use" },
         { href: "/structure", id: "structure", title: "Structure & Methodology" },
         { href: "/coverage", id: "coverage", title: "Coverage" },
         { href: "/cost-model", id: "cost-model", title: "Cost Model (Generic)" },
       ],
     },
     {
-      label: "VC Mapper / Solutioning Kit",
+      label: "VC Kit",
       items: [
-        { href: "/vc-kit", id: "vc-kit", title: "Kit Overview" },
+        { href: "/vc-kit", id: "vc-kit", title: "VC Kit Overview" },
         { href: "/sandbox", id: "sandbox", title: "Deal Sandbox" },
         { href: "/sandbox/map", id: "sandbox-map", title: "Deal Map" },
-        { href: "/vc-kit/chat", id: "vc-kit-chat", title: "Kit Chat" },
         { href: "/vc-kit/template", id: "vc-kit-template", title: "Template Pack" },
         { href: "/vc-kit/mapper", id: "vc-kit-mapper", title: "Mapper & Rules" },
-        { href: "/vc-kit/agent", id: "vc-kit-agent", title: "SalesChat Agent Pack" },
         { href: "/vc-kit/runbook", id: "vc-kit-runbook", title: "Pilot Runbook" },
+        { href: "/vc-kit/agent", id: "vc-kit-agent", title: "SalesChat Agent Pack" },
+        { href: "/vc-kit/chat", id: "vc-kit-chat", title: "Kit Chat" },
       ],
     },
     {
@@ -106,14 +107,16 @@
 
   function buildToolChrome() {
     const toolLinks = [
-      { id: "structure", href: "/structure", label: "Structure" },
-      { id: "coverage", href: "/coverage", label: "Coverage" },
+      { id: "how-to", href: "/how-to", label: "How to" },
       { id: "vc-kit", href: "/vc-kit", label: "VC Kit" },
       { id: "sandbox", href: "/sandbox", label: "Sandbox" },
+      { id: "sandbox-map", href: "/sandbox/map", label: "Map" },
+      { id: "structure", href: "/structure", label: "Structure" },
+      { id: "coverage", href: "/coverage", label: "Coverage" },
+      { id: "cost-model", href: "/cost-model", label: "Cost (Generic)" },
       { id: "vc-kit-chat", href: "/vc-kit/chat", label: "Chat" },
       { id: "coverage-deal-a", href: "/coverage-deal-a", label: "Map A" },
       { id: "deal-b", href: "/deal-b", label: "Deal B" },
-      { id: "cost-model", href: "/cost-model", label: "Cost (Generic)" },
       { id: "cost-model-deal-a", href: "/cost-model-deal-a", label: "Cost (Deal A)" },
       { id: "cost-model-deal-b", href: "/cost-model-deal-b", label: "Cost (Deal B)" },
       { id: "deck", href: "/deck", label: "Deck A" },

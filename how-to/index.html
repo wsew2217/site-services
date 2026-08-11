@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · How to use this site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.howto-path {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 22px;
+}
+.howto-step {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 14px 16px;
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  background: #fff;
+}
+.howto-step b.n {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #13294B;
+  color: #fff;
+  font-size: 13px;
+}
+.howto-step .t { display: block; margin-bottom: 2px; }
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 14px 0 20px;
+}
+.legend-card {
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: #fff;
+}
+.legend-card h3 { margin: 0 0 6px; font-size: 15px; }
+.legend-card p { margin: 0; font-size: 13.5px; color: #54607A; }
+.tool-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0 20px;
+}
+@media (max-width: 720px) { .tool-compare { grid-template-columns: 1fr; } }
+.tool-compare .preferred {
+  border-color: #2fd6c2;
+  box-shadow: 0 0 0 2px rgba(47,214,194,0.18);
+}
+.badge-pref {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #149887;
+  margin-bottom: 6px;
+}
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="how-to" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">Site Services · First-run guide</div>
+  <h1>How to use this site</h1>
+  <div class="sub">What the suite is, the recommended path, where downloads live, and how mapper vs engine differ. Generic samples only — no customer data on the live site.</div>
+  <div class="kit-dl" style="margin-top:16px">
+    <a class="primary" href="/vc-kit">Open VC Kit</a>
+    <a class="primary" href="/sandbox">Try sample deal</a>
+    <a href="/coverage">Coverage atlas</a>
+    <a href="/cost-model">Cost model</a>
+  </div>
+</div>
+
+<div class="kit-callout" role="note">
+  <b class="t">No customer data on the live site.</b>
+  Address-request workbooks and pilot estates stay on Desktop / governed folders. This suite ships generic sample workbooks and templates only.
+</div>
+
+<h2>What the suite is
+  <span class="help-tip">
+    <button type="button" class="help-tip-btn" aria-describedby="tip-suite" title="Three layers of the suite">?</button>
+    <span role="tooltip" id="tip-suite" class="help-tip-panel">Generic Site Services is the product language. Deals A and B are labeled examples. The VC kit is the Excel → roles → cost-model solutioning path for any estate.</span>
+  </span>
+</h2>
+<div class="legend-grid">
+  <div class="legend-card">
+    <h3>Generic Site Services</h3>
+    <p><a href="/structure">Structure</a>, <a href="/coverage">Coverage</a>, and <a href="/cost-model">Cost Model</a> — reusable model language, capability atlas, and economics sandbox for any estate.</p>
+  </div>
+  <div class="legend-card">
+    <h3>VC Mapper / Solutioning Kit</h3>
+    <p>Template → <code>vc_mapper.py</code> → Cost_Model_Load → cost model. Prefer this for new solutioning. Start at <a href="/vc-kit">/vc-kit</a> or <a href="/sandbox">/sandbox</a>.</p>
+  </div>
+  <div class="legend-card">
+    <h3>Reference Deal A</h3>
+    <p>One labeled campus-footprint example (summary, deck, deal-specific cost). Numbers are that deal’s only — not universal defaults.</p>
+  </div>
+  <div class="legend-card">
+    <h3>Reference Deal B</h3>
+    <p>Tech-bar pattern example — contrast to Deal A’s campus footprint. Sanitized sample only.</p>
+  </div>
+</div>
+
+<h2>Recommended path
+  <span class="help-tip">
+    <button type="button" class="help-tip-btn" aria-describedby="tip-path" title="Day-one walkthrough">?</button>
+    <span role="tooltip" id="tip-path" class="help-tip-panel">VC Kit → Sandbox (Try sample deal) → Map → Cost model → Proposal export. Mapper first for roles; full engine run is optional later.</span>
+  </span>
+</h2>
+<div class="howto-path">
+  <div class="howto-step"><b class="n">1</b><div><b class="t">VC Kit</b>
+    <p style="margin:4px 0 0">Open <a href="/vc-kit">Kit Overview</a> — pipeline, file inventory, and downloads under <code>/assets/vc-kit/…</code>.</p>
+  </div></div>
+  <div class="howto-step"><b class="n">2</b><div><b class="t">Sandbox — Try sample deal</b>
+    <p style="margin:4px 0 0">On <a href="/sandbox">/sandbox</a>, click <b>Try sample deal</b> (or upload Excel). Browser catchment writes sessionStorage for the rest of the flow.</p>
+  </div></div>
+  <div class="howto-step"><b class="n">3</b><div><b class="t">Map</b>
+    <p style="margin:4px 0 0">Open <a href="/sandbox/map">Deal Map</a> — Staffed / Local / Remote pins from the current sandbox deal.</p>
+  </div></div>
+  <div class="howto-step"><b class="n">4</b><div><b class="t">Cost model</b>
+    <p style="margin:4px 0 0">Continue to <a href="/cost-model?from=sandbox">/cost-model</a>. Use the Guide tab for how JSON loads and what the ladders mean.</p>
+  </div></div>
+  <div class="howto-step"><b class="n">5</b><div><b class="t">Proposal export</b>
+    <p style="margin:4px 0 0">From sandbox results or the cost model, download the proposal pack zip. Optional: run <code>python vc_mapper.py</code> locally for real estates (off git).</p>
+  </div></div>
+</div>
+
+<h2>Where downloads live</h2>
+<p>Primary kit files live under <code>/assets/vc-kit/…</code> (also mirrored under <code>/samples</code> for the Excel packs).</p>
+<div class="card soft">
+  <div class="kit-dl">
+    <a class="primary" href="/assets/site-services-full-offline.zip" download title="Full documentation suite for local use">Download full site offline (.zip)</a>
+    <a href="/assets/offline-site/index.html">Full-site offline hub</a>
+    <a class="primary" href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>vc_template_pack_v1_0.xlsx</a>
+    <a class="primary" href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>Mapped sample</a>
+    <a href="/assets/vc-kit/offline/index.html">Kit offline hub</a>
+    <a href="/assets/vc-kit/site-services-offline.zip" download>VC kit only (.zip)</a>
+    <a href="/assets/vc-kit/vc_mapper_package.zip" download>Mapper package (.zip)</a>
+    <a href="/assets/vc-kit/AI_REBUILD_PROMPT.txt" download>AI rebuild prompt</a>
+  </div>
+  <p class="mute" style="margin:10px 0 0">After unzip: <code>cd offline-site &amp;&amp; python3 -m http.server 8765</code> → <code>http://localhost:8765/</code> or <code>/how-to/</code>. Kit-only zip remains secondary for mapper docs alone.</p>
+</div>
+
+<h2>Mapper vs <code>python -m engine run</code>
+  <span class="help-tip">
+    <button type="button" class="help-tip-btn" aria-describedby="tip-two-tools" title="Which command to run">?</button>
+    <span role="tooltip" id="tip-two-tools" class="help-tip-panel">Prefer python vc_mapper.py for VC solutioning. python -m engine run is the older/parallel full staffing path that produces Excel + Deal_Output.json.</span>
+  </span>
+</h2>
+<div class="tool-compare">
+  <div class="card preferred">
+    <div class="badge-pref">Preferred for this kit</div>
+    <h3><code>python vc_mapper.py</code></h3>
+    <p style="margin:0">Template → Mapped_Sites / Summary / Cost_Model_Load. Then bridge helper or sandbox JSON → cost model. Use for new VC solutioning.</p>
+  </div>
+  <div class="card tint">
+    <div class="badge-pref" style="color:#8A93A6">Older / parallel</div>
+    <h3><code>python -m engine run</code></h3>
+    <p style="margin:0">Full deal-engine path in <code>engine/</code>: intake → Excel + <code>Deal_Output.json</code> → upload on <a href="/cost-model">/cost-model</a>. Optional when you need locked day-one staffing.</p>
+  </div>
+</div>
+<p class="mute">Sandbox browser catchment mirrors mapper-style roles — it does <b>not</b> replace a full engine run for cash/OEM workbook depth.</p>
+
+<h2>Coverage capability matrix</h2>
+<p>On <a href="/coverage">/coverage</a>, click any country row for Staffed vs Capability detail. This is a generic atlas — not a single-customer campus map. Deal A’s campus footprint lives under <a href="/coverage-deal-a">/coverage-deal-a</a>.</p>
+
+<div class="kit-callout soft" role="note">
+  <b class="t">Sidebar tip.</b>
+  Every page shares the left nav. <b>How to use this site</b> sits near the top of Site Services; the full <b>VC Kit</b> group lists overview, sandbox, map, chat, template, mapper, agent, and runbook. On mobile, open nav with ☰.
+</div>
+
+<div class="card soft">
+  <h3>Quick links</h3>
+  <div class="kit-dl">
+    <a class="primary" href="/vc-kit">VC Kit</a>
+    <a class="primary" href="/sandbox">Deal Sandbox</a>
+    <a href="/sandbox/map">Deal Map</a>
+    <a href="/structure">Structure</a>
+    <a href="/coverage">Coverage</a>
+    <a href="/cost-model">Cost Model</a>
+    <button type="button" class="kit-dl-btn" onclick="suiteDownloadPageHtml({filename:'how-to-use-this-site.html',title:'How to use this site'})">Download this page as HTML</button>
+  </div>
+</div>
+
+<p class="mute">Look for small <b>?</b> tips next to headings and CTAs on kit, sandbox, and home. Hover or focus them for short explanations.</p>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+</body>
+</html>

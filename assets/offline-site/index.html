@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · Full site offline hub</title>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.offline-hero {
+  background: #13294B;
+  color: #fff;
+  border-radius: 16px;
+  padding: 28px 26px 22px;
+  margin-bottom: 22px;
+}
+.offline-hero .k { color: #D86A44; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; font-size: 11px; }
+.offline-hero h1 { font-family: Cambria, Georgia, serif; font-size: 28px; margin: 8px 0 6px; }
+.offline-hero .s { color: #C9D2E4; font-size: 14px; margin: 0; }
+.start-card {
+  border: 2px solid #2fd6c2;
+  box-shadow: 0 0 0 2px rgba(47,214,194,.16);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 0 0 20px;
+  background: #fff;
+}
+.start-card a.primary {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #13294B;
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 700;
+}
+pre.run {
+  background: #F4F6FB;
+  border: 1px solid var(--doc-line, #E4E8F0);
+  border-radius: 10px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  font-size: 13px;
+}
+table.page-list { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.page-list th { text-align: left; background: #13294B; color: #fff; padding: 8px 10px; }
+table.page-list td { border: 1px solid var(--doc-line, #E4E8F0); padding: 8px 10px; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 28px 20px 64px; }
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="offline-hub" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page wrap">
+  <div class="offline-hero">
+    <div class="k">Offline · Full documentation suite</div>
+    <h1>Site Services offline hub</h1>
+    <p class="s">Static mirror for local use. Serve with a tiny HTTP server so <code>/assets/…</code> paths keep working. Generic samples only — no customer PII.</p>
+  </div>
+
+  <div class="start-card" role="note">
+    <b>Start here: How to use this site</b>
+    <p style="margin:8px 0 0">Tooltips (?), sidebar navigation, recommended path (kit → sandbox → cost model), and what each area is for.</p>
+    <a class="primary" href="/how-to/">Open How to use this site →</a>
+  </div>
+
+  <h2>How to run locally</h2>
+  <p>Unzip <code>site-services-full-offline.zip</code>, then:</p>
+  <pre class="run">cd offline-site
+python3 -m http.server 8765</pre>
+  <p>Open <a href="http://localhost:8765/"><code>http://localhost:8765/</code></a> (home) or <a href="http://localhost:8765/how-to/"><code>/how-to/</code></a>.</p>
+  <p class="mute">Avoid <code>file://</code> — JSON fetches and absolute asset paths need localhost.</p>
+
+  <h2>Downloads on the live site</h2>
+  <ul>
+    <li><a href="/assets/site-services-full-offline.zip" download><b>Full site offline (.zip)</b></a> — this package</li>
+    <li><a href="/assets/vc-kit/site-services-offline.zip" download>VC kit only (.zip)</a> — mapper docs / kit hub (secondary)</li>
+  </ul>
+
+  <h2>Included pages</h2>
+  <table class="page-list">
+    <thead><tr><th>Page</th><th>Path</th></tr></thead>
+    <tbody>
+      <tr><td><a href="/how-to">How to use this site</a></td><td><code>/how-to</code></td></tr>
+      <tr><td><a href="/">Home</a></td><td><code>/</code></td></tr>
+      <tr><td><a href="/story">Build Story</a></td><td><code>/story</code></td></tr>
+      <tr><td><a href="/coverage-deal-a">Campus Coverage Map (Deal A)</a></td><td><code>/coverage-deal-a</code></td></tr>
+      <tr><td><a href="/cost-model-deal-a">Cost Model (Deal A)</a></td><td><code>/cost-model-deal-a</code></td></tr>
+      <tr><td><a href="/cost-model-deal-b">Cost Model (Deal B)</a></td><td><code>/cost-model-deal-b</code></td></tr>
+      <tr><td><a href="/cost-model">Cost Model (Generic)</a></td><td><code>/cost-model</code></td></tr>
+      <tr><td><a href="/coverage">Coverage</a></td><td><code>/coverage</code></td></tr>
+      <tr><td><a href="/deck">Customer Deck</a></td><td><code>/deck</code></td></tr>
+      <tr><td><a href="/workbook">Customer Workbook</a></td><td><code>/workbook</code></td></tr>
+      <tr><td><a href="/methodology">Deal A Methodology</a></td><td><code>/methodology</code></td></tr>
+      <tr><td><a href="/sandbox/map">Deal Map</a></td><td><code>/sandbox/map</code></td></tr>
+      <tr><td><a href="/sandbox">Deal Sandbox</a></td><td><code>/sandbox</code></td></tr>
+      <tr><td><a href="/summary">Executive Summary</a></td><td><code>/summary</code></td></tr>
+      <tr><td><a href="/how-we-built">How We Built</a></td><td><code>/how-we-built</code></td></tr>
+      <tr><td><a href="/deck-internal">Internal Deck</a></td><td><code>/deck-internal</code></td></tr>
+      <tr><td><a href="/workbook-internal">Internal Workbook</a></td><td><code>/workbook-internal</code></td></tr>
+      <tr><td><a href="/vc-kit/chat">Kit Chat</a></td><td><code>/vc-kit/chat</code></td></tr>
+      <tr><td><a href="/vc-kit/mapper">Mapper & Rules</a></td><td><code>/vc-kit/mapper</code></td></tr>
+      <tr><td><a href="/vc-kit/runbook">Pilot Runbook</a></td><td><code>/vc-kit/runbook</code></td></tr>
+      <tr><td><a href="/vc-kit/agent">SalesChat Agent Pack</a></td><td><code>/vc-kit/agent</code></td></tr>
+      <tr><td><a href="/structure">Structure & Methodology</a></td><td><code>/structure</code></td></tr>
+      <tr><td><a href="/deal-b">Tech Bar Pattern (Deal B)</a></td><td><code>/deal-b</code></td></tr>
+      <tr><td><a href="/vc-kit/template">Template Pack</a></td><td><code>/vc-kit/template</code></td></tr>
+      <tr><td><a href="/vc-kit">VC Kit Overview</a></td><td><code>/vc-kit</code></td></tr>
+      <tr><td><a href="/changes">What Changed</a></td><td><code>/changes</code></td></tr>
+    </tbody>
+  </table>
+
+  <p class="mute" style="margin-top:24px">Built 2026-08-11 · Field Services Solution Design</p>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+</body>
+</html>

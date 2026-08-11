@@ -4,6 +4,7 @@
 .Python
 .vercel
 .venv*/
+.offline-build/
 Deal_Output.xlsx
 Deal_Output.json
 __pycache__/
