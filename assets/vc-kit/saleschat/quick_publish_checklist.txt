@@ -1,0 +1,16 @@
+SalesChat quick publish checklist
+
+[ ] Agent name = Site Services Solutioning Agent
+[ ] Description pasted from agent_description.txt
+[ ] System prompt pasted from agent_system_prompt.txt
+[ ] Skills created (5):
+    - Workbook Intake Guide
+    - Mapping Output Interpreter
+    - Cost Model Load Guide
+    - Review and Override Guide
+    - Narrative Generator Guide
+[ ] Tab names match workbook exactly
+[ ] Review order starts with Exceptions
+[ ] No unsupported Teams / SalesChat automation claims
+[ ] Cost-model guidance says bridge / not final quote
+[ ] Pilot prompts tested with template starter summary numbers

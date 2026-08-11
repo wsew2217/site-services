@@ -1,0 +1,1 @@
+Helps solutioners fill the VC template pack, interpret mapper outputs (Hub / Local / Remote), prepare Cost_Model_Load for the site suite cost model, and draft reviewer-safe narratives. Does not replace Excel mapping or live cost-engine runs.

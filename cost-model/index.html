@@ -102,6 +102,7 @@ details ul{margin:8px 0 4px 20px}
 <div class="card"><h3>Inputs</h3>
 <ul style="margin:8px 0 0 18px">
 <li><b>Engine JSON</b> — prefer <code>/assets/engine-summary.json</code> from <code>python -m engine run …</code> (see <code>engine/README.md</code>). Campuses and day-one techs lock as site-derived.</li>
+<li><b>VC Mapper bridge</b> — after mapping, use <a href="/vc-kit/mapper">Cost_Model_Load → bridge</a> then prefer a full engine run before uploading JSON here.</li>
 <li><b>Intake assumptions</b> — sites, users, tickets/user, physical-touch share, throughput, utilization, regional labor mix, logistics / dispatch / OEM / transition rates (editable placeholders).</li>
 <li><b>Ratio bands</b> — commercial guardrails on Scenarios (and <a href="/structure">Structure</a>), not day-one sizing truth. Day one follows demand + VC floors.</li>
 </ul></div>
@@ -122,6 +123,14 @@ details ul{margin:8px 0 4px 20px}
 <li><b>Print / PDF</b> exports the visible panes; <b>Reset defaults</b> restores the page snapshot. Rebuild engine outputs with the README quick-start, then re-copy JSON into <code>/assets/</code>.</li>
 </ol></div>
 
+<div class="card"><h3>From VC Mapper · Cost_Model_Load</h3>
+<ul style="margin:8px 0 0 18px">
+<li>Map sites with the <a href="/vc-kit">VC Solutioning Kit</a>; review Exceptions before trusting roles.</li>
+<li>Bridge sheet → engine Sites intake: <code>python3 tools/vc_mapper/cost_model_bridge.py --input mapped.xlsx --sites-out engine_sites.xlsx --json-out bridge.json</code></li>
+<li>Prefer a full engine pass: <code>python -m engine run engine_sites.xlsx -o Deal_Output.xlsx</code>, then upload <code>Deal_Output.json</code> here.</li>
+<li><code>bridge.json</code> is a rough sandbox only (<code>day1_techs_hint</code> ≠ final staffing). Cost_Model_Load is not a priced proposal.</li>
+</ul></div>
+
 <div class="card"><h3>What not to confuse</h3>
 <ul style="margin:8px 0 0 18px">
 <li><b>Deal A numbers are not universal</b> — 989 sites / 29 campuses / ~453:1 derived ratio belong to that example only (<a href="/cost-model-deal-a">/cost-model-deal-a</a>).</li>
@@ -129,7 +138,7 @@ details ul{margin:8px 0 4px 20px}
 <li>Ratios do not invent campus count; geography and hub catchment live in the Python engine. Dollar rates are modern placeholders.</li>
 </ul></div>
 
-<div class="band">Also see: <a href="/structure" style="color:#fff">Structure &amp; methodology</a> · <a href="/cost-model-deal-a" style="color:#fff">Deal A cost</a> · <a href="/cost-model-deal-b" style="color:#fff">Deal B cost</a> · <code>python -m engine run</code></div>
+<div class="band">Also see: <a href="/vc-kit" style="color:#fff">VC kit</a> · <a href="/structure" style="color:#fff">Structure &amp; methodology</a> · <a href="/cost-model-deal-a" style="color:#fff">Deal A cost</a> · <a href="/cost-model-deal-b" style="color:#fff">Deal B cost</a> · <code>python -m engine run</code></div>
 </div>
 
 <!-- ================= PANE 1: INPUTS ================= -->

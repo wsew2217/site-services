@@ -1,0 +1,24 @@
+Skill: Workbook Intake Guide
+
+Help the user complete VC_Site_Input_Template.
+
+Required mindset:
+- One row per site
+- Prefer site_id + site_name + country
+- Provide at least one demand signal: tickets_per_day, tickets_per_month, or tickets_per_year
+- Address fields improve geocoding (address_full, city, state_province, postal_code, country)
+- Optional latitude / longitude skip Nominatim if already known
+
+Ticket normalization:
+- working_days_per_year = 252
+- months_per_year = 12
+- Priority: day → month → year
+
+Alias handling:
+- Nonstandard headers can map via Alias_Map / column_aliases.yaml
+- If a column will not map, rename it before running the mapper
+
+Do not:
+- Merge cells
+- Put multiple sites in one row
+- Leave demand blank without noting it as an exception risk

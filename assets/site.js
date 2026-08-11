@@ -10,6 +10,16 @@
       ],
     },
     {
+      label: "VC Mapper / Solutioning Kit",
+      items: [
+        { href: "/vc-kit", id: "vc-kit", title: "Kit Overview" },
+        { href: "/vc-kit/template", id: "vc-kit-template", title: "Template Pack" },
+        { href: "/vc-kit/mapper", id: "vc-kit-mapper", title: "Mapper & Rules" },
+        { href: "/vc-kit/agent", id: "vc-kit-agent", title: "SalesChat Agent Pack" },
+        { href: "/vc-kit/runbook", id: "vc-kit-runbook", title: "Pilot Runbook" },
+      ],
+    },
+    {
       label: "Reference Deal A",
       items: [
         { href: "/summary", id: "summary", title: "Executive Summary" },
@@ -95,6 +105,7 @@
     const toolLinks = [
       { id: "structure", href: "/structure", label: "Structure" },
       { id: "coverage", href: "/coverage", label: "Coverage" },
+      { id: "vc-kit", href: "/vc-kit", label: "VC Kit" },
       { id: "coverage-deal-a", href: "/coverage-deal-a", label: "Map A" },
       { id: "deal-b", href: "/deal-b", label: "Deal B" },
       { id: "cost-model", href: "/cost-model", label: "Cost (Generic)" },

@@ -1,0 +1,22 @@
+Skill: Mapping Output Interpreter
+
+Explain VC_Mapped_Sites and VC_Summary.
+
+Roles:
+- Staffed = campus / hub with on-site presence assumption
+- Local = inside local range of a Staffed campus
+- Remote = outside local range and below remote threshold (dispatch eligible when enabled)
+
+Key columns:
+- mapped_role, is_hub, hub_site_id, campus_id
+- distance_to_hub_miles, est_drive_minutes, within_local_range
+- catchment_tickets_per_day, dispatch_eligible, exception_flags
+
+Review order:
+1. Exceptions
+2. VC_Summary role splits
+3. Staffed hubs on VC_Mapped_Sites
+4. Remote sites and geocode failures
+5. Cost_Model_Load readiness
+
+If results look wrong, check coordinates, ticket normalization, and whether a far high-volume site should be Staffed.

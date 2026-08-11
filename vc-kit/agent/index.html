@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · SalesChat Agent Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.kit-dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+.kit-dl a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--doc-line);
+  background: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #13294B;
+}
+.pack-block {
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  background: #fff;
+  margin: 0 0 14px;
+  overflow: hidden;
+}
+.pack-block header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #eef3fa;
+  border-bottom: 1px solid var(--doc-line);
+}
+.pack-block header strong { color: #13294B; font-size: 13.5px; }
+.pack-block header button {
+  appearance: none;
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background: #13294B;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pack-block pre {
+  margin: 0;
+  padding: 14px 16px;
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  max-height: 220px;
+  overflow: auto;
+  background: #fff;
+}
+.warn {
+  border-left: 4px solid #d86a44;
+  padding: 12px 14px;
+  background: #fff6f1;
+  border-radius: 0 12px 12px 0;
+  margin: 14px 0 20px;
+  font-size: 14px;
+}
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="vc-kit-agent" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">VC kit · SalesChat</div>
+  <h1>Agent text pack</h1>
+  <div class="sub">Copyable / downloadable prompts for a custom SalesChat agent. Helps solutioners use the workbook — does not replace Excel mapping or live engine runs.</div>
+</div>
+
+<div class="warn"><b class="t">Manual publish still required.</b> Paste these texts into your SalesChat / custom-agent UI. This suite does not create or host the live agent. Do not claim Teams auto-edit, guaranteed SLAs, or automatic workbook writes.</div>
+
+<div class="kit-dl">
+  <a href="/assets/vc-kit/saleschat_agent_pack.zip" download>Download full pack (.zip)</a>
+  <a href="/assets/vc-kit/saleschat/agent_system_prompt.txt" download>System prompt</a>
+  <a href="/assets/vc-kit/saleschat/quick_publish_checklist.txt" download>Publish checklist</a>
+</div>
+
+<h2>Agent identity</h2>
+<div class="pack-block" data-file="agent_name.txt">
+  <header><strong>agent_name.txt</strong><button type="button" data-copy>Copy</button></header>
+  <pre id="t-name">Loading…</pre>
+</div>
+<div class="pack-block" data-file="agent_description.txt">
+  <header><strong>agent_description.txt</strong><button type="button" data-copy>Copy</button></header>
+  <pre id="t-desc">Loading…</pre>
+</div>
+<div class="pack-block" data-file="agent_system_prompt.txt">
+  <header><strong>agent_system_prompt.txt</strong><button type="button" data-copy>Copy</button></header>
+  <pre id="t-sys">Loading…</pre>
+</div>
+
+<h2>Five skills</h2>
+<div class="pack-block" data-file="skill_workbook_intake_guide.txt">
+  <header><strong>Workbook Intake Guide</strong><button type="button" data-copy>Copy</button></header>
+  <pre>Loading…</pre>
+</div>
+<div class="pack-block" data-file="skill_mapping_output_interpreter.txt">
+  <header><strong>Mapping Output Interpreter</strong><button type="button" data-copy>Copy</button></header>
+  <pre>Loading…</pre>
+</div>
+<div class="pack-block" data-file="skill_cost_model_load_guide.txt">
+  <header><strong>Cost Model Load Guide</strong><button type="button" data-copy>Copy</button></header>
+  <pre>Loading…</pre>
+</div>
+<div class="pack-block" data-file="skill_review_and_override_guide.txt">
+  <header><strong>Review and Override Guide</strong><button type="button" data-copy>Copy</button></header>
+  <pre>Loading…</pre>
+</div>
+<div class="pack-block" data-file="skill_narrative_generator_guide.txt">
+  <header><strong>Narrative Generator Guide</strong><button type="button" data-copy>Copy</button></header>
+  <pre>Loading…</pre>
+</div>
+
+<h2>Publish checklist</h2>
+<div class="pack-block" data-file="quick_publish_checklist.txt">
+  <header><strong>quick_publish_checklist.txt</strong><button type="button" data-copy>Copy</button></header>
+  <pre>Loading…</pre>
+</div>
+
+<div class="band">Kit: <a href="/vc-kit" style="color:#fff">Overview</a> · <a href="/vc-kit/template" style="color:#fff">Template</a> · <a href="/vc-kit/mapper" style="color:#fff">Mapper</a> · <a href="/vc-kit/runbook" style="color:#fff">Runbook</a></div>
+<div class="foot">Sanitized pack · no customer names</div>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+<script>
+(() => {
+  document.querySelectorAll(".pack-block").forEach(async (block) => {
+    const file = block.dataset.file;
+    const pre = block.querySelector("pre");
+    const btn = block.querySelector("[data-copy]");
+    try {
+      const res = await fetch("/assets/vc-kit/saleschat/" + file);
+      const text = await res.text();
+      pre.textContent = text.trim();
+    } catch (e) {
+      pre.textContent = "Could not load " + file;
+    }
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(pre.textContent);
+        btn.textContent = "Copied";
+        setTimeout(() => { btn.textContent = "Copy"; }, 1400);
+      } catch (_) {
+        btn.textContent = "Select text";
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

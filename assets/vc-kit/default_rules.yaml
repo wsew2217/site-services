@@ -1,0 +1,27 @@
+working_days_per_year: 252
+months_per_year: 12
+
+hub_threshold_tickets_per_day: 3.0
+remote_threshold_tickets_per_day: 1.2
+
+cluster_radius_miles: 25.0
+max_drive_minutes: 60.0
+avg_drive_speed_mph: 40.0
+
+# When false, drive-time uses haversine proxy only (no live routing API).
+# Local range is still inclusive OR: miles ≤ cluster_radius_miles OR est minutes ≤ max_drive_minutes.
+enable_drive_time_logic: false
+enable_dispatch_override: true
+
+hub_selection_priority:
+  - tickets_per_day
+  - users
+  - seat_count
+
+economics:
+  dispatch_cost_per_event: 175.0
+  minimum_staffed_campus_cost_floor: 95000.0
+  cluster_overhead_cost: 12000.0
+  local_service_benefit_factor: 0.0
+
+rules_version: "1.0.0"

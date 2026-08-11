@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Site Services · VC Mapper / Solutioning Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+.flow {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 22px;
+}
+.flow-step {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 14px 16px;
+  border: 1px solid var(--doc-line);
+  border-radius: 12px;
+  background: #fff;
+}
+.flow-step b.n {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #13294B;
+  color: #fff;
+  font-size: 13px;
+}
+.kit-dl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+.kit-dl a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--doc-line);
+  background: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #13294B;
+}
+.kit-dl a:hover { border-color: #2fd6c2; }
+</style>
+</head>
+<body class="suite-app suite-doc" data-page="vc-kit" data-mode="shell">
+<div data-suite-content>
+  <div class="suite-doc-frame">
+<div class="page">
+<div class="hero">
+  <div class="kicker">Site Services · Solutioning kit</div>
+  <h1>VC Mapper / Solutioning Kit</h1>
+  <div class="sub">Excel intake → Python mapper → Cost_Model_Load → generic cost model. Generic starter only — Reference Deal A/B labels, no real customer data on this site.</div>
+  <div class="statrow">
+    <div class="stat"><b>5</b><span>kit pages</span></div>
+    <div class="stat"><b>8</b><span>workbook tabs</span></div>
+    <div class="stat"><b>25 mi</b><span>local range</span></div>
+    <div class="stat acc"><b>1.2</b><span>remote tpd floor</span></div>
+  </div>
+</div>
+
+<p>This kit is the working path from sparse site lists into virtual-campus roles and a cost-model bridge. Keep real pilot workbooks on the Desktop governed folders — never commit account names or address dumps to git.</p>
+
+<h2>Pipeline</h2>
+<div class="flow">
+  <div class="flow-step"><b class="n">1</b><div><b class="t">Template</b><p style="margin:4px 0 0">Fill <code>VC_Site_Input_Template</code> in <code>vc_template_pack_v1_0.xlsx</code> (one row per site).</p></div></div>
+  <div class="flow-step"><b class="n">2</b><div><b class="t">Mapper</b><p style="margin:4px 0 0">Run <code>vc_mapper.py</code> with <code>default_rules.yaml</code> → Hub / Local / Remote on <code>VC_Mapped_Sites</code>.</p></div></div>
+  <div class="flow-step"><b class="n">3</b><div><b class="t">Cost_Model_Load</b><p style="margin:4px 0 0">Engine-aligned sheet for Sites intake / bridge JSON — not a priced proposal by itself.</p></div></div>
+  <div class="flow-step"><b class="n">4</b><div><b class="t">Cost model</b><p style="margin:4px 0 0">Prefer <code>python -m engine run</code>, then load summary on <a href="/cost-model#pane-guide">/cost-model Guide</a>.</p></div></div>
+</div>
+
+<h2>Build order (condensed)</h2>
+<ol>
+<li>Create / refresh the workbook template</li>
+<li>Install the Python package + rules YAML</li>
+<li>Map the generic starter rows; review Exceptions → Summary → roles</li>
+<li>Publish SalesChat text pack (UI setup is still manual)</li>
+<li>Run first pilot on Desktop customer inputs (off git)</li>
+</ol>
+
+<div class="card soft">
+  <h3>Quick downloads</h3>
+  <div class="kit-dl">
+    <a href="/assets/vc-kit/vc_template_pack_v1_0.xlsx" download>Template workbook</a>
+    <a href="/assets/vc-kit/vc_mapper_package.zip" download>Mapper package (.zip)</a>
+    <a href="/assets/vc-kit/default_rules.yaml" download>default_rules.yaml</a>
+    <a href="/assets/vc-kit/vc_template_pack_v1_0_mapped_sample.xlsx" download>Sample mapped output</a>
+    <a href="/assets/vc-kit/saleschat_agent_pack.zip" download>SalesChat text pack</a>
+  </div>
+</div>
+
+<h2>Kit pages</h2>
+<div class="two">
+  <div class="card"><h3><a href="/vc-kit/template">Template</a></h3><p>Tabs, headers, starter rows, download links.</p></div>
+  <div class="card"><h3><a href="/vc-kit/mapper">Mapper</a></h3><p>Mac commands, catchment rules, interactive role legend.</p></div>
+  <div class="card"><h3><a href="/vc-kit/agent">SalesChat agent</a></h3><p>Copyable prompts and skill text — no overclaims.</p></div>
+  <div class="card"><h3><a href="/vc-kit/runbook">Runbook</a></h3><p>Pilot checklist and acceptance criteria.</p></div>
+</div>
+
+<div class="band">Also see: <a href="/structure" style="color:#fff">Structure</a> · <a href="/coverage" style="color:#fff">Coverage</a> · <a href="/cost-model#pane-guide" style="color:#fff">Cost model Guide</a> · <a href="/cost-model-deal-a#pane-guide" style="color:#fff">Deal A Guide</a> · <a href="/cost-model-deal-b#pane-guide" style="color:#fff">Deal B Guide</a></div>
+
+<div class="foot">Field Services Solution Design · VC kit v1 · Generic starter only</div>
+</div>
+  </div>
+</div>
+<script src="/assets/site.js"></script>
+</body>
+</html>

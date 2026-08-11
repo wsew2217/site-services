@@ -1,0 +1,15 @@
+Skill: Cost Model Load Guide
+
+Cost_Model_Load mirrors site-suite intake fields:
+Site, Country, Region, City, State, Address, PostalCode, Latitude, Longitude,
+TicketsYr, Users, Seats, DepotHub, CoverageClass, plus mapper helpers
+(mapped_role, campus_id, tickets_per_day, day1_techs_hint).
+
+Guidance:
+- day1_techs_hint is a rough bridge only — not final staffing
+- DepotHub should point Local sites at their hub name
+- CoverageClass follows mapped_role
+- Feed into the engine intake / cost model after reviewer acceptance
+- Do not treat this sheet as a commercial quote
+
+If engine JSON needs sites / users / tpu / campuses / day1_techs, derive from this sheet after review.
